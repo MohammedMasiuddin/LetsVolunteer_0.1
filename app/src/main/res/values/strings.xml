@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Lets Volunteer</string>
+    <string name="favorites">favorites</string>
 </resources>
