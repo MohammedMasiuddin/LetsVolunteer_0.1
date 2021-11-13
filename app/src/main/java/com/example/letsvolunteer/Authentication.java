@@ -23,5 +23,8 @@ public class Authentication extends AppCompatActivity {
         registerBtn.setOnClickListener(v -> {
             startActivity(new Intent(Authentication.this, RegisterationActivity.class));
         });
+        loginBtn.setOnClickListener(v -> {
+           startActivity(new Intent(Authentication.this, LoginActivity.class));
+        });
     }
 }

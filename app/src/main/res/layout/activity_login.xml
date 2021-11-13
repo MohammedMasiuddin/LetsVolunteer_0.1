@@ -5,41 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    tools:context=".RegisterationActivity">
+    tools:context=".LoginActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:text="Register"
+        android:text="Login"
         android:textColor="#000"
         android:textSize="25sp"/>
     <!-- Email -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailTIL"
+        android:id="@+id/emailTIL2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
         <EditText
-            android:id="@+id/emailEditText"
+            android:id="@+id/emailEditText2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="Email"/>
     </com.google.android.material.textfield.TextInputLayout>
-<!-- Password -->
+    <!-- Password -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordTIL"
+        android:id="@+id/passwordTIL2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_below="@id/emailTIL"
+        android:layout_below="@id/emailTIL2"
         android:layout_marginTop="10dp"
         app:passwordToggleEnabled="true">
         <EditText
-            android:id="@+id/passwordEditText"
+            android:id="@+id/passwordEditText2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -48,21 +48,30 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/registerButton"
+        android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/passwordTIL"
+        android:layout_below="@id/passwordTIL2"
         android:layout_centerHorizontal="true"
-        android:text="Register"/>
+        android:text="Login"/>
 
     <TextView
-        android:id="@+id/have_accountTv"
+        android:id="@+id/recoverPassTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Already have an account? Login"
         android:textAlignment="center"
-        android:layout_below="@id/registerButton"
+        android:text="Forgot Password? Reset"
+        android:layout_below="@id/login_button"/>
+
+    <TextView
+        android:id="@+id/nothave_accountTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Do not have an account? Register"
+        android:textAlignment="center"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
         android:textColor="#000"/>
 
 
