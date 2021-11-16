@@ -55,7 +55,7 @@ public class BlankFragment extends Fragment {
     int requestCode = 12345;
     ImageView imageView;
     LinearLayout linearLayout;
-//    GridLayout gridLayout;
+    GridLayout gridLayout;
 
 
     public static BlankFragment newInstance(String param1, String param2) {
@@ -89,6 +89,8 @@ public class BlankFragment extends Fragment {
         ImageButton btn = (ImageButton) view.findViewById(R.id.AddimageButton);
 //        imageView = view.findViewById(R.id.uploadimageView);
         linearLayout = view.findViewById(R.id.uploadImagesContainer);
+
+//        gridLayout = view.findViewById(R.id.uploadImagesContainer);
 
 
 
@@ -167,31 +169,12 @@ public class BlankFragment extends Fragment {
                 InputStream inputStream = getActivity().getContentResolver().openInputStream(filepath);
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
-                View view2 = View.inflate(getContext(),R.layout.imagesampletemplate,linearLayout);
+                View view2 = getLayoutInflater().inflate(R.layout.imagesampletemplate,linearLayout,false);
                 ImageView image4 = view2.findViewById(R.id.imageViewsample);
                 image4.setImageBitmap(bitmap);
-
-                ImageView tempImageView = new ImageView(getContext());
-
-
-                int height = getContext().getResources().getDimensionPixelSize(R.dimen.imageheight1);
-                int width = getContext().getResources().getDimensionPixelSize(R.dimen.imagewidth1);
-                int margin = getContext().getResources().getDimensionPixelSize(R.dimen.imagemargin);
-
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width,height);
-                layoutParams.setMargins(margin,margin,margin,margin);
-
-                tempImageView.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT ));
-
-                CardView cardView = new CardView(getContext());
-                cardView.setLayoutParams(layoutParams);
-                cardView.addView(tempImageView);
+                linearLayout.addView(view2);
 
 
-                linearLayout.addView(cardView);
-
-                tempImageView.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
