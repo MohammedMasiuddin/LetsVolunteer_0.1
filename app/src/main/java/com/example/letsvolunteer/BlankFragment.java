@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -19,25 +20,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.zip.Inflater;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BlankFragment#newInstance} factory method to
- * create an instance of this fragment.
- *
- */
 public class BlankFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final String TAG = "Firebase drf";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -46,16 +54,10 @@ public class BlankFragment extends Fragment {
     String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
     int requestCode = 12345;
     ImageView imageView;
+    LinearLayout linearLayout;
+//    GridLayout gridLayout;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BlankFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static BlankFragment newInstance(String param1, String param2) {
         BlankFragment fragment = new BlankFragment();
         Bundle args = new Bundle();
@@ -85,7 +87,24 @@ public class BlankFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_blank, container, false);
 
         ImageButton btn = (ImageButton) view.findViewById(R.id.AddimageButton);
-        imageView = view.findViewById(R.id.uploadimageView);
+//        imageView = view.findViewById(R.id.uploadimageView);
+        linearLayout = view.findViewById(R.id.uploadImagesContainer);
+
+
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference dbref = firebaseDatabase.getReference("Events");
+
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("first", "Ada");
+        user.put("last", "Lovelace");
+        user.put("born", 1815);
+
+
+
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,11 +112,33 @@ public class BlankFragment extends Fragment {
             }
         });
 
+        EventsPost eventPost = new EventsPost("Somename","somedescription","098788908","someemail@gmail.com");
+
         Button upload = view.findViewById(R.id.uploadbutton);
         upload.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                Log.d("TAG", "onClick: ");
+
+                dbref.setValue("Testing");
+
+                db.collection("users")
+                        .document("user1")
+                        .set(user)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d(TAG, "onSuccess: ");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error adding document", e);
+                            }
+                        });
+
+
             }
         });
 
@@ -126,7 +167,31 @@ public class BlankFragment extends Fragment {
                 InputStream inputStream = getActivity().getContentResolver().openInputStream(filepath);
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
-                imageView.setImageBitmap(bitmap);
+                View view2 = View.inflate(getContext(),R.layout.imagesampletemplate,linearLayout);
+                ImageView image4 = view2.findViewById(R.id.imageViewsample);
+                image4.setImageBitmap(bitmap);
+
+                ImageView tempImageView = new ImageView(getContext());
+
+
+                int height = getContext().getResources().getDimensionPixelSize(R.dimen.imageheight1);
+                int width = getContext().getResources().getDimensionPixelSize(R.dimen.imagewidth1);
+                int margin = getContext().getResources().getDimensionPixelSize(R.dimen.imagemargin);
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width,height);
+                layoutParams.setMargins(margin,margin,margin,margin);
+
+                tempImageView.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT ));
+
+                CardView cardView = new CardView(getContext());
+                cardView.setLayoutParams(layoutParams);
+                cardView.addView(tempImageView);
+
+
+                linearLayout.addView(cardView);
+
+                tempImageView.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
