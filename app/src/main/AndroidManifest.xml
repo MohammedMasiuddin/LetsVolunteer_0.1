@@ -9,6 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LetsVolunteer">
+        <activity android:name=".OrganiserLoginPage"></activity>
+        <activity android:name=".UserLoginPage" />
+        <activity android:name=".WelcomePage" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
