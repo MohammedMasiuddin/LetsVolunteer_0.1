@@ -9,10 +9,10 @@
     android:backgroundTint="@color/background"
     android:backgroundTintMode="screen"
     android:padding="20dp"
-    tools:context=".LoginActivity">
+    tools:context=".OLoginActivity">
 
     <TextView
-        android:id="@+id/letsvolunteer"
+        android:id="@+id/oLetsvolunteer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Lets Volunteer"
@@ -21,10 +21,10 @@
         android:textSize="30sp" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/logo_cv"
+        android:id="@+id/oLogo_cv"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_below="@+id/letsvolunteer"
+        android:layout_below="@+id/oLetsvolunteer"
         android:layout_centerHorizontal="true"
         android:layout_margin="5dp"
         app:cardBackgroundColor="@color/white"
@@ -49,7 +49,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/logo_cv"
+        android:layout_below="@+id/oLogo_cv"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
         app:cardBackgroundColor="#CCFFFFFF"
@@ -61,14 +61,14 @@
             android:layout_margin="10dp">
             <!-- Email -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/emailTIL2"
+                android:id="@+id/oEmailTIL2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/passwordTIL2"
+                android:layout_above="@+id/oPasswordTIL2"
                 android:layout_centerHorizontal="true">
 
                 <EditText
-                    android:id="@+id/emailEditText2"
+                    android:id="@+id/oEmailEditText2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Email"
@@ -78,7 +78,7 @@
             </com.google.android.material.textfield.TextInputLayout>
             <!-- Password -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/passwordTIL2"
+                android:id="@+id/oPasswordTIL2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -87,7 +87,7 @@
                 app:passwordToggleEnabled="true">
 
                 <EditText
-                    android:id="@+id/passwordEditText2"
+                    android:id="@+id/oPasswordEditText2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Password"
@@ -97,33 +97,24 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/login_button"
+                android:id="@+id/oLogin_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/passwordTIL2"
+                android:layout_below="@id/oPasswordTIL2"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="60dp"
                 android:text="Login" />
 
             <TextView
-                android:id="@+id/recoverPassTv"
+                android:id="@+id/oRecoverPassTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/login_button"
+                android:layout_below="@id/oLogin_button"
                 android:layout_marginTop="15dp"
                 android:text="Forgot Password? Reset"
                 android:textAlignment="center"
                 android:textColor="#000" />
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/googleLoginBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/emailTIL2"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="20dp">
-
-            </com.google.android.gms.common.SignInButton>
 
         </RelativeLayout>
 
@@ -131,7 +122,7 @@
 
 
     <TextView
-        android:id="@+id/nothave_accountTv"
+        android:id="@+id/oNothave_accountTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

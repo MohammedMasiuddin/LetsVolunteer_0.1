@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/vol"
     android:paddingHorizontal="25dp"
-    android:paddingVertical="40dp"
+    android:paddingVertical="25dp"
     android:backgroundTint="@color/background"
     android:backgroundTintMode="screen"
     android:alpha="0.82"
-    tools:context=".RegisterationActivity">
+    tools:context=".ORegisterationActivity">
 
 
     <androidx.cardview.widget.CardView
@@ -26,58 +26,73 @@
             android:layout_height="match_parent"
             android:layout_margin="10dp">
 
-        <!-- Email -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/emailTIL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
-            <EditText
-                android:id="@+id/emailEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:hint="Email"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <!-- Password -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/vFirstNameTIL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/emailTIL"
-            android:layout_marginTop="10dp">
-            <EditText
-                android:id="@+id/vFirstNameEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="First Name"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
+            <!-- Email -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/vLastNameTIL"
+                android:id="@+id/oEmailTIL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/vFirstNameTIL"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="20dp">
                 <EditText
-                    android:id="@+id/vLastNameEditText"
+                    android:id="@+id/oEmailEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:hint="Last Name"/>
+                    android:inputType="textEmailAddress"
+                    android:hint="Email"/>
             </com.google.android.material.textfield.TextInputLayout>
             <!-- Password -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/passwordTIL"
+                android:id="@+id/oOrganizationNameTIL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/vLastNameTIL"
+                android:layout_below="@id/oEmailTIL"
+                android:layout_marginTop="10dp">
+                <EditText
+                    android:id="@+id/oOrganizationNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:hint="Organization Name"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/oAddressTIL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/oOrganizationNameTIL"
+                android:layout_marginTop="10dp">
+                <EditText
+                    android:id="@+id/oAddressEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:hint="Address"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/oPhoneNumberTIL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/oAddressTIL"
+                android:layout_marginTop="10dp">
+                <EditText
+                    android:id="@+id/oPhoneNumberEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="Phone Number"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Password -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/oPasswordTIL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/oPhoneNumberTIL"
                 android:layout_marginTop="10dp"
                 app:passwordToggleEnabled="true">
                 <EditText
-                    android:id="@+id/passwordEditText"
+                    android:id="@+id/oPasswordEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -86,15 +101,15 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/vConfirmPasswordTIL"
+                android:id="@+id/oConfirmPasswordTIL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:layout_below="@id/passwordTIL"
+                android:layout_below="@id/oPasswordTIL"
                 android:layout_marginTop="10dp"
                 app:passwordToggleEnabled="true">
                 <EditText
-                    android:id="@+id/vConfirmpasswordEditText"
+                    android:id="@+id/oConfirmpasswordEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -103,12 +118,12 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/registerButton"
+                android:id="@+id/oRegisterButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/vConfirmPasswordTIL"
+                android:layout_below="@id/oConfirmPasswordTIL"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:text="Register" />
 
 
@@ -118,7 +133,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/have_accountTv"
+        android:id="@+id/oHave_accountTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Already have an account? Login"

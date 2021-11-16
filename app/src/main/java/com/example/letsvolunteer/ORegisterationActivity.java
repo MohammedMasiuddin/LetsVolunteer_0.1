@@ -12,7 +12,6 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,11 +22,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.nio.charset.StandardCharsets;
+public class ORegisterationActivity extends AppCompatActivity {
 
-public class RegisterationActivity extends AppCompatActivity {
-
-    EditText emailEt, passwordEt, firstNameEt, lastNameEt, confirmPasswordEt;
+    EditText emailEt, passwordEt, organizationNameEt, addressEt, phoneNumberEt, confirmPasswordEt;
     Button registerBtn;
     TextView haveAccountTv;
 
@@ -39,20 +36,21 @@ public class RegisterationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registeration);
+        setContentView(R.layout.activity_oregisteration);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Create Account");
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
-        emailEt = findViewById(R.id.emailEditText);
-        passwordEt = findViewById(R.id.passwordEditText);
-        registerBtn = findViewById(R.id.registerButton);
-        haveAccountTv = findViewById(R.id.have_accountTv);
-        firstNameEt = findViewById(R.id.vFirstNameEditText);
-        lastNameEt = findViewById(R.id.vLastNameEditText);
-        confirmPasswordEt = findViewById(R.id.vConfirmpasswordEditText);
+        emailEt = findViewById(R.id.oEmailEditText);
+        passwordEt = findViewById(R.id.oPasswordEditText);
+        organizationNameEt = findViewById(R.id.oOrganizationNameEditText);
+        addressEt = findViewById(R.id.oAddressEditText);
+        phoneNumberEt = findViewById(R.id.oPhoneNumberEditText);
+        confirmPasswordEt = findViewById(R.id.oConfirmpasswordEditText);
+        registerBtn = findViewById(R.id.oRegisterButton);
+        haveAccountTv = findViewById(R.id.oHave_accountTv);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -65,8 +63,9 @@ public class RegisterationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = emailEt.getText().toString().trim();
                 String password = passwordEt.getText().toString().trim();
-                String firstName = firstNameEt.getText().toString().trim();
-                String lastName = lastNameEt.getText().toString().trim();
+                String organizationName = organizationNameEt.getText().toString().trim();
+                String address = addressEt.getText().toString().trim();
+                String phoneNumber = phoneNumberEt.getText().toString().trim();
                 String confirmPassword = confirmPasswordEt.getText().toString().trim();
 
                 if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -74,13 +73,17 @@ public class RegisterationActivity extends AppCompatActivity {
                     emailEt.setError("Invalid Email");
                     emailEt.setFocusable(true);
                 }
-                else if (TextUtils.isEmpty(firstName)) {
-                    firstNameEt.setError("Required field");
-                    firstNameEt.setFocusable(true);
+                else if (TextUtils.isEmpty(organizationName)) {
+                    organizationNameEt.setError("Required field");
+                    organizationNameEt.setFocusable(true);
                 }
-                else if (TextUtils.isEmpty(lastName)) {
-                    lastNameEt.setError("Required field");
-                    lastNameEt.setFocusable(true);
+                else if (TextUtils.isEmpty(address)) {
+                    addressEt.setError("Required field");
+                    addressEt.setFocusable(true);
+                }
+                else if (TextUtils.isEmpty(phoneNumber) || phoneNumber.length() < 7) {
+                    phoneNumberEt.setError("invalid phone number");
+                    phoneNumberEt.setFocusable(true);
                 }
                 else if (password.length() < 6) {
                     // set focus to editText and send error
@@ -100,7 +103,7 @@ public class RegisterationActivity extends AppCompatActivity {
         haveAccountTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RegisterationActivity.this, LoginActivity.class));
+                startActivity(new Intent(ORegisterationActivity.this, OLoginActivity.class));
                 finish();
             }
         });
@@ -108,7 +111,7 @@ public class RegisterationActivity extends AppCompatActivity {
     }
 
     private void registerUser(String email, String password) {
-      //  email and password are valid, show progress and register user
+        //  email and password are valid, show progress and register user
         progressDialog.show();
 
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -119,20 +122,20 @@ public class RegisterationActivity extends AppCompatActivity {
                             // Sign in success, dimiss dialog and start register activity
                             progressDialog.dismiss();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(RegisterationActivity.this, "Registered \n" + user.getEmail(), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(RegisterationActivity.this, ProfileActivity.class));
+                            Toast.makeText(ORegisterationActivity.this, "Registered \n" + user.getEmail(), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(ORegisterationActivity.this, ProfileActivity.class));
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             progressDialog.dismiss();
-                            Toast.makeText(RegisterationActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ORegisterationActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
-                Toast.makeText(RegisterationActivity.this, ""+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ORegisterationActivity.this, ""+ e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

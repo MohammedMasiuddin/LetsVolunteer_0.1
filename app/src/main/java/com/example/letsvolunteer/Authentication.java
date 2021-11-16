@@ -21,10 +21,10 @@ public class Authentication extends AppCompatActivity {
 
 
         registerBtn.setOnClickListener(v -> {
-            startActivity(new Intent(Authentication.this, RegisterationActivity.class));
+            startActivity(new Intent(Authentication.this, LoginActivity.class));
         });
         loginBtn.setOnClickListener(v -> {
-           startActivity(new Intent(Authentication.this, LoginActivity.class));
+           startActivity(new Intent(Authentication.this, OLoginActivity.class));
         });
     }
 }

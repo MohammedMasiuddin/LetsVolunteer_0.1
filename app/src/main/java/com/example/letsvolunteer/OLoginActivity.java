@@ -33,18 +33,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 
-
-
-public class LoginActivity extends AppCompatActivity {
+public class OLoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 100;
     EditText emailEt, passwordEt;
     Button loginBtn;
     TextView notHaveAccountTv, recoverPassTv;
-    SignInButton googleLoginBtn;
 
     private FirebaseAuth mAuth;
 
@@ -54,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_ologin);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Login");
@@ -70,12 +65,11 @@ public class LoginActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        emailEt = findViewById(R.id.emailEditText2);
-        passwordEt = findViewById(R.id.passwordEditText2);
-        loginBtn = findViewById(R.id.login_button);
-        notHaveAccountTv = findViewById(R.id.nothave_accountTv);
-        recoverPassTv = findViewById(R.id.recoverPassTv);
-        googleLoginBtn = findViewById(R.id.googleLoginBtn);
+        emailEt = findViewById(R.id.oEmailEditText2);
+        passwordEt = findViewById(R.id.oPasswordEditText2);
+        loginBtn = findViewById(R.id.oLogin_button);
+        notHaveAccountTv = findViewById(R.id.oNothave_accountTv);
+        recoverPassTv = findViewById(R.id.oRecoverPassTv);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         notHaveAccountTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, RegisterationActivity.class));
+                startActivity(new Intent(OLoginActivity.this, ORegisterationActivity.class));
                 finish();
             }
         });
@@ -112,14 +106,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        googleLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-                    startActivityForResult(signInIntent, RC_SIGN_IN);
-
-            }
-        });
 
         pd = new ProgressDialog(this);
 
@@ -174,10 +160,10 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         pd.dismiss();
                         if(task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Email sent", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(OLoginActivity.this, "Email sent", Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Toast.makeText(LoginActivity.this, "Failed...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(OLoginActivity.this, "Failed...", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -186,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
                 pd.dismiss();
 
                 // get and show proper error message
-                Toast.makeText(LoginActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(OLoginActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -203,12 +189,12 @@ public class LoginActivity extends AppCompatActivity {
                             pd.dismiss();
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                            startActivity(new Intent(OLoginActivity.this, ProfileActivity.class));
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             pd.dismiss();
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(OLoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
 
                         }
@@ -217,7 +203,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 // error message
-                Toast.makeText(LoginActivity.this, ""+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(OLoginActivity.this, ""+ e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -256,22 +242,22 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(LoginActivity.this, ""+user.getEmail(), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                            Toast.makeText(OLoginActivity.this, ""+user.getEmail(), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(OLoginActivity.this, ProfileActivity.class));
                             finish();
-                           // updateUI(user);
+                            // updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
 
-                            Toast.makeText(LoginActivity.this, "Login Failed...", Toast.LENGTH_SHORT).show();
-                           // updateUI(null);
+                            Toast.makeText(OLoginActivity.this, "Login Failed...", Toast.LENGTH_SHORT).show();
+                            // updateUI(null);
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 // show error message
-                Toast.makeText(LoginActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(OLoginActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

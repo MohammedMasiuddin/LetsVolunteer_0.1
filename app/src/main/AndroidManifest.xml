@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LetsVolunteer">
         <activity
+            android:name=".ORegisterationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OLoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity

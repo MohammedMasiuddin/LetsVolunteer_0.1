@@ -4,30 +4,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
+    android:background="@drawable/vol"
+    android:paddingHorizontal="25dp"
+    android:paddingVertical="75dp"
+    android:backgroundTint="@color/background"
+    android:backgroundTintMode="screen"
+    android:alpha="0.82"
     tools:context=".Authentication">
 
-    <ImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="25dp"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/volunteering"
-        />
+        android:layout_marginBottom="50dp"
+        app:cardBackgroundColor="#CCFFFFFF"
+        app:cardCornerRadius="20dp">
 
-    <Button
-        android:id="@+id/register_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/login_button"
-        android:text="Register"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
 
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="200dp"
-        android:text="Login"/>
+            <TextView
+                android:id="@+id/welcome_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:text="Welcome"
+                android:layout_centerHorizontal="true"/>
+            <TextView
+                android:id="@+id/to_text"
+                android:layout_below="@+id/welcome_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:text="To"
+                android:layout_centerHorizontal="true"/>
+            <TextView
+                android:id="@+id/volunteer_text"
+                android:layout_below="@+id/to_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:text="Volunteer"
+                android:layout_centerHorizontal="true"/>
+
+            <Button
+                android:id="@+id/register_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_above="@id/or_text"
+                android:text="Volunteer" />
+
+            <TextView
+                android:id="@+id/or_text"
+                android:layout_above="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:text="OR"
+                android:layout_centerHorizontal="true"/>
+
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="80dp"
+                android:text="Organizer"/>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
