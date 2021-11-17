@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Switch;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -24,6 +25,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Log.d("TAG", "onNavigationItemSelected: "+ item.getItemId());
+                switch(item.getItemId()) {
+                    case R.id.page_1 :
+                        // code
+
+                        return true;
+
+                    case R.id.page_2:
+                        // code block
+                        return true;
+                    default:
+                        // code block
+                        break;
+                }
+
+
                 return true;
             }
         });
