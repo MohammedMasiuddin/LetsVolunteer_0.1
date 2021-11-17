@@ -243,7 +243,7 @@ public class OLoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(OLoginActivity.this, ""+user.getEmail(), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(OLoginActivity.this, ProfileActivity.class));
+                            startActivity(new Intent(OLoginActivity.this, MainActivity.class));
                             finish();
                             // updateUI(user);
                         } else {

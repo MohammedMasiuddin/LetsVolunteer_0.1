@@ -152,7 +152,7 @@ public class RegisterationActivity extends AppCompatActivity {
                                     Log.d(TAG, "onFailure: " + e.getMessage());
                                 }
                             });
-                            startActivity(new Intent(RegisterationActivity.this, ProfileActivity.class));
+                            startActivity(new Intent(RegisterationActivity.this, MainActivity.class));
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.
