@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1074177403065-qqge3b4bv9iu1rt5de2cceevfh6ajrvn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.letsvolunteer",
+            "certificate_hash": "6f191fc38ccd2e76c4a2c523f75ad234dc1a1d2c"
+          }
+        },
+        {
           "client_id": "1074177403065-mi63fpmtj1g1rfqb6cdrbhpbrjurpc5v.apps.googleusercontent.com",
           "client_type": 3
         }
