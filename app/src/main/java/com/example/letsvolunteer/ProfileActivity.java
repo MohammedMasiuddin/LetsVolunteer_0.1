@@ -37,6 +37,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (user != null) {
             // user is signed in, stay in this page
             profileTv.setText(user.getEmail());
+
         }
         else {
             // user not signed in, goto main activity
