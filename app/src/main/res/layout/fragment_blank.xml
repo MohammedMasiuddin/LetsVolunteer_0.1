@@ -56,6 +56,8 @@
                 app:boxStrokeColor="@color/teal_700">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/Evendescriptionentered"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
@@ -99,6 +101,7 @@
                 app:boxStrokeColor="@color/teal_700">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/PhonenumberEnter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="phone" />
@@ -121,6 +124,7 @@
                 app:boxStrokeColor="@color/teal_700">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailgiven"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress" />

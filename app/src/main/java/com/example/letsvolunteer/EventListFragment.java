@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.material.button.MaterialButton;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EventListFragment#newInstance} factory method to
@@ -61,7 +63,16 @@ public class EventListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event_list, container, false);
-//        Button btn = view.findViewById(R.id.)
+
+        MaterialButton btn = view.findViewById(R.id.addEventsbtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
+                        new BlankFragment()).commit();            }
+        });
+
+
         return view;
 
     }

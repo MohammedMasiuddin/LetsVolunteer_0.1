@@ -42,6 +42,8 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FieldValue;
@@ -175,10 +177,16 @@ public class BlankFragment extends Fragment {
             }
         });
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
         TextInputEditText textEventName = view.findViewById(R.id.EventNameEnteredittext);
+        TextInputEditText textEventDescription = view.findViewById(R.id.Evendescriptionentered);
+        TextInputEditText textEventphone = view.findViewById(R.id.PhonenumberEnter);
+        TextInputEditText textemail = view.findViewById(R.id.emailgiven);
 
 
-        EventsPost eventPost = new EventsPost("Somename","somedescription","098788908","someemail@gmail.com");
+
 
         Button upload = view.findViewById(R.id.uploadbutton);
 
@@ -189,10 +197,23 @@ public class BlankFragment extends Fragment {
 
         upload.setOnClickListener(new View.OnClickListener() {
 
+
             @Override
             public void onClick(View view) {
+
+                EventsPost eventPost = new EventsPost(textEventName.getText().toString(),
+                        textEventDescription.getText().toString(),
+                        textEventphone.getText().toString(),textemail.getText().toString(), user.getUid()
+                );
+
                 if (datalist.size() == 0){
-                    Log.d(TAG, "onCreateView: "+ textEventName.getText() );
+                    Log.d(TAG, "onCreateView: "+ textEventName.getText().toString() );
+                    Log.d(TAG, "onCreateView: "+ textEventDescription.getText().toString() );
+                    Log.d(TAG, "onCreateView: "+ textEventphone.getText().toString() );
+                    Log.d(TAG, "onCreateView: "+ textemail.getText().toString() );
+
+                    Log.d(TAG, "onClick: "+ eventPost);
+
                     return;
                 }
 

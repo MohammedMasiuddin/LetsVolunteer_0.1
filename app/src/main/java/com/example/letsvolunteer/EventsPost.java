@@ -11,21 +11,12 @@ public class EventsPost {
     public List<String> imageUrlLists = new ArrayList<>();
     public String organiserid;
 
-    public List<String> getImageUrlLists() {
-        return imageUrlLists;
-    }
-
-    public void setImageUrlLists(List<String> imageUrlLists) {
-        this.imageUrlLists = imageUrlLists;
-    }
-
-    public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId
-                  ) {
+    public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId, String organiserid) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.phoneNumber = phoneNumber;
         this.emailId = emailId;
-//        this.imgageurl = imgageurl;
+        this.organiserid = organiserid;
     }
 
     public String getEventName() {
@@ -60,5 +51,19 @@ public class EventsPost {
         this.emailId = emailId;
     }
 
+    public String getOrganiserid() {
+        return organiserid;
+    }
 
+    public void setOrganiserid(String organiserid) {
+        this.organiserid = organiserid;
+    }
+
+    public List<String> getImageUrlLists() {
+        return imageUrlLists;
+    }
+
+    public void setImageUrlLists(List<String> imageUrlLists) {
+        this.imageUrlLists = imageUrlLists;
+    }
 }

@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:padding="20dp ">
+        android:padding="20dp">
 
         <TextView
 
@@ -76,16 +76,29 @@
         <!--            android:background="@color/transparent"-->
         <!--            android:src="@drawable/ic_baseline_search_24" />-->
 
-        <ImageView
-            android:id="@+id/add_btn"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addEventsbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/button"
+            android:textColor="@color/black"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="30dp"
-            android:background="@android:color/darker_gray"
-            android:src="@drawable/add" />
+            android:text="Add Event"
+            android:layout_marginLeft="8dp"
+            app:cornerRadius="10dp"
+        />
+
+<!--        <ImageView-->
+<!--            android:id="@+id/add_btn"-->
+<!--            android:layout_width="25dp"-->
+<!--            android:layout_height="25dp"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginLeft="30dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:background="@android:color/darker_gray"-->
+<!--            android:src="@drawable/add" />-->
 
     </RelativeLayout>
 

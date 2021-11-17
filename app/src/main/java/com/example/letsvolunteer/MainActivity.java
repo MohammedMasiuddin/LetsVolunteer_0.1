@@ -60,9 +60,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
-                new BlankFragment()).commit();
+                new EventListFragment()).commit();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
+//                new BlankFragment()).commit();
 
 
     }
