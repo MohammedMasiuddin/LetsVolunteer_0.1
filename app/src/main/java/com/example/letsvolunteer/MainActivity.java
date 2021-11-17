@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.page_2:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
+                                new EventListFragment()).commit();
                         // code block
                         return true;
                     default:

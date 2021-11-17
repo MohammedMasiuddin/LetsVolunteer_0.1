@@ -189,7 +189,7 @@ public class OLoginActivity extends AppCompatActivity {
                             pd.dismiss();
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(OLoginActivity.this, ProfileActivity.class));
+                            startActivity(new Intent(OLoginActivity.this, MainActivity.class));
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.
