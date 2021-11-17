@@ -64,7 +64,7 @@
             android:layout_marginLeft="70dp"
             android:layout_marginTop="20dp"
             android:layout_toRightOf="@id/eventListTxt"
-            android:background="transparent"
+            android:background="@color/transparent"
             android:text="AZ"
             android:textColor="@color/black" />
 
@@ -75,7 +75,7 @@
             android:layout_marginLeft="45dp"
             android:layout_marginTop="21dp"
             android:layout_toRightOf="@id/sort_btn"
-            android:background="transparent"
+            android:background="@color/transparent"
             android:src="@drawable/ic_baseline_search_24" />
 
         <ImageView
@@ -188,7 +188,7 @@
         android:layout_below="@id/descriptionTxt"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="18dp"
-        android:text="@string/event_description"
+        android:text="@string/eventdescription"
         android:textSize="18sp"
         android:fontFamily="sans-serif-thin"
         android:textColor="@color/black"
@@ -199,7 +199,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/descContent"
-        android:background="B235DE"
+        android:background="#B235DE"
         android:layout_marginTop="12dp"
         android:layout_marginLeft="21dp">
 
