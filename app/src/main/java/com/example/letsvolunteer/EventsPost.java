@@ -1,13 +1,21 @@
 package com.example.letsvolunteer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EventsPost {
     public String eventName;
     public String eventDescription;
     public String phoneNumber;
     public String emailId;
-    public String imgageurl;
+    public List<String> imageUrlLists = new ArrayList<>();
 
-    public EventsPost() {
+    public List<String> getImageUrlLists() {
+        return imageUrlLists;
+    }
+
+    public void setImageUrlLists(List<String> imageUrlLists) {
+        this.imageUrlLists = imageUrlLists;
     }
 
     public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId
@@ -51,11 +59,5 @@ public class EventsPost {
         this.emailId = emailId;
     }
 
-    public String getImgageurl() {
-        return imgageurl;
-    }
 
-    public void setImgageurl(String imgageurl) {
-        this.imgageurl = imgageurl;
-    }
 }

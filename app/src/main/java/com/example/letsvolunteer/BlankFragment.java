@@ -1,6 +1,7 @@
 package com.example.letsvolunteer;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -20,21 +21,37 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointForward;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.storage.FirebaseStorage;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.Inflater;
@@ -52,11 +69,13 @@ public class BlankFragment extends Fragment {
     private String mParam2;
     Boolean isPermissionGrandted = true;
     String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-    int requestCode = 12345;
+    int Request_Code = 12345;
     ImageView imageView;
     LinearLayout linearLayout;
+    ArrayList<byte[]> datalist = new ArrayList<byte[]>() ;
     GridLayout gridLayout;
-
+    Uri downloadUri;
+    String documentid;
 
     public static BlankFragment newInstance(String param1, String param2) {
         BlankFragment fragment = new BlankFragment();
@@ -89,23 +108,37 @@ public class BlankFragment extends Fragment {
         ImageButton btn = (ImageButton) view.findViewById(R.id.AddimageButton);
 //        imageView = view.findViewById(R.id.uploadimageView);
         linearLayout = view.findViewById(R.id.uploadImagesContainer);
+        TextView dateselected = view.findViewById(R.id.dateselected);
+        MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select date")
+                .build();
+
+        Button datebtn = view.findViewById(R.id.containedButtonfordate);
+        datebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: databtn");
+                datePicker.show(getParentFragmentManager(),"MATERIAL");
+                datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+                    @Override
+                    public void onPositiveButtonClick(Object selection) {
+                        dateselected.setText("Event Date : "+ datePicker.getHeaderText());
+                        dateselected.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        });
 
 //        gridLayout = view.findViewById(R.id.uploadImagesContainer);
 
 
+//        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+//        DatabaseReference dbref = firebaseDatabase.getReference("Events");
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference dbref = firebaseDatabase.getReference("Events");
-
-
-        Map<String, Object> user = new HashMap<>();
-        user.put("first", "Ada");
-        user.put("last", "Lovelace");
-        user.put("born", 1815);
-
-
-
+//        Map<String, Object> user = new HashMap<>();
+//        user.put("first", "Ada");
+//        user.put("last", "Lovelace");
+//        user.put("born", 1815);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,20 +150,77 @@ public class BlankFragment extends Fragment {
         EventsPost eventPost = new EventsPost("Somename","somedescription","098788908","someemail@gmail.com");
 
         Button upload = view.findViewById(R.id.uploadbutton);
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference mountainImagesRef = storageRef.child("Events/firstimagetesting111.jpg");
+
+
         upload.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+                if (datalist.size() == 0){
+                    return;
+                }
 
-                dbref.setValue("Testing");
 
-                db.collection("users")
-                        .document("user1")
-                        .set(user)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                ProgressDialog progressDialog = new ProgressDialog(getContext());
+                progressDialog.show();
+                progressDialog.setContentView(R.layout.loadingspinner);
+
+
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("Events")
+                        .add(eventPost)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
-                            public void onSuccess(Void unused) {
-                                Log.d(TAG, "onSuccess: ");
+                            public void onSuccess(DocumentReference documentReference) {
+                               documentid = documentReference.getId();
+
+                               for (int i = 0 ; i < datalist.size(); i++){
+                                   StorageReference mountainImagesRef = storageRef.child("Events/firstimagetesting"+ i +".jpg");
+                                   int finalI = i;
+                                   mountainImagesRef.putBytes(datalist.get(i))
+                                           .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                                               @Override
+                                               public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                                   if (!task.isSuccessful()) {
+                                                       throw task.getException();
+                                                   }
+
+                                                   // Continue with the task to get the download URL
+                                                   return mountainImagesRef.getDownloadUrl();
+
+
+                                               }
+                                           }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                       @Override
+                                       public void onComplete(@NonNull Task<Uri> task) {
+                                           if (task.isSuccessful()) {
+                                               downloadUri = task.getResult();
+                                               eventPost.getImageUrlLists().add(downloadUri.toString());
+                                               Log.d(TAG, "onComplete: "+ downloadUri);
+                                               db.collection("Events")
+                                                           .document(documentid)
+                                                       .update("imageUrlLists",
+                                                               FieldValue.arrayUnion(downloadUri.toString()));
+
+
+
+                                           } else {
+                                               // Handle failures
+                                               // ...
+                                               Log.d(TAG, "onComplete: Failed to upload");
+                                           }
+                                            if ( finalI == datalist.size() -1 ){
+                                                progressDialog.dismiss();
+                                                Toast.makeText(getContext().getApplicationContext(),"Data is uploaded ",Toast.LENGTH_LONG).show();
+                                            }
+                                       }
+                                   });
+                               }
+
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -140,6 +230,9 @@ public class BlankFragment extends Fragment {
                             }
                         });
 
+//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                imageBitmaps.get(0).compress(Bitmap.CompressFormat.PNG,100,stream);
+//                byte[] data = stream.toByteArray();
 
             }
         });
@@ -148,31 +241,42 @@ public class BlankFragment extends Fragment {
     }
 
 
+
+
     public void checkPermissions() {
         if (ContextCompat.checkSelfPermission(getContext().getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
             isPermissionGrandted = true;
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent,"Choose from bellow"),requestCode);
+            startActivityForResult(Intent.createChooser(intent,"Choose from bellow"),Request_Code);
         }else {
-            ActivityCompat.requestPermissions(getActivity(),permissions,requestCode);
+            ActivityCompat.requestPermissions(getActivity(),permissions,Request_Code);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 //                super.onActivityResult(requestCode, resultCode, data);
-        if (data != null){
+        if (data != null && data.getData() != null && requestCode == Request_Code ){
             Uri filepath = data.getData();
             try {
                 InputStream inputStream = getActivity().getContentResolver().openInputStream(filepath);
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
+
+
                 View view2 = getLayoutInflater().inflate(R.layout.imagesampletemplate,linearLayout,false);
                 ImageView image4 = view2.findViewById(R.id.imageViewsample);
                 image4.setImageBitmap(bitmap);
                 linearLayout.addView(view2);
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+                byte[] data1 = stream.toByteArray();
+
+                datalist.add(data1);
+
 
 
             } catch (FileNotFoundException e) {
