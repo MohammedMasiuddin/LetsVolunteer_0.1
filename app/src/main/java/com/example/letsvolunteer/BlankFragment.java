@@ -40,6 +40,8 @@ import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FieldValue;
@@ -173,6 +175,9 @@ public class BlankFragment extends Fragment {
             }
         });
 
+        TextInputEditText textEventName = view.findViewById(R.id.EventNameEnteredittext);
+
+
         EventsPost eventPost = new EventsPost("Somename","somedescription","098788908","someemail@gmail.com");
 
         Button upload = view.findViewById(R.id.uploadbutton);
@@ -187,6 +192,7 @@ public class BlankFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (datalist.size() == 0){
+                    Log.d(TAG, "onCreateView: "+ textEventName.getText() );
                     return;
                 }
 
