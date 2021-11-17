@@ -13,6 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LetsVolunteer">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDIZ4tr2beW_t3hcfNm-NkKEXcSXc9JHF4"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

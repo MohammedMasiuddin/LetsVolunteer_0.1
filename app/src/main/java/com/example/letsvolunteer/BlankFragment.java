@@ -29,6 +29,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -63,6 +66,7 @@ public class BlankFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public static final String TAG = "Firebase drf";
+    private static final int RESULT_OK = -1;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -76,6 +80,7 @@ public class BlankFragment extends Fragment {
     GridLayout gridLayout;
     Uri downloadUri;
     String documentid;
+    int PLACE_REQUEST = 1;
 
     public static BlankFragment newInstance(String param1, String param2) {
         BlankFragment fragment = new BlankFragment();
@@ -114,6 +119,23 @@ public class BlankFragment extends Fragment {
                 .build();
 
         Button datebtn = view.findViewById(R.id.containedButtonfordate);
+
+        Button locationaddbtn = view.findViewById(R.id.locationPicker);
+        locationaddbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+                try {
+                    startActivityForResult(intentBuilder.build(getActivity(),PLACE_REQUEST));
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
         datebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,6 +172,7 @@ public class BlankFragment extends Fragment {
         EventsPost eventPost = new EventsPost("Somename","somedescription","098788908","someemail@gmail.com");
 
         Button upload = view.findViewById(R.id.uploadbutton);
+
 
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference mountainImagesRef = storageRef.child("Events/firstimagetesting111.jpg");
@@ -258,6 +281,13 @@ public class BlankFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 //                super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PLACE_REQUEST){
+            if (resultCode == RESULT_OK ){
+
+            }
+        }
+
         if (data != null && data.getData() != null && requestCode == Request_Code ){
             Uri filepath = data.getData();
             try {

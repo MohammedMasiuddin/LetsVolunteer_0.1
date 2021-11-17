@@ -127,6 +127,24 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
+            <Button
+                android:id="@+id/locationPicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:backgroundTint="#808E259F"
+                android:text="Add location of the event" />
+
+            <TextView
+                android:id="@+id/eventLocation"
+                android:visibility="invisible"
+                android:textSize="24dp"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="170dp"
@@ -168,6 +186,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
+                android:padding="20dp"
                 android:backgroundTint="#808E259F"
                 android:text="Post Event " />
 
