@@ -10,14 +10,26 @@ public class EventsPost {
     public String emailId;
     public List<String> imageUrlLists = new ArrayList<>();
     public String organiserid;
+    public String EventDate;
 
-    public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId, String organiserid) {
+
+    public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId, String organiserid, String eventDate) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.phoneNumber = phoneNumber;
         this.emailId = emailId;
         this.organiserid = organiserid;
+        EventDate = eventDate;
     }
+
+    public String getEventDate() {
+        return EventDate;
+    }
+
+    public void setEventDate(String eventDate) {
+        EventDate = eventDate;
+    }
+
 
     public String getEventName() {
         return eventName;

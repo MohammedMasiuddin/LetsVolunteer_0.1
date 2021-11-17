@@ -203,7 +203,8 @@ public class BlankFragment extends Fragment {
 
                 EventsPost eventPost = new EventsPost(textEventName.getText().toString(),
                         textEventDescription.getText().toString(),
-                        textEventphone.getText().toString(),textemail.getText().toString(), user.getUid()
+                        textEventphone.getText().toString()
+                        ,textemail.getText().toString(), user.getUid(),datePicker.getHeaderText()
                 );
 
                 if (datalist.size() == 0){
