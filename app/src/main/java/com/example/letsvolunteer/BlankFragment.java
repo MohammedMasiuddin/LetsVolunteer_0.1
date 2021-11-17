@@ -31,7 +31,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -73,6 +72,8 @@ public class BlankFragment extends Fragment {
     private String mParam2;
     Boolean isPermissionGrandted = true;
     String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+    String[] permissions1 = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+
     int Request_Code = 12345;
     ImageView imageView;
     LinearLayout linearLayout;
@@ -81,6 +82,7 @@ public class BlankFragment extends Fragment {
     Uri downloadUri;
     String documentid;
     int PLACE_REQUEST = 1;
+    TextView textViewLocation;
 
     public static BlankFragment newInstance(String param1, String param2) {
         BlankFragment fragment = new BlankFragment();
@@ -119,19 +121,21 @@ public class BlankFragment extends Fragment {
                 .build();
 
         Button datebtn = view.findViewById(R.id.containedButtonfordate);
-
+        textViewLocation = view.findViewById(R.id.eventLocation);
         Button locationaddbtn = view.findViewById(R.id.locationPicker);
         locationaddbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
-                try {
-                    startActivityForResult(intentBuilder.build(getActivity(),PLACE_REQUEST));
-                } catch (GooglePlayServicesRepairableException e) {
-                    e.printStackTrace();
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                }
+//
+//                    PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+//                    try {
+//                        startActivityForResult(intentBuilder.build(getActivity()), PLACE_REQUEST);
+//                    } catch (GooglePlayServicesRepairableException e) {
+//                        e.printStackTrace();
+//                    } catch (GooglePlayServicesNotAvailableException e) {
+//                        e.printStackTrace();
+//                    }
+//
             }
         });
 
@@ -190,7 +194,7 @@ public class BlankFragment extends Fragment {
                 ProgressDialog progressDialog = new ProgressDialog(getContext());
                 progressDialog.show();
                 progressDialog.setContentView(R.layout.loadingspinner);
-
+//                progressDialog.getWindow().setBackgroundDrawable(R.color.transparent);
 
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -253,9 +257,6 @@ public class BlankFragment extends Fragment {
                             }
                         });
 
-//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                imageBitmaps.get(0).compress(Bitmap.CompressFormat.PNG,100,stream);
-//                byte[] data = stream.toByteArray();
 
             }
         });
@@ -282,11 +283,12 @@ public class BlankFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 //                super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == PLACE_REQUEST){
-            if (resultCode == RESULT_OK ){
-
-            }
-        }
+//        if (requestCode == PLACE_REQUEST){
+//            if (resultCode == RESULT_OK ){
+//                Place place = PlacePicker.getPlace(data,getContext());
+//                textViewLocation.setText("" +place.getLatLng().latitude + place.getLatLng().longitude);
+//            }
+//        }
 
         if (data != null && data.getData() != null && requestCode == Request_Code ){
             Uri filepath = data.getData();

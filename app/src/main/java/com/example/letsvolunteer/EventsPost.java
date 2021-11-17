@@ -9,6 +9,7 @@ public class EventsPost {
     public String phoneNumber;
     public String emailId;
     public List<String> imageUrlLists = new ArrayList<>();
+    public String organiserid;
 
     public List<String> getImageUrlLists() {
         return imageUrlLists;
