@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1074177403065",
+    "firebase_url": "https://lets-volunteer-2d172-default-rtdb.firebaseio.com",
+    "project_id": "lets-volunteer-2d172",
+    "storage_bucket": "lets-volunteer-2d172.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074177403065:android:5045f63491ac6d40ed1368",
+        "android_client_info": {
+          "package_name": "com.example.letsvolunteer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1074177403065-qqge3b4bv9iu1rt5de2cceevfh6ajrvn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.letsvolunteer",
+            "certificate_hash": "6f191fc38ccd2e76c4a2c523f75ad234dc1a1d2c"
+          }
+        },
+        {
+          "client_id": "1074177403065-mi63fpmtj1g1rfqb6cdrbhpbrjurpc5v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmESx9kyoPYk1V5mEcIK-GLNNDGuMhWbo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1074177403065-mi63fpmtj1g1rfqb6cdrbhpbrjurpc5v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
