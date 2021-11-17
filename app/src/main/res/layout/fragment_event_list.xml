@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="1dp">
+        android:padding="20dp ">
 
         <TextView
 
@@ -55,35 +55,35 @@
             android:textSize="24sp" />
 
 
-<!--        <TextView-->
-<!--            android:id="@+id/sort_btn"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginLeft="70dp"-->
-<!--            android:layout_marginTop="24dp"-->
-<!--            android:layout_toRightOf="@id/eventListTxt"-->
-<!--            android:background="@color/transparent"-->
-<!--            android:text="AZ"-->
-<!--            android:textColor="@color/black" />-->
+        <!--        <TextView-->
+        <!--            android:id="@+id/sort_btn"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="70dp"-->
+        <!--            android:layout_marginTop="24dp"-->
+        <!--            android:layout_toRightOf="@id/eventListTxt"-->
+        <!--            android:background="@color/transparent"-->
+        <!--            android:text="AZ"-->
+        <!--            android:textColor="@color/black" />-->
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/search_bar"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginLeft="25dp"-->
-<!--            android:layout_marginTop="21dp"-->
-<!--            android:layout_toRightOf="@id/sort_btn"-->
-<!--            android:background="@color/transparent"-->
-<!--            android:src="@drawable/ic_baseline_search_24" />-->
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/search_bar"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="25dp"-->
+        <!--            android:layout_marginTop="21dp"-->
+        <!--            android:layout_toRightOf="@id/sort_btn"-->
+        <!--            android:background="@color/transparent"-->
+        <!--            android:src="@drawable/ic_baseline_search_24" />-->
 
         <ImageView
             android:id="@+id/add_btn"
             android:layout_width="25dp"
             android:layout_height="25dp"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="30dp"
-            android:layout_alignParentRight="true"
             android:background="@android:color/darker_gray"
             android:src="@drawable/add" />
 
