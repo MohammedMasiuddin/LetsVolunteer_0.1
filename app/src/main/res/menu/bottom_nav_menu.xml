@@ -5,6 +5,8 @@
         android:id="@+id/page_1"
         android:enabled="true"
         android:icon="@drawable/ic_favorite"
+
+        android:iconTint="#cc80d9"
         android:title="@string/favorites"/>
     <item
         android:id="@+id/page_2"

@@ -25,8 +25,12 @@
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#f1f1f1"
-            app:menu="@menu/bottom_nav_menu"/>
+            android:background="@color/white"
+            app:itemHorizontalTranslationEnabled="true"
+            app:itemIconTint="@drawable/bottom_nav_item_color"
+            app:itemRippleColor="#cc80d9"
+            app:itemTextColor="#8E259F"
+            app:menu="@menu/bottom_nav_menu" />
 
     </LinearLayout>
 
