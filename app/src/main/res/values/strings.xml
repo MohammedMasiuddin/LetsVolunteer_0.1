@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Lets Volunteer</string>
-    <string name="favorites">favorites</string>
+    <string name="chat">chat</string>
     <string name="eventdescription">Event Details </string>
+    <string name="search">search</string>
+    <string name="maps">Map</string>
+    <string name="notification">notification</string>
+    <string name="user">user</string>
+
+
+
+
 </resources>

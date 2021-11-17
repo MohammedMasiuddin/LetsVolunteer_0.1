@@ -4,18 +4,29 @@
     <item
         android:id="@+id/page_1"
         android:enabled="true"
-        android:icon="@drawable/ic_favorite"
+        android:icon="@drawable/ic_baseline_chat_24"
 
         android:iconTint="#cc80d9"
-        android:title="@string/favorites"/>
+        android:title="@string/chat"/>
     <item
         android:id="@+id/page_2"
         android:enabled="true"
-        android:icon="@drawable/ic_favorite"
-        android:title="music"/>
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="Search"/>
     <item
         android:id="@+id/page_3"
         android:enabled="true"
-        android:icon="@drawable/ic_favorite"
-        android:title="places"/>
+        android:icon="@drawable/ic_baseline_location_on_24"
+        android:title="@string/maps"/>
+    <item
+        android:id="@+id/page_4"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_notifications_24"
+        android:title="@string/notification"/>
+    <item
+        android:id="@+id/page_5"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="@string/user"/>
+
 </menu>
