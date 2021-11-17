@@ -15,6 +15,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,8 +44,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 100;
     EditText emailEt, passwordEt;
     Button loginBtn;
+
     TextView notHaveAccountTv, recoverPassTv;
-    SignInButton googleLoginBtn;
+    ImageView googleLoginBtn;
 
     private FirebaseAuth mAuth;
 
