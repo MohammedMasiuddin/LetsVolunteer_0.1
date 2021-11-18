@@ -153,7 +153,7 @@ public class BlankFragment extends Fragment {
                     @Override
                     public void onPositiveButtonClick(Object selection) {
                         Log.d(TAG, "onPositiveButtonClick: "+ selection.toString());
-                        dateselected.setText("Event Date : "+ datePicker.getHeaderText());
+                        dateselected.setText("Date : "+ datePicker.getHeaderText());
                         dateselected.setVisibility(View.VISIBLE);
                     }
                 });

@@ -38,6 +38,7 @@ public class EventListsAdapter extends RecyclerView.Adapter<EventListsAdapter.Vi
         holder.eventDate.setText(events.get(position).getEventDate());
 
         Glide.with(holder.eventImageView).load(events.get(position).imageUrlLists.get(0)).into(holder.eventImageView);
+
     }
 
     @Override
@@ -45,7 +46,7 @@ public class EventListsAdapter extends RecyclerView.Adapter<EventListsAdapter.Vi
         return events.size() ;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView eventImageView;
         TextView eventName;
         TextView eventDate;
@@ -57,6 +58,11 @@ public class EventListsAdapter extends RecyclerView.Adapter<EventListsAdapter.Vi
             eventName = itemView.findViewById(R.id.eventNameTxt);
             eventDate = itemView.findViewById(R.id.eventDateTxt);
             location = itemView.findViewById(R.id.location);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
 
         }
     }

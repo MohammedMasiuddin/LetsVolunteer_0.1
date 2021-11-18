@@ -80,6 +80,7 @@ public class EventListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event_list, container, false);
 
+
         MaterialButton btn = view.findViewById(R.id.addEventsbtn);
         RecyclerView recyclerView = view.findViewById(R.id.EventListrecycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -112,8 +113,10 @@ public class EventListFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SetActionBarTitle mainActivity = (SetActionBarTitle) getActivity();
+                mainActivity.ChangeActionBarTitle("Create Event");
                 getParentFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
-                        new BlankFragment()).commit();            }
+                        new BlankFragment()).addToBackStack(null).commit();            }
         });
 
 

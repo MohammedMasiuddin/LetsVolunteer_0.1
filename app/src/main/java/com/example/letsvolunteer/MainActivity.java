@@ -19,7 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SetActionBarTitle {
+
+
 
     FirebaseAuth firebaseAuth;
 
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.page_2:
+                        actionBar.setTitle("Events");
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
                                 new EventListFragment()).commit();
                         // code block
@@ -66,12 +69,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
-                new EventListFragment()).commit();
 //        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
-//                new BlankFragment()).commit();
+//                new EventListFragment()).commit();
+        bottomNavigation.setSelectedItemId(R.id.page_2);
 
 
+    }
+
+    public void ChangeActionBarTitle(String title){
+        getSupportActionBar().setTitle(title);
     }
 
     private void checkUserStatus() {

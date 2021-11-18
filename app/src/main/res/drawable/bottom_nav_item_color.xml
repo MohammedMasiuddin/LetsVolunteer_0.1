@@ -5,6 +5,6 @@
         android:color="#8E259F"/>
 
     <item android:state_checked="false"
-        android:color="#ecbaf5"/>
+        android:color="#D1D1D1"/>
 
 </selector>

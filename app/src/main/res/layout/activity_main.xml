@@ -17,40 +17,41 @@
 
 <!--</LinearLayout>-->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
+android:orientation="vertical"
 android:layout_height="match_parent"
 tools:context=".MainActivity">
 
-<FrameLayout
-    android:id="@+id/fragment_container_view_tag"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    <FrameLayout
+        android:id="@+id/fragment_container_view_tag"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_alignParentTop="true"
 
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent">
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+        />
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:itemHorizontalTranslationEnabled="true"
-        app:itemIconTint="@drawable/bottom_nav_item_color"
-        app:labelVisibilityMode="labeled"
-        app:itemRippleColor="#cc80d9"
-        app:itemTextColor="#8E259F"
-        app:menu="@menu/bottom_nav_menu" />
+        android:layout_alignParentBottom="true"
+        >
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F7E8FA"
+            app:itemHorizontalTranslationEnabled="true"
+            app:itemIconTint="@drawable/bottom_nav_item_color"
+            app:itemRippleColor="#cc80d9"
+            app:itemTextColor="#8E259F"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_nav_menu" />
+
+    </LinearLayout>
 
 </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
