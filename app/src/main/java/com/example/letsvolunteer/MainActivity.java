@@ -50,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
                                 new EventListFragment()).commit();
                         // code block
                         return true;
+                    case R.id.page_5:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
+                                new vAccountInfoFragment()).commit();
+                        // code block
+                        return true;
+
                     default:
                         // code block
                         break;

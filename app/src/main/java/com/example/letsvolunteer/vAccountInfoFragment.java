@@ -168,7 +168,7 @@ public class vAccountInfoFragment extends Fragment {
                 public void onFailure(@NonNull Exception e) {
                     Log.d(TAG, "onFailure SAVE: " + e.getMessage());
                 }
-            })
+            });
 
         });
 
