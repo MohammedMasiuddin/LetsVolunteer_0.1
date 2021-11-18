@@ -42,6 +42,9 @@ public class RegisterationActivity extends AppCompatActivity {
     public static final String KEY_FN = "firstName";
     public static final String KEY_LN = "lastName";
     public static final String KEY_email = "email";
+    public static final String KEY_age = "age";
+    public static final String KEY_photoUri = "photoUri";
+
 
     ProgressDialog progressDialog;
 
@@ -136,11 +139,13 @@ public class RegisterationActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(RegisterationActivity.this, "Registered \n" + user.getEmail(), Toast.LENGTH_SHORT).show();
                             UserID = user.getUid();
-                            DocumentReference documentReference = db.collection("Users").document(UserID);
+                            DocumentReference documentReference = db.collection("Volunteer").document(UserID);
                             Map<String, Object> data = new HashMap<>();
                             data.put(KEY_FN, firstName);
                             data.put(KEY_LN, lastName);
                             data.put(KEY_email, email);
+                            data.put(KEY_age, "");
+                            data.put(KEY_photoUri, "");
                             documentReference.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {

@@ -59,6 +59,8 @@ public class LoginActivity extends AppCompatActivity {
     public static final String KEY_FN = "firstName";
     public static final String KEY_LN = "lastName";
     public static final String KEY_email = "email";
+    public static final String KEY_age = "age";
+    public static final String KEY_photoUri = "photoUri";
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -310,6 +312,8 @@ public class LoginActivity extends AppCompatActivity {
             data.put(KEY_FN, personGivenName);
             data.put(KEY_LN, personFamilyName);
             data.put(KEY_email, personEmail);
+            data.put(KEY_age, "");
+            data.put(KEY_photoUri, personPhoto);
             documentReference.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
