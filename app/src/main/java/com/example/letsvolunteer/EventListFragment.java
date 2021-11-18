@@ -1,15 +1,30 @@
 package com.example.letsvolunteer;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +37,7 @@ public class EventListFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "Events";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -65,6 +81,34 @@ public class EventListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_event_list, container, false);
 
         MaterialButton btn = view.findViewById(R.id.addEventsbtn);
+        RecyclerView recyclerView = view.findViewById(R.id.EventListrecycleview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.loadingspinner);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        ArrayList<EventsPost> eventsResults = new ArrayList<EventsPost>();
+        Query dbref = db.collection("Events").limit(10);
+        dbref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+             queryDocumentSnapshots.getDocuments().forEach(
+                     e -> {
+                         eventsResults.add(new EventsPost((HashMap<String, Object>) e.getData()));
+                     }
+             );
+
+            EventListsAdapter eventListsAdapter = new EventListsAdapter(eventsResults, getf());
+            recyclerView.setAdapter(eventListsAdapter);
+            progressDialog.dismiss();
+            Log.d(TAG, "onSuccess: "+ eventsResults);
+
+            }
+        });
+
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -152,6 +152,7 @@ public class BlankFragment extends Fragment {
                 datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
                     @Override
                     public void onPositiveButtonClick(Object selection) {
+                        Log.d(TAG, "onPositiveButtonClick: "+ selection.toString());
                         dateselected.setText("Event Date : "+ datePicker.getHeaderText());
                         dateselected.setVisibility(View.VISIBLE);
                     }
@@ -201,22 +202,24 @@ public class BlankFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                EventsPost eventPost = new EventsPost(textEventName.getText().toString(),
-                        textEventDescription.getText().toString(),
-                        textEventphone.getText().toString()
-                        ,textemail.getText().toString(), user.getUid(),datePicker.getHeaderText()
-                );
 
                 if (datalist.size() == 0){
                     Log.d(TAG, "onCreateView: "+ textEventName.getText().toString() );
                     Log.d(TAG, "onCreateView: "+ textEventDescription.getText().toString() );
                     Log.d(TAG, "onCreateView: "+ textEventphone.getText().toString() );
                     Log.d(TAG, "onCreateView: "+ textemail.getText().toString() );
-
-                    Log.d(TAG, "onClick: "+ eventPost);
+                    Log.d(TAG, "onClick: "+ datePicker.getSelection());
+//                    Log.d(TAG, "onClick: "+ eventPost);
 
                     return;
                 }
+
+
+                EventsPost eventPost = new EventsPost(textEventName.getText().toString(),
+                        textEventDescription.getText().toString(),
+                        textEventphone.getText().toString()
+                        ,textemail.getText().toString(), user.getUid(),datePicker.getSelection().toString()
+                );
 
 
                 ProgressDialog progressDialog = new ProgressDialog(getContext());

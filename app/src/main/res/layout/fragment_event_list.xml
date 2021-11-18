@@ -135,10 +135,10 @@
 <!--    </LinearLayout>-->
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/EventListrecycleview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/utils"
-        android:layout_marginLeft="19dp"
         android:layout_marginTop="12dp" />
 
 

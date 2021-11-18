@@ -1,7 +1,9 @@
 package com.example.letsvolunteer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EventsPost {
     public String eventName;
@@ -10,8 +12,7 @@ public class EventsPost {
     public String emailId;
     public List<String> imageUrlLists = new ArrayList<>();
     public String organiserid;
-    public String EventDate;
-
+    public String eventDate;
 
     public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId, String organiserid, String eventDate) {
         this.eventName = eventName;
@@ -19,17 +20,37 @@ public class EventsPost {
         this.phoneNumber = phoneNumber;
         this.emailId = emailId;
         this.organiserid = organiserid;
-        EventDate = eventDate;
+        this.eventDate = eventDate;
+    }
+
+    public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId, List<String> imageUrlLists, String organiserid, String eventDate) {
+        this.eventName = eventName;
+        this.eventDescription = eventDescription;
+        this.phoneNumber = phoneNumber;
+        this.emailId = emailId;
+        this.imageUrlLists = imageUrlLists;
+        this.organiserid = organiserid;
+        this.eventDate = eventDate;
+    }
+
+    public EventsPost(HashMap<String,Object> map){
+        this.eventName = (String) map.get("eventName");
+        this.eventName = (String) map.get("eventName");
+        this.eventDescription = (String) map.get("eventDescription");
+        this.phoneNumber = (String) map.get("phoneNumber");
+        this.emailId = (String) map.get("emailId");
+        this.imageUrlLists = (List<String>) map.get("imageUrlLists");
+        this.organiserid = (String) map.get("organiserid");
+        this.eventDate = (String) map.get("eventDate");
     }
 
     public String getEventDate() {
-        return EventDate;
+        return eventDate;
     }
 
     public void setEventDate(String eventDate) {
-        EventDate = eventDate;
+        this.eventDate = eventDate;
     }
-
 
     public String getEventName() {
         return eventName;
