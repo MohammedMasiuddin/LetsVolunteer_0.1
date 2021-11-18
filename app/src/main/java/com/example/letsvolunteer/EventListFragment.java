@@ -100,7 +100,7 @@ public class EventListFragment extends Fragment {
                      }
              );
 
-            EventListsAdapter eventListsAdapter = new EventListsAdapter(eventsResults, getf());
+            EventListsAdapter eventListsAdapter = new EventListsAdapter(eventsResults);
             recyclerView.setAdapter(eventListsAdapter);
             progressDialog.dismiss();
             Log.d(TAG, "onSuccess: "+ eventsResults);

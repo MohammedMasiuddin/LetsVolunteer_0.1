@@ -18,9 +18,8 @@ import java.util.List;
 public class EventListsAdapter extends RecyclerView.Adapter<EventListsAdapter.ViewHolder> {
 
     private ArrayList<EventsPost> events;
-    Context context;
 
-    public EventListsAdapter(ArrayList<EventsPost> eventsResults,Context context) {
+    public EventListsAdapter(ArrayList<EventsPost> eventsResults) {
         this.events = eventsResults;
 
     }
@@ -38,7 +37,7 @@ public class EventListsAdapter extends RecyclerView.Adapter<EventListsAdapter.Vi
         holder.eventName.setText(events.get(position).getEventName());
         holder.eventDate.setText(events.get(position).getEventDate());
 
-        Glide.with().load(events.get(position).imageUrlLists.get(0)).into(holder.eventImageView);
+        Glide.with(holder.eventImageView).load(events.get(position).imageUrlLists.get(0)).into(holder.eventImageView);
     }
 
     @Override
