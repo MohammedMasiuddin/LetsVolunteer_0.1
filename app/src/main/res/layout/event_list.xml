@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:background="@drawable/background">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -30,6 +36,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="70dp"
             android:text="Events"
+            android:fontFamily="@font/aclonica"
             android:textColor="#0B0A0A"
             android:textSize="20sp" />
 
@@ -52,6 +59,7 @@
             android:layout_marginLeft="19dp"
             android:layout_marginTop="6dp"
             android:text="Events List"
+            android:fontFamily="@font/aclonica"
             android:textColor="#101010"
             android:textSize="24sp"
             />
@@ -63,6 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="70dp"
             android:layout_marginTop="24dp"
+            android:fontFamily="@font/aclonica"
             android:layout_toRightOf="@id/eventListTxt"
             android:background="@color/transparent"
             android:text="AZ"
@@ -105,6 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Food Distribution"
+            android:fontFamily="@font/aclonica"
             android:backgroundTint="@color/button"
             android:textColor="@color/black"
             android:layout_marginLeft="16dp"
@@ -115,6 +125,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/button"
             android:textColor="@color/black"
+            android:fontFamily="@font/aclonica"
             android:text="North York"
             android:layout_marginLeft="8dp"
             app:cornerRadius="10dp"
@@ -133,5 +144,5 @@
 
 </RelativeLayout>
 
-
+</androidx.core.widget.NestedScrollView>
 

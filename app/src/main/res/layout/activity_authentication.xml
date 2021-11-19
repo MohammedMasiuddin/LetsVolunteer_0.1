@@ -1,107 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:alpha="0.82"
-    android:background="@drawable/background"
-    android:backgroundTintMode="screen"
-    >
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
-        android:layout_width="400dp"
-        android:layout_height="500dp"
-        app:cardBackgroundColor="#CCFFFFFF"
-        app:cardCornerRadius="80dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center">
+            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/welcome_text"
-                android:layout_width="wrap_content"
+                android:id="@+id/letsvolunteer"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="Welcome To"
-                android:textSize="30dp"
-                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/aclonica"
+                android:text="Lets Volunteer"
+                android:textAlignment="center"
                 android:textColor="@color/purple_700"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/logo_cv"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="250dp"
+                android:layout_marginTop="80dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="50dp" />
+                app:layout_constraintTop_toBottomOf="@+id/letsvolunteer">
 
+                <androidx.cardview.widget.CardView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    app:cardCornerRadius="250dp">
 
+                    <ImageView
+                        android:layout_width="164dp"
+                        android:layout_height="146dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/vol" />
 
-            <TextView
-                android:id="@+id/volunteer_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="Volunteer"
-                android:textSize="30dp"
-                android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                android:textColor="@color/purple_700"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/welcome_text"
-                />
+                </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <Button
-                android:id="@+id/register_button"
-                android:layout_width="210dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:text="Volunteer"
-                android:textSize="20dp"
-                android:textStyle="bold"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                app:cardBackgroundColor="#CCFFFFFF"
+                app:cardCornerRadius="80dp"
                 android:layout_marginTop="50dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/volunteer_text"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/logo_cv">
 
-            <TextView
-                android:id="@+id/or_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="OR"
-                android:textSize="30dp"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/purple_700"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_button"
-                />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/login_button"
-                android:layout_width="210dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Organisation"
-                android:textSize="20dp"
-                android:textStyle="bold"
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:fontFamily="@font/aclonica"
+                        android:text="Welcome To"
+                        android:textColor="@color/purple_700"
+                        android:textSize="30dp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"></TextView>
 
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/or_text" />
+
+
+
+                    <TextView
+                        android:id="@+id/text3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Volunteer"
+                        android:textSize="30dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/purple_700"
+                        android:fontFamily="@font/aclonica"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2"></TextView>
+
+                    <Button
+                        android:id="@+id/register_button"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="50dp"
+                        android:text="Volunteer"
+                        android:fontFamily="@font/aclonica"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/text3" />
+                    <TextView
+                        android:id="@+id/or_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:text="OR"
+                        android:textColor="@color/purple_700"
+                        android:textSize="30dp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/aclonica"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/register_button" />
+                    <Button
+                        android:id="@+id/login_button"
+                        android:layout_width="230dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Organisation"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/aclonica"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/or_text" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </androidx.cardview.widget.CardView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,6 +16,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     >
+
     <TextView
         android:id="@+id/letsvolunteer"
         android:layout_width="match_parent"
@@ -14,6 +25,7 @@
         android:textColor="@color/purple_700"
         android:textAlignment="center"
         android:textSize="30sp"
+        android:fontFamily="@font/aclonica"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,6 +105,7 @@
                 android:textColor="@color/black"
                 android:textSize="14dp"
                 android:textStyle="bold"
+                android:fontFamily="@font/aclonica"
                android:layout_marginTop="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -114,6 +127,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="Email"
+                    android:fontFamily="@font/aclonica"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/background"
                     android:textColorHint="@color/background"
@@ -135,6 +149,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Password"
+                    android:fontFamily="@font/aclonica"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:inputType="textPassword"
@@ -149,8 +164,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Login"
+                android:fontFamily="@font/aclonica"
                 android:textSize="18dp"
                 android:layout_marginTop="10dp"
+                android:textColor="@color/purple_700"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/passwordTIL2" />
@@ -160,6 +177,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="Forgot password"
+                android:fontFamily="@font/aclonica"
                 android:textColor="@color/black"
                 android:textSize="14dp"
                 android:textStyle="bold"
@@ -178,9 +196,13 @@
         android:textColor="@color/black"
         android:textSize="14dp"
         android:textStyle="bold"
+        android:fontFamily="@font/aclonica"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/backgroundPurple">
+    android:background="@color/background">
 
     <RelativeLayout
         android:id="@+id/navback"
@@ -28,6 +35,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="70dp"
             android:text="Event Favourites"
+            android:fontFamily="@font/aclonica"
             android:textColor="#0B0A0A"
             android:textSize="20sp" />
 
@@ -42,6 +50,7 @@
         android:layout_below="@id/navback"
         android:text="My Volunteer Events"
         android:textSize="24sp"
+        android:fontFamily="@font/aclonica"
         android:layout_marginLeft="19dp"
         android:layout_marginTop="33dp"
         android:textColor="@color/black"/>
@@ -67,6 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="My Interest"
+            android:fontFamily="@font/aclonica"
             android:textSize="24sp"
             android:textColor="@color/black"/>
         <ImageButton
@@ -90,6 +100,7 @@
             android:layout_height="wrap_content"
             app:cornerRadius="10dp"
             android:text="Blood Donation"
+            android:fontFamily="@font/aclonica"
             android:backgroundTint="@color/button"
             android:textColor="@color/black"
             android:textAllCaps="false"/>
@@ -98,6 +109,7 @@
             android:layout_height="wrap_content"
             app:cornerRadius="10dp"
             android:text="Food Distribution"
+            android:fontFamily="@font/aclonica"
             android:layout_marginLeft="35dp"
             android:backgroundTint="@color/button"
             android:textColor="@color/black"
@@ -120,6 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Locations"
+            android:fontFamily="@font/aclonica"
             android:textSize="24sp"
             android:textColor="@color/black"/>
         <ImageButton
@@ -136,6 +149,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/location"
         android:layout_marginLeft="20dp"
+        android:fontFamily="@font/aclonica"
         android:layout_marginTop="19dp">
 
         <com.google.android.material.button.MaterialButton
@@ -143,6 +157,7 @@
             android:layout_height="wrap_content"
             app:cornerRadius="10dp"
             android:text="North York"
+            android:fontFamily="@font/aclonica"
             android:backgroundTint="@color/button"
             android:textColor="@color/black"
             android:textAllCaps="false"/>
@@ -151,6 +166,7 @@
             android:layout_height="wrap_content"
             app:cornerRadius="10dp"
             android:text="Markham"
+            android:fontFamily="@font/aclonica"
             android:layout_marginLeft="35dp"
             android:backgroundTint="@color/button"
             android:textColor="@color/black"
@@ -160,6 +176,7 @@
             android:layout_height="wrap_content"
             app:cornerRadius="10dp"
             android:text="Steels"
+            android:fontFamily="@font/aclonica"
             android:layout_marginLeft="35dp"
             android:backgroundTint="@color/button"
             android:textColor="@color/black"
@@ -168,3 +185,4 @@
     </LinearLayout>
 
 </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

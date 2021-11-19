@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#66B235DE"
-    >
+    android:background="#66B235DE">
 
     <RelativeLayout
         android:id="@+id/navback"
@@ -29,6 +34,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="70dp"
             android:text="Event Details"
+            android:fontFamily="@font/aclonica"
             android:textColor="#0B0A0A"
             android:textSize="20sp" />
 
@@ -50,6 +56,7 @@
             android:layout_marginLeft="19dp"
             android:layout_marginTop="6dp"
             android:text="Events List"
+            android:fontFamily="@font/aclonica"
             android:textColor="#101010"
             android:textSize="24sp"
             />
@@ -66,6 +73,7 @@
             android:layout_toRightOf="@id/eventListTxt"
             android:background="@color/transparent"
             android:text="AZ"
+            android:fontFamily="@font/aclonica"
             android:textColor="@color/black" />
 
         <ImageButton
@@ -106,9 +114,7 @@
 
         <ImageView
             android:layout_width="280dp"
-            android:layout_height="203dp"
-
-            />
+            android:layout_height="203dp" />
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -120,6 +126,7 @@
         android:layout_marginLeft="19dp"
         android:layout_marginTop="20dp"
         android:text="Event Name"
+        android:fontFamily="@font/aclonica"
         android:textStyle="bold"
         android:textColor="@color/black"
         android:textSize="18sp" />
@@ -178,6 +185,7 @@
         android:layout_marginLeft="18dp"
         android:layout_marginTop="32dp"
         android:text="Description"
+        android:fontFamily="@font/aclonica"
         android:textSize="18sp"
         android:textColor="@color/black"
         />
@@ -190,7 +198,7 @@
         android:layout_marginTop="18dp"
         android:text="@string/eventdescription"
         android:textSize="18sp"
-        android:fontFamily="sans-serif-thin"
+        android:fontFamily="@font/aclonica"
         android:textColor="@color/black"
         />
 
@@ -207,6 +215,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Location"
+            android:fontFamily="@font/aclonica"
             android:layout_marginLeft="28dp"
             android:layout_marginTop="21dp"
             android:textSize="15sp"
@@ -227,6 +236,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Organized by:"
+        android:fontFamily="@font/aclonica"
         android:layout_below="@id/location"
         android:layout_marginLeft="21dp"
         android:layout_marginTop="19dp"/>
@@ -243,6 +253,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Organizer Name"
+            android:fontFamily="@font/aclonica"
             android:textSize="18sp"
             android:textStyle="bold"/>
         <ImageView
@@ -274,12 +285,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:text="Comments:"
+            android:fontFamily="@font/aclonica"
             android:textStyle="bold"/>
-
-
-
     </LinearLayout>
-
 
 <com.google.android.material.card.MaterialCardView
     android:layout_width="match_parent"
@@ -287,10 +295,5 @@
     app:cardCornerRadius="10dp"
     android:layout_below="@id/commentsTxt"
     android:layout_margin="7dp"/>
-
-
-
-
-
-
 </RelativeLayout>
+</androidx.core.widget.NestedScrollView>
