@@ -87,6 +87,8 @@ public class BlankFragment extends Fragment {
     String documentid;
     int PLACE_REQUEST = 1;
     TextView textViewLocation;
+    TextView showimagesuploaded;
+    String count = "image:  ";
 
     public static BlankFragment newInstance(String param1, String param2) {
         BlankFragment fragment = new BlankFragment();
@@ -123,10 +125,13 @@ public class BlankFragment extends Fragment {
         MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date")
                 .build();
+        showimagesuploaded = view.findViewById(R.id.showimagesuploaded);
 
         Button datebtn = view.findViewById(R.id.containedButtonfordate);
         textViewLocation = view.findViewById(R.id.eventLocation);
         Button locationaddbtn = view.findViewById(R.id.locationPicker);
+        showimagesuploaded.setText("image:  "+datalist.size());
+
         locationaddbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -328,7 +333,6 @@ public class BlankFragment extends Fragment {
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
 
-
                 View view2 = getLayoutInflater().inflate(R.layout.imagesampletemplate,linearLayout,false);
                 ImageView image4 = view2.findViewById(R.id.imageViewsample);
                 image4.setImageBitmap(bitmap);
@@ -339,6 +343,8 @@ public class BlankFragment extends Fragment {
                 byte[] data1 = stream.toByteArray();
 
                 datalist.add(data1);
+                showimagesuploaded.setText(count + datalist.size());
+
 
 
 

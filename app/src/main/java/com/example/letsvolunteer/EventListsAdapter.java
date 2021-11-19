@@ -1,6 +1,5 @@
 package com.example.letsvolunteer;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class EventListsAdapter extends RecyclerView.Adapter<EventListsAdapter.ViewHolder> {
+public abstract class EventListsAdapter extends RecyclerView.Adapter<EventListsAdapter.ViewHolder> {
 
     private ArrayList<EventsPost> events;
 
@@ -38,7 +36,7 @@ public class EventListsAdapter extends RecyclerView.Adapter<EventListsAdapter.Vi
         holder.eventDate.setText(events.get(position).getEventDate());
 
         Glide.with(holder.eventImageView).load(events.get(position).imageUrlLists.get(0)).into(holder.eventImageView);
-
+        holder.onClickcalled(position);
     }
 
     @Override
@@ -46,11 +44,14 @@ public class EventListsAdapter extends RecyclerView.Adapter<EventListsAdapter.Vi
         return events.size() ;
     }
 
+    public abstract void navigatetodetails(EventsPost eventsPost);
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView eventImageView;
         TextView eventName;
         TextView eventDate;
         TextView location;
+        int position;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -63,7 +64,11 @@ public class EventListsAdapter extends RecyclerView.Adapter<EventListsAdapter.Vi
 
         @Override
         public void onClick(View v) {
+            navigatetodetails(events.get(position));
+        }
 
+        public void onClickcalled(int position) {
+            this.position = position;
         }
     }
 }

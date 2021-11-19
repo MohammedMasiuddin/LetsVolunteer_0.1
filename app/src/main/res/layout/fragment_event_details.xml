@@ -1,284 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#66B235DE"
-    >
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/navback"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:background="@color/white">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_baseline_arrow_back_24" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="70dp"
-            android:text="Event Details"
-            android:textColor="#0B0A0A"
-            android:textSize="20sp" />
+            android:orientation="vertical" >
+
+            <HorizontalScrollView
+                android:id="@+id/imgEventDetails"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_margin="20dp"
+                android:fadeScrollbars="false"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp">
+
+                <LinearLayout
+                    android:id="@+id/EventDetailsImageContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="10dp">
+
+                        <ImageButton
+                            android:id="@+id/AddimageButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY"
+                            tools:src="@tools:sample/backgrounds/scenic" />
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/eveTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgEvent"
+
+                android:text="Event Name"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/dateTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/eveTxt"
+                android:layout_marginLeft="19dp"
+                android:layout_marginTop="9dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Date : 23 Dec 2021"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+
+                />
+
+            <LinearLayout
+                android:id="@+id/options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dateTxt"
+                android:layout_marginLeft="28dp"
+                android:layout_marginTop="19dp">
 
 
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/utils"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/navback"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="1dp">
+                <ImageView
+                    android:id="@+id/chatBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_chat_24" />
 
-        <TextView
+                <ImageView
+                    android:id="@+id/favouriteBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="23dp"
+                    android:src="@drawable/ic_baseline_favorite_24" />
 
-            android:id="@+id/eventListTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="19dp"
-            android:layout_marginTop="6dp"
-            android:text="Events List"
-            android:textColor="#101010"
-            android:textSize="24sp"
-            />
-
+                <ImageView
+                    android:id="@+id/inBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="23dp"
+                    android:src="@drawable/are_you_in" />
 
 
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/sort_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
-            android:layout_marginTop="20dp"
-            android:layout_toRightOf="@id/eventListTxt"
-            android:background="@color/transparent"
-            android:text="AZ"
-            android:textColor="@color/black" />
+            <TextView
+                android:id="@+id/descriptionTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/options"
+                android:layout_marginLeft="18dp"
+                android:layout_marginTop="32dp"
+                android:text="Description"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
-        <ImageButton
-            android:id="@+id/search_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="45dp"
-            android:layout_marginTop="21dp"
-            android:layout_toRightOf="@id/sort_btn"
-            android:background="@color/transparent"
-            android:src="@drawable/ic_baseline_search_24" />
+            <TextView
+                android:id="@+id/descContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/descriptionTxt"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="18dp"
+                android:fontFamily="sans-serif-thin"
+                android:text="@string/eventdescription"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
-        <ImageView
-            android:id="@+id/add_btn"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="70dp"
-            android:layout_marginTop="30dp"
-            android:layout_toRightOf="@id/search_bar"
-            android:background="@android:color/darker_gray"
-            android:src="@drawable/add" />
+            <LinearLayout
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/descContent"
+                android:layout_marginLeft="21dp"
+                android:layout_marginTop="12dp"
+                android:background="#B235DE">
 
-
-    </RelativeLayout>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/imgEvent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/utils"
-        app:cardCornerRadius="25dp"
-        app:cardElevation="25dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginLeft="19dp"
-        android:layout_centerHorizontal="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginTop="21dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="Location"
+                    android:textSize="15sp" />
 
 
-        <ImageView
-            android:layout_width="280dp"
-            android:layout_height="203dp"
-
-            />
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <TextView
-        android:id="@+id/eveTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/imgEvent"
-        android:layout_marginLeft="19dp"
-        android:layout_marginTop="20dp"
-        android:text="Event Name"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/dateTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/eveTxt"
-        android:layout_marginLeft="19dp"
-        android:layout_marginTop="9dp"
-        android:fontFamily="sans-serif-light"
-        android:text="Date : 23 Dec 2021"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-
-        />
-    <LinearLayout
-        android:id="@+id/options"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
-        android:layout_marginLeft="28dp"
-        android:layout_below="@+id/dateTxt">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="225dp"
+                    android:layout_marginTop="12dp"
+                    android:src="@drawable/ic_baseline_location_on_24" />
 
 
-        <ImageView
-            android:id="@+id/chatBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_chat_24"/>
-        <ImageView
-            android:id="@+id/favouriteBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_favorite_24"
-            android:layout_marginLeft="23dp"
-            />
+            </LinearLayout>
 
-        <ImageView
-            android:id="@+id/inBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/are_you_in"
-            android:layout_marginLeft="23dp"
-            />
+            <TextView
+                android:id="@+id/organizedBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/location"
+                android:layout_marginLeft="21dp"
+                android:layout_marginTop="19dp"
+                android:text="Organized by:" />
 
+            <LinearLayout
+                android:id="@+id/commentsTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/organizerDetails"
+                android:layout_marginLeft="18dp"
+                android:layout_marginTop="45dp">
 
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/descriptionTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/options"
-        android:layout_marginLeft="18dp"
-        android:layout_marginTop="32dp"
-        android:text="Description"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        />
-    <TextView
-        android:id="@+id/descContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/descriptionTxt"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="18dp"
-        android:text="@string/eventdescription"
-        android:textSize="18sp"
-        android:fontFamily="sans-serif-thin"
-        android:textColor="@color/black"
-        />
-
-    <LinearLayout
-        android:id="@+id/location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/descContent"
-        android:background="#B235DE"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="21dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Location"
-            android:layout_marginLeft="28dp"
-            android:layout_marginTop="21dp"
-            android:textSize="15sp"
-            android:layout_marginBottom="24dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="Comments:"
+                    android:textStyle="bold" />
 
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_location_on_24"
-            android:layout_marginLeft="225dp"
-            android:layout_marginTop="12dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/organizerDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/organizedBy"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="3dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Organizer Name"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="159dp"
+                    android:src="@drawable/ic_baseline_email_24" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/ic_baseline_phone_24" />
 
 
-    </LinearLayout>
-    <TextView
-        android:id="@+id/organizedBy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Organized by:"
-        android:layout_below="@id/location"
-        android:layout_marginLeft="21dp"
-        android:layout_marginTop="19dp"/>
+            </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/organizerDetails"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="32dp"
-        android:layout_below="@id/organizedBy"
-        android:layout_marginTop="3dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Organizer Name"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_email_24"
-            android:layout_marginLeft="159dp"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_phone_24"
-            android:layout_marginLeft="20dp"/>
-
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/commentsTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:layout_below="@id/organizerDetails"
-        android:layout_marginLeft="18dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="Comments:"
-            android:textStyle="bold"/>
-
-
-
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 
     <com.google.android.material.card.MaterialCardView
@@ -293,4 +234,4 @@
 
 
 
-</RelativeLayout>
+</LinearLayout>

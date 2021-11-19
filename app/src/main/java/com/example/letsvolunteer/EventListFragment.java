@@ -97,11 +97,17 @@ public class EventListFragment extends Fragment {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
              queryDocumentSnapshots.getDocuments().forEach(
                      e -> {
-                         eventsResults.add(new EventsPost((HashMap<String, Object>) e.getData()));
+                         eventsResults.add(new EventsPost((HashMap<String, Object>) e.getData(),e.getId()));
                      }
              );
 
-            EventListsAdapter eventListsAdapter = new EventListsAdapter(eventsResults);
+            EventListsAdapter eventListsAdapter = new EventListsAdapter(eventsResults) {
+                @Override
+                public void navigatetodetails(EventsPost eventsPost) {
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container_view_tag, new EventDetailsFragment()).commit();
+                }
+            };
             recyclerView.setAdapter(eventListsAdapter);
             progressDialog.dismiss();
             Log.d(TAG, "onSuccess: "+ eventsResults);

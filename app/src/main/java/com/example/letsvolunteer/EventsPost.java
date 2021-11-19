@@ -13,6 +13,7 @@ public class EventsPost {
     public List<String> imageUrlLists = new ArrayList<>();
     public String organiserid;
     public String eventDate;
+    public String eventid;
 
     public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId, String organiserid, String eventDate) {
         this.eventName = eventName;
@@ -31,9 +32,10 @@ public class EventsPost {
         this.imageUrlLists = imageUrlLists;
         this.organiserid = organiserid;
         this.eventDate = eventDate;
+
     }
 
-    public EventsPost(HashMap<String,Object> map){
+    public EventsPost(HashMap<String,Object> map, String eventid){
         this.eventName = (String) map.get("eventName");
         this.eventName = (String) map.get("eventName");
         this.eventDescription = (String) map.get("eventDescription");
@@ -42,6 +44,7 @@ public class EventsPost {
         this.imageUrlLists = (List<String>) map.get("imageUrlLists");
         this.organiserid = (String) map.get("organiserid");
         this.eventDate = (String) map.get("eventDate");
+        this.eventid = eventid;
     }
 
     public String getEventDate() {
