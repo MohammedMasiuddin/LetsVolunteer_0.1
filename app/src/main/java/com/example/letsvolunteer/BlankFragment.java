@@ -135,16 +135,7 @@ public class BlankFragment extends Fragment {
         locationaddbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//
-//                    PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
-//                    try {
-//                        startActivityForResult(intentBuilder.build(getActivity()), PLACE_REQUEST);
-//                    } catch (GooglePlayServicesRepairableException e) {
-//                        e.printStackTrace();
-//                    } catch (GooglePlayServicesNotAvailableException e) {
-//                        e.printStackTrace();
-//                    }
-//
+                Intent intent = new Intent();
             }
         });
 
