@@ -165,16 +165,7 @@ public class BlankFragment extends Fragment {
             }
         });
 
-//        gridLayout = view.findViewById(R.id.uploadImagesContainer);
 
-
-//        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-//        DatabaseReference dbref = firebaseDatabase.getReference("Events");
-
-//        Map<String, Object> user = new HashMap<>();
-//        user.put("first", "Ada");
-//        user.put("last", "Lovelace");
-//        user.put("born", 1815);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -15,6 +15,17 @@ public class EventsPost {
     public String eventDate;
     public String eventid;
 
+    public String getEventid() {
+        return eventid;
+    }
+
+    public EventsPost() {
+    }
+
+    public void setEventid(String eventid) {
+        this.eventid = eventid;
+    }
+
     public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId, String organiserid, String eventDate) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;

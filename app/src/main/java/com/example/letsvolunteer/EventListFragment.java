@@ -105,7 +105,7 @@ public class EventListFragment extends Fragment {
                 @Override
                 public void navigatetodetails(EventsPost eventsPost) {
                     getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container_view_tag, new EventDetailsFragment()).commit();
+                    .replace(R.id.fragment_container_view_tag, EventDetailsFragment.newInstance(eventsPost.eventid)).commit();
                 }
             };
             recyclerView.setAdapter(eventListsAdapter);
