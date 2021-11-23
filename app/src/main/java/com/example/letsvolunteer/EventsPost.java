@@ -14,6 +14,15 @@ public class EventsPost {
     public String organiserid;
     public String eventDate;
     public String eventid;
+    public String categoryinterest;
+
+    public String getCategoryinterest() {
+        return categoryinterest;
+    }
+
+    public void setCategoryinterest(String categoryinterest) {
+        this.categoryinterest = categoryinterest;
+    }
 
     public String getEventid() {
         return eventid;
@@ -33,6 +42,16 @@ public class EventsPost {
         this.emailId = emailId;
         this.organiserid = organiserid;
         this.eventDate = eventDate;
+    }
+
+    public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId, String organiserid, String eventDate, String categoryinterest) {
+        this.eventName = eventName;
+        this.eventDescription = eventDescription;
+        this.phoneNumber = phoneNumber;
+        this.emailId = emailId;
+        this.organiserid = organiserid;
+        this.eventDate = eventDate;
+        this.categoryinterest = categoryinterest;
     }
 
     public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId, List<String> imageUrlLists, String organiserid, String eventDate) {

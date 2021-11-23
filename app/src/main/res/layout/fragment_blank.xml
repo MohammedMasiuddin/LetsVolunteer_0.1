@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e4cced"
+    android:background="#BFB9C1"
     android:orientation="vertical"
     android:paddingRight="2dp"
     tools:context=".BlankFragment">
@@ -80,7 +80,15 @@
                 app:boxCornerRadiusBottomStart="10dp"
                 app:boxCornerRadiusTopEnd="10sp"
                 app:boxCornerRadiusTopStart="10dp"
-                app:boxStrokeColor="@color/teal_700">
+                app:boxStrokeColor="@color/teal_700"
+                app:counterEnabled="true"
+                app:counterMaxLength="50"
+                app:endIconMode="clear_text"
+
+                app:errorEnabled="true"
+                app:helperText="Required"
+                app:helperTextEnabled="true"
+                >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/EventNameEnteredittext"
@@ -97,6 +105,12 @@
                 android:hint="Enter Event Description"
                 app:boxBackgroundColor="#FAFAFA"
                 app:boxCornerRadiusBottomEnd="10dp"
+
+                app:counterEnabled="true"
+                app:endIconMode="clear_text"
+                app:helperText="Required"
+                app:helperTextEnabled="true"
+
                 app:boxCornerRadiusBottomStart="10dp"
                 app:boxCornerRadiusTopEnd="10sp"
 
@@ -127,7 +141,7 @@
                     android:layout_margin="20dp"
                     android:layout_weight="3"
                     android:backgroundTint="#808E259F"
-                    android:text="Select Event Date" />
+                    android:text="Event Date" />
 
                 <TextView
                     android:id="@+id/dateselected"
@@ -148,10 +162,20 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:hint="Contact Phone Number"
+
                 app:boxBackgroundColor="#FAFAFA"
                 app:boxCornerRadiusBottomEnd="10dp"
                 app:boxCornerRadiusBottomStart="10dp"
                 app:boxCornerRadiusTopEnd="10sp"
+
+                app:counterEnabled="true"
+                app:counterMaxLength="14"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
+                app:helperText="Required"
+                app:helperTextEnabled="true"
+                app:startIconDrawable="@drawable/ic_baseline_phone_24"
+                app:endIconTint="@color/black"
 
                 app:boxCornerRadiusTopStart="10dp"
                 app:boxStrokeColor="@color/teal_700">
@@ -175,6 +199,13 @@
                 app:boxCornerRadiusBottomEnd="10dp"
                 app:boxCornerRadiusBottomStart="10dp"
                 app:boxCornerRadiusTopEnd="10sp"
+
+                app:counterEnabled="true"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
+                app:helperText="Required"
+                app:helperTextEnabled="true"
+                app:startIconDrawable="@drawable/ic_baseline_email_24"
 
                 app:boxCornerRadiusTopStart="10dp"
                 app:boxStrokeColor="@color/teal_700">
@@ -205,6 +236,20 @@
                 android:textSize="24dp"
                 android:visibility="invisible" />
 
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+                >
+
+                <AutoCompleteTextView
+                    android:id="@+id/selectCatorgyinterst"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Select Event Catogry" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/uploadbutton"

@@ -16,12 +16,17 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -46,6 +51,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.storage.FirebaseStorage;
 
@@ -60,6 +66,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.zip.Inflater;
 
 public class BlankFragment extends Fragment {
@@ -89,6 +96,8 @@ public class BlankFragment extends Fragment {
     TextView textViewLocation;
     TextView showimagesuploaded;
     String count = "image:  ";
+    ArrayList<String> categoriesinterest;
+    Boolean isvalid;
 
     public static BlankFragment newInstance(String param1, String param2) {
         BlankFragment fragment = new BlankFragment();
@@ -124,6 +133,7 @@ public class BlankFragment extends Fragment {
         TextView dateselected = view.findViewById(R.id.dateselected);
         MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date")
+                .setCalendarConstraints(new CalendarConstraints.Builder().setValidator(DateValidatorPointForward.now()).build())
                 .build();
         showimagesuploaded = view.findViewById(R.id.showimagesuploaded);
 
@@ -135,7 +145,7 @@ public class BlankFragment extends Fragment {
         locationaddbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
+                startActivityForResult(new Intent(((MainActivity) getActivity()), PlaceMapsActivity.class),1014);
             }
         });
 
@@ -173,49 +183,192 @@ public class BlankFragment extends Fragment {
         TextInputEditText textEventphone = view.findViewById(R.id.PhonenumberEnter);
         TextInputEditText textemail = view.findViewById(R.id.emailgiven);
 
+        TextInputLayout eventname = view.findViewById(R.id.EventNameEnter);
+        TextInputLayout eventdescription = view.findViewById(R.id.textField);
+        TextInputLayout eventphonenumber = view.findViewById(R.id.OrganiserPhoneEnter);
+        TextInputLayout eventemail = view.findViewById(R.id.Enteremail);
 
+
+        AutoCompleteTextView selectCatorgyinterst = view.findViewById(R.id.selectCatorgyinterst);
+
+        // email validation
+        textemail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!s.toString().matches("[a-zA-Z0-9!@#\\$%\\^\\&*\\)\\(+=._-]+@[a-zA-Z0-9]+\\.[a-zA-z0-9]+") ){
+                    eventemail.setError("Enter value is not email");
+                    return;
+                }
+                eventemail.setError(null);
+                return;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        // Phone number edit text validations
+        textEventphone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() <= 10 || s.equals("") ){
+                    eventphonenumber.setError("phone number should be greater then 10 char");
+                    return;
+                }
+                if (!s.toString().matches("[0-9+]+") ){
+                    eventphonenumber.setError("phone number should be digits");
+                    return;
+                }
+
+
+                eventphonenumber.setError("");
+                return ;
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        // Event text description validation
+        textEventDescription.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() <= 3 || s.equals("") ){
+                    eventdescription.setError("Name should be greater then 3 char");
+                    return;
+                }
+
+                eventdescription.setError("");
+                return ;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        // Event Name validations
+        textEventName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && ((EditText) v).getText().toString().length() <= 3 ){
+                    eventname.setError("Name should be greater then 3 char");
+                }
+            }
+        });
+        textEventName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() <= 3 || s.equals("") ){
+                    eventname.setError("Name should be greater then 3 char");
+                    return;
+                }
+                if (!s.toString().matches("[a-zA-Z\\s0-9]+") ){
+                    eventname.setError("Name should be alphabatic");
+                    return;
+                }
+                int count3 = 0;
+                for (char temp : s.toString().toCharArray()) {
+
+                    if (temp == ' '  ){
+                        count3++;
+                    }
+                    else{
+                        count3 = 0;
+                    }
+
+                    if ( count3 > 1 ){
+                        eventname.setError("Name should not have more than one blank");
+                        return;
+                    }
+                }
+
+
+                eventname.setError("");
+                return ;
+            }
+        });
 
 
         Button upload = view.findViewById(R.id.uploadbutton);
 
 
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference mountainImagesRef = storageRef.child("Events/firstimagetesting111.jpg");
+//        StorageReference mountainImagesRef = storageRef.child("Events/firstimagetesting111.jpg");
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        // autotext completion fetch from firestore
+        db.collection("EventCatorgy").document("CategoriesDoc").get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        Log.d(TAG, "onCreateView: "+ task.getResult().getData().get("Categories").getClass());
+                        categoriesinterest = (ArrayList<String>) task.getResult().getData().get("Categories");
+                        ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(),R.layout.support_simple_spinner_dropdown_item,categoriesinterest);
+                        selectCatorgyinterst.setAdapter(arrayAdapter);
+                    }
+                });
+
+        // upload btn clicked
         upload.setOnClickListener(new View.OnClickListener() {
-
-
             @Override
             public void onClick(View view) {
-
 
                 if (datalist.size() == 0){
                     Log.d(TAG, "onCreateView: "+ textEventName.getText().toString() );
                     Log.d(TAG, "onCreateView: "+ textEventDescription.getText().toString() );
                     Log.d(TAG, "onCreateView: "+ textEventphone.getText().toString() );
                     Log.d(TAG, "onCreateView: "+ textemail.getText().toString() );
-                    Log.d(TAG, "onClick: "+ datePicker.getSelection());
-//                    Log.d(TAG, "onClick: "+ eventPost);
+//                    Log.d(TAG, "onClick: "+ datePicker.getSelection());
+
+
 
                     return;
                 }
 
-
+                // creating post object
                 EventsPost eventPost = new EventsPost(textEventName.getText().toString(),
                         textEventDescription.getText().toString(),
                         textEventphone.getText().toString()
-                        ,textemail.getText().toString(), user.getUid(),datePicker.getSelection().toString()
+                        ,textemail.getText().toString(),
+                        user.getUid(),
+                        datePicker.getSelection().toString(),
+                        selectCatorgyinterst.getText().toString()
                 );
 
-
+                // assign spinner
                 ProgressDialog progressDialog = new ProgressDialog(getContext());
                 progressDialog.show();
                 progressDialog.setContentView(R.layout.loadingspinner);
 //                progressDialog.getWindow().setBackgroundDrawable(R.color.transparent);
 
+                if(!categoriesinterest.contains(selectCatorgyinterst.getText().toString()) ){
+                    Log.d(TAG, "onClick:  treudskdjdfg nm;ldfm ");
+                    db.collection("EventCatorgy").document("CategoriesDoc")
+                            .update("Categories",
+                                    FieldValue.arrayUnion(selectCatorgyinterst.getText().toString()));
+                }
 
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
                 db.collection("Events")
                         .add(eventPost)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -224,7 +377,7 @@ public class BlankFragment extends Fragment {
                                documentid = documentReference.getId();
 
                                for (int i = 0 ; i < datalist.size(); i++){
-                                   StorageReference mountainImagesRef = storageRef.child("Events/firstimagetesting"+ i +".jpg");
+                                   StorageReference mountainImagesRef = storageRef.child("Events/" + UUID.randomUUID().toString() +".jpg");
                                    int finalI = i;
                                    mountainImagesRef.putBytes(datalist.get(i))
                                            .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -307,6 +460,11 @@ public class BlankFragment extends Fragment {
 //                textViewLocation.setText("" +place.getLatLng().latitude + place.getLatLng().longitude);
 //            }
 //        }
+
+        if (requestCode == 1014 && resultCode == RESULT_OK){
+            Log.d(TAG, "onActivityResult: " + data.getStringExtra("location"));
+            Log.d(TAG, "onActivityResult: "+ data.getExtras());
+        }
 
         if (data != null && data.getData() != null && requestCode == Request_Code ){
             Uri filepath = data.getData();

@@ -69,9 +69,9 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
             }
         });
 
-//        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
-//                new EventListFragment()).commit();
-        bottomNavigation.setSelectedItemId(R.id.page_2);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
+                new BlankFragment()).commit();
+//        bottomNavigation.setSelectedItemId(R.id.page_2);
 
 
     }
