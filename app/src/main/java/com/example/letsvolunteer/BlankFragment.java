@@ -1,11 +1,14 @@
 package com.example.letsvolunteer;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -34,8 +37,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -65,6 +71,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.zip.Inflater;
@@ -84,6 +91,7 @@ public class BlankFragment extends Fragment {
     Boolean isPermissionGrandted = true;
     String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
     String[] permissions1 = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+    String[] permissions2 = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     int Request_Code = 12345;
     ImageView imageView;
@@ -98,6 +106,8 @@ public class BlankFragment extends Fragment {
     String count = "image:  ";
     ArrayList<String> categoriesinterest;
     Boolean isvalid;
+    ImageView mapimageview;
+    String dateselect1 = "";
 
     public static BlankFragment newInstance(String param1, String param2) {
         BlankFragment fragment = new BlankFragment();
@@ -131,6 +141,8 @@ public class BlankFragment extends Fragment {
 //        imageView = view.findViewById(R.id.uploadimageView);
         linearLayout = view.findViewById(R.id.uploadImagesContainer);
         TextView dateselected = view.findViewById(R.id.dateselected);
+
+        mapimageview = view.findViewById(R.id.mapimage);
         MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date")
                 .setCalendarConstraints(new CalendarConstraints.Builder().setValidator(DateValidatorPointForward.now()).build())
@@ -145,6 +157,13 @@ public class BlankFragment extends Fragment {
         locationaddbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!(ContextCompat.checkSelfPermission(getContext(),Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)){
+                    ActivityCompat.requestPermissions( getActivity(),
+                            permissions2, 1
+                    );
+                    return;
+                }
+                mapimageview.setVisibility(View.VISIBLE);
                 startActivityForResult(new Intent(((MainActivity) getActivity()), PlaceMapsActivity.class),1014);
             }
         });
@@ -160,6 +179,7 @@ public class BlankFragment extends Fragment {
                     public void onPositiveButtonClick(Object selection) {
                         Log.d(TAG, "onPositiveButtonClick: "+ selection.toString());
                         dateselected.setText("Date : "+ datePicker.getHeaderText());
+                        dateselect1 = datePicker.getHeaderText();
                         dateselected.setVisibility(View.VISIBLE);
                     }
                 });
@@ -192,6 +212,14 @@ public class BlankFragment extends Fragment {
         AutoCompleteTextView selectCatorgyinterst = view.findViewById(R.id.selectCatorgyinterst);
 
         // email validation
+        textemail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && ((EditText) v).getText().toString().length() <= 3 ){
+                    eventemail.setError("enter valid email");
+                }
+            }
+        });
         textemail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -211,6 +239,14 @@ public class BlankFragment extends Fragment {
         });
 
         // Phone number edit text validations
+        textEventphone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && ((EditText) v).getText().toString().length() < 10 ){
+                    eventphonenumber.setError(" enter valid phone number ");
+                }
+            }
+        });
         textEventphone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -239,6 +275,14 @@ public class BlankFragment extends Fragment {
         });
 
         // Event text description validation
+        textEventDescription.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && ((EditText) v).getText().toString().length() <= 3 ){
+                    eventdescription.setError("Description should be greater then 3 char");
+                }
+            }
+        });
         textEventDescription.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -334,17 +378,29 @@ public class BlankFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if (datalist.size() == 0){
-                    Log.d(TAG, "onCreateView: "+ textEventName.getText().toString() );
-                    Log.d(TAG, "onCreateView: "+ textEventDescription.getText().toString() );
-                    Log.d(TAG, "onCreateView: "+ textEventphone.getText().toString() );
-                    Log.d(TAG, "onCreateView: "+ textemail.getText().toString() );
-//                    Log.d(TAG, "onClick: "+ datePicker.getSelection());
 
-
-
+                if(datalist.size() == 0) {
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("Event cannot be without image please upload images")
+                            .setCancelable(true)
+                            .create().show();
                     return;
                 }
+                if (eventname.getError() != "" && eventname.isDirty() || eventdescription.getError() != ""
+                        && eventdescription.isDirty() || dateselected.getText().toString() != "" ||
+                        eventphonenumber.getError() != "" && eventphonenumber.isDirty() ||
+                        eventemail.isDirty() && eventemail.getError() != "" ||
+                        selectCatorgyinterst.isDirty() && selectCatorgyinterst.getText().toString().length() > 0 ||
+                        textViewLocation.getText().toString().length() > 0 ){
+
+                    Log.d(TAG, "onClick: "+ eventdescription.isDirty());
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("please enter valid input to textfields")
+                            .setCancelable(true)
+                            .create().show();
+                    return;
+                }
+
 
                 // creating post object
                 EventsPost eventPost = new EventsPost(textEventName.getText().toString(),
@@ -352,7 +408,7 @@ public class BlankFragment extends Fragment {
                         textEventphone.getText().toString()
                         ,textemail.getText().toString(),
                         user.getUid(),
-                        datePicker.getSelection().toString(),
+                        dateselect1,
                         selectCatorgyinterst.getText().toString()
                 );
 
@@ -462,8 +518,24 @@ public class BlankFragment extends Fragment {
 //        }
 
         if (requestCode == 1014 && resultCode == RESULT_OK){
-            Log.d(TAG, "onActivityResult: " + data.getStringExtra("location"));
+//            Log.d(TAG, "onActivityResult: " + data.getStringExtra("location"));
             Log.d(TAG, "onActivityResult: "+ data.getExtras());
+            if (data.getExtras().get("geocodes") != null){
+                textViewLocation.setText("Latitude :"+ ((LatLng) data.getExtras().get("geocodes")).latitude
+                        + "\n" + "Longitude : " + ((LatLng) data.getExtras().get("geocodes")).longitude );
+                textViewLocation.setVisibility(View.VISIBLE);
+                String path = (String) data.getExtras().get("mapimage");
+                Log.d(TAG, "onActivityResult: "+ (String) data.getExtras().get("mapimage"));
+
+//                Glide.with(getActivity()).clear(mapimageview);
+                Glide.with(getActivity())
+                        .load(path)
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE).into(mapimageview);
+
+
+                return;
+            }
         }
 
         if (data != null && data.getData() != null && requestCode == Request_Code ){
@@ -484,9 +556,6 @@ public class BlankFragment extends Fragment {
 
                 datalist.add(data1);
                 showimagesuploaded.setText(count + datalist.size());
-
-
-
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

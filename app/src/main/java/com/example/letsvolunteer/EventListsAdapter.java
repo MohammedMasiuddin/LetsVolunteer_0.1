@@ -35,7 +35,9 @@ public abstract class EventListsAdapter extends RecyclerView.Adapter<EventListsA
         holder.eventName.setText(events.get(position).getEventName());
         holder.eventDate.setText(events.get(position).getEventDate());
 
-        Glide.with(holder.eventImageView).load(events.get(position).imageUrlLists.get(0)).into(holder.eventImageView);
+        Glide.with(holder.eventImageView).load(events.get(position).imageUrlLists.get(0))
+                .placeholder(android.R.drawable.progress_indeterminate_horizontal).error(android.R.drawable.stat_notify_error)
+                .into(holder.eventImageView);
         holder.onClickcalled(position);
     }
 

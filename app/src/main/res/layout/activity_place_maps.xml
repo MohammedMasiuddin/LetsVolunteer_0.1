@@ -10,8 +10,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
         <ImageButton
@@ -60,12 +60,30 @@
             android:src="@drawable/ic_baseline_check_24" />
     </LinearLayout>
 
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        map:boxCornerRadiusBottomEnd="10dp"-->
+<!--        map:boxCornerRadiusBottomStart="10dp"-->
+<!--        android:layout_margin="10dp"-->
+
+<!--        map:boxCornerRadiusTopEnd="10sp"-->
+<!--        map:boxCornerRadiusTopStart="10sp"-->
+
+<!--        android:layout_weight="1">-->
+
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="hint" />-->
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_weight="11"
         tools:context=".PlaceMapsActivity" />
 
 </LinearLayout>

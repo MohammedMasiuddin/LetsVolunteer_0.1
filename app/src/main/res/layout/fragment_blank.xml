@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="2"
-                    android:text="TextView"
+                    android:text=""
                     android:textAlignment="center"
                     android:textSize="24dp"
                     android:visibility="invisible" />
@@ -218,6 +218,26 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:background="#F5F5F5"
+                app:boxCornerRadiusTopStart="5dp"
+                app:boxCornerRadiusTopEnd="5dp"
+                app:boxCornerRadiusBottomStart="5dp"
+                app:boxCornerRadiusBottomEnd="5dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+                >
+
+                <AutoCompleteTextView
+                    android:id="@+id/selectCatorgyinterst"
+                    android:background="#F5F5F5"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:hint="Select Event Catogry" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/locationPicker"
@@ -231,25 +251,18 @@
                 android:id="@+id/eventLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:text=""
                 android:textAlignment="center"
                 android:textSize="24dp"
-                android:visibility="invisible" />
+                android:visibility="gone" />
 
-
-            <com.google.android.material.textfield.TextInputLayout
+            <ImageView
+                android:id="@+id/mapimage"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="20dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
-                >
-
-                <AutoCompleteTextView
-                    android:id="@+id/selectCatorgyinterst"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Select Event Catogry" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="300dp"
+                android:layout_margin="10dp"
+                android:visibility="gone"
+                />
 
             <Button
                 android:id="@+id/uploadbutton"
