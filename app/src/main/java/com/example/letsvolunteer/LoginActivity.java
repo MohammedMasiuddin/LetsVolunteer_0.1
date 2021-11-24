@@ -307,13 +307,13 @@ public class LoginActivity extends AppCompatActivity {
             Uri personPhoto = acct.getPhotoUrl();
 
             UserID = user.getUid();
-            DocumentReference documentReference = db.collection("Users").document(UserID);
+            DocumentReference documentReference = db.collection("Volunteer").document(UserID);
             Map<String, Object> data = new HashMap<>();
             data.put(KEY_FN, personGivenName);
             data.put(KEY_LN, personFamilyName);
             data.put(KEY_email, personEmail);
             data.put(KEY_age, "");
-            data.put(KEY_photoUri, personPhoto);
+            data.put(KEY_photoUri, "");
             documentReference.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
