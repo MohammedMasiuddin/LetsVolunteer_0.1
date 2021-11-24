@@ -391,7 +391,7 @@ public class BlankFragment extends Fragment {
                             .create().show();
                     return;
                 }
-                if (eventname.getError() != "" && eventname.isDirty() ){
+                if (eventname.getError() != "" && eventname.isDirty() || !eventname.isDirty() ){
                     new AlertDialog.Builder(getContext()).setTitle("Alert")
                             .setMessage("Enter the valid Event name ")
                             .setCancelable(true)
@@ -400,7 +400,7 @@ public class BlankFragment extends Fragment {
                 }
 
                 if (eventdescription.getError() != ""
-                        && eventdescription.isDirty()){
+                        && eventdescription.isDirty() || !eventdescription.isDirty()){
                     new AlertDialog.Builder(getContext()).setTitle("Alert")
                             .setMessage("Enter the valid Event description ")
                             .setCancelable(true)
@@ -415,21 +415,21 @@ public class BlankFragment extends Fragment {
                             .create().show();
                     return;
                 }
-                if (eventphonenumber.getError() != "" && eventphonenumber.isDirty()){
+                if (eventphonenumber.getError() != "" && eventphonenumber.isDirty() || !eventphonenumber.isDirty()){
                     new AlertDialog.Builder(getContext()).setTitle("Alert")
                             .setMessage("please select the valid phone number ")
                             .setCancelable(true)
                             .create().show();
                     return;
                 }
-                if (eventemail.isDirty() && eventemail.getError() != "" ){
+                if (eventemail.isDirty() && eventemail.getError() != "" || !eventemail.isDirty() ){
                     new AlertDialog.Builder(getContext()).setTitle("Alert")
                             .setMessage("please select the valid email ")
                             .setCancelable(true)
                             .create().show();
                     return;
                 }
-                if (selectCatorgyinterst.isDirty() && selectCatorgyinterst.getText().toString().length() < 3){
+                if (selectCatorgyinterst.isDirty() && selectCatorgyinterst.getText().toString().length() < 3 || !selectCatorgyinterst.isDirty()){
                     new AlertDialog.Builder(getContext()).setTitle("Alert")
                             .setMessage("please select the catergory of event ")
                             .setCancelable(true)
