@@ -47,6 +47,7 @@ public class PlaceMapsActivity extends FragmentActivity implements OnMapReadyCal
     LatLng latLngTemp;
     Bitmap mapimage ;
     boolean flag = false;
+    String locationaddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,18 @@ public class PlaceMapsActivity extends FragmentActivity implements OnMapReadyCal
                     }
 
                     intent.putExtra("mapimage", path);
+
+                    List<Address> addressList = null;
+                    try {
+                        addressList = new Geocoder(getApplicationContext()).getFromLocation(latLngTemp.latitude, latLngTemp.longitude, 1);
+                        locationaddress = addressList.get(0).getAddressLine(0).toString();
+                        Log.d("TAG", "geting location address " );
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    intent.putExtra("locationaddress",locationaddress);
                     setResult(RESULT_OK,intent);
                     finish();
                     Log.d("TAG", "onClick: finished intent");

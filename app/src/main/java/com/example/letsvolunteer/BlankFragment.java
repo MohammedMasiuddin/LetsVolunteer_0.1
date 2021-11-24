@@ -59,6 +59,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -102,12 +103,15 @@ public class BlankFragment extends Fragment {
     String documentid;
     int PLACE_REQUEST = 1;
     TextView textViewLocation;
+    TextView textlocationAddress;
     TextView showimagesuploaded;
     String count = "image:  ";
     ArrayList<String> categoriesinterest;
     Boolean isvalid;
     ImageView mapimageview;
     String dateselect1 = "";
+    GeoPoint geoPoint;
+    String locationAddress;
 
     public static BlankFragment newInstance(String param1, String param2) {
         BlankFragment fragment = new BlankFragment();
@@ -151,6 +155,7 @@ public class BlankFragment extends Fragment {
 
         Button datebtn = view.findViewById(R.id.containedButtonfordate);
         textViewLocation = view.findViewById(R.id.eventLocation);
+        textlocationAddress = view.findViewById(R.id.eventLocationAddress);
         Button locationaddbtn = view.findViewById(R.id.locationPicker);
         showimagesuploaded.setText("image:  "+datalist.size());
 
@@ -386,16 +391,56 @@ public class BlankFragment extends Fragment {
                             .create().show();
                     return;
                 }
-                if (eventname.getError() != "" && eventname.isDirty() || eventdescription.getError() != ""
-                        && eventdescription.isDirty() || dateselected.getText().toString() != "" ||
-                        eventphonenumber.getError() != "" && eventphonenumber.isDirty() ||
-                        eventemail.isDirty() && eventemail.getError() != "" ||
-                        selectCatorgyinterst.isDirty() && selectCatorgyinterst.getText().toString().length() > 0 ||
-                        textViewLocation.getText().toString().length() > 0 ){
+                if (eventname.getError() != "" && eventname.isDirty() ){
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("Enter the valid Event name ")
+                            .setCancelable(true)
+                            .create().show();
+                    return;
+                }
+
+                if (eventdescription.getError() != ""
+                        && eventdescription.isDirty()){
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("Enter the valid Event description ")
+                            .setCancelable(true)
+                            .create().show();
+                    return;
+                }
+
+                if (dateselected.getText().toString().length() < 3 ){
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("please select the valid date ")
+                            .setCancelable(true)
+                            .create().show();
+                    return;
+                }
+                if (eventphonenumber.getError() != "" && eventphonenumber.isDirty()){
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("please select the valid phone number ")
+                            .setCancelable(true)
+                            .create().show();
+                    return;
+                }
+                if (eventemail.isDirty() && eventemail.getError() != "" ){
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("please select the valid email ")
+                            .setCancelable(true)
+                            .create().show();
+                    return;
+                }
+                if (selectCatorgyinterst.isDirty() && selectCatorgyinterst.getText().toString().length() < 3){
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("please select the catergory of event ")
+                            .setCancelable(true)
+                            .create().show();
+                    return;
+                }
+                if ( textViewLocation.getText().toString().length() < 3 && geoPoint != null ){
 
                     Log.d(TAG, "onClick: "+ eventdescription.isDirty());
                     new AlertDialog.Builder(getContext()).setTitle("Alert")
-                            .setMessage("please enter valid input to textfields")
+                            .setMessage("please select the location")
                             .setCancelable(true)
                             .create().show();
                     return;
@@ -409,7 +454,9 @@ public class BlankFragment extends Fragment {
                         ,textemail.getText().toString(),
                         user.getUid(),
                         dateselect1,
-                        selectCatorgyinterst.getText().toString()
+                        selectCatorgyinterst.getText().toString(),
+                        geoPoint,
+                        locationAddress
                 );
 
                 // assign spinner
@@ -508,31 +555,29 @@ public class BlankFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//                super.onActivityResult(requestCode, resultCode, data);
-
-//        if (requestCode == PLACE_REQUEST){
-//            if (resultCode == RESULT_OK ){
-//                Place place = PlacePicker.getPlace(data,getContext());
-//                textViewLocation.setText("" +place.getLatLng().latitude + place.getLatLng().longitude);
-//            }
-//        }
 
         if (requestCode == 1014 && resultCode == RESULT_OK){
-//            Log.d(TAG, "onActivityResult: " + data.getStringExtra("location"));
             Log.d(TAG, "onActivityResult: "+ data.getExtras());
             if (data.getExtras().get("geocodes") != null){
                 textViewLocation.setText("Latitude :"+ ((LatLng) data.getExtras().get("geocodes")).latitude
                         + "\n" + "Longitude : " + ((LatLng) data.getExtras().get("geocodes")).longitude );
                 textViewLocation.setVisibility(View.VISIBLE);
                 String path = (String) data.getExtras().get("mapimage");
-                Log.d(TAG, "onActivityResult: "+ (String) data.getExtras().get("mapimage"));
 
-//                Glide.with(getActivity()).clear(mapimageview);
+                Log.d(TAG, "onActivityResult: "+ (String) data.getExtras().get("mapimage"));
+                Log.d(TAG, "onActivityResult: "+ (String) data.getExtras().get("locationaddress"));
+
+                geoPoint = new GeoPoint(((LatLng) data.getExtras().get("geocodes")).latitude,
+                        ((LatLng) data.getExtras().get("geocodes")).longitude);
+
+                locationAddress =  (String) data.getExtras().get("locationaddress");
+                textlocationAddress.setText("Address : "+locationAddress);
+                textlocationAddress.setVisibility(View.VISIBLE);
+
                 Glide.with(getActivity())
                         .load(path)
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.NONE).into(mapimageview);
-
 
                 return;
             }

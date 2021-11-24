@@ -1,5 +1,6 @@
 package com.example.letsvolunteer;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public abstract class EventListsAdapter extends RecyclerView.Adapter<EventListsA
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.eventName.setText(events.get(position).getEventName());
         holder.eventDate.setText(events.get(position).getEventDate());
-
+        holder.location.setText(events.get(position).getLocationAddress());
         Glide.with(holder.eventImageView).load(events.get(position).imageUrlLists.get(0))
                 .placeholder(android.R.drawable.progress_indeterminate_horizontal).error(android.R.drawable.stat_notify_error)
                 .into(holder.eventImageView);
@@ -60,7 +61,7 @@ public abstract class EventListsAdapter extends RecyclerView.Adapter<EventListsA
             eventImageView = itemView.findViewById(R.id.eventImg);
             eventName = itemView.findViewById(R.id.eventNameTxt);
             eventDate = itemView.findViewById(R.id.eventDateTxt);
-            location = itemView.findViewById(R.id.location);
+            location = itemView.findViewById(R.id.locationTxt);
             itemView.setOnClickListener(this);
         }
 

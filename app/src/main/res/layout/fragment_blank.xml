@@ -264,6 +264,15 @@
                 android:visibility="gone"
                 />
 
+            <TextView
+                android:id="@+id/eventLocationAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAlignment="center"
+                android:textSize="24dp"
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/uploadbutton"
                 android:layout_width="match_parent"
