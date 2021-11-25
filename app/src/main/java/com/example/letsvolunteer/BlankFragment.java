@@ -31,11 +31,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -58,11 +64,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.zip.Inflater;
 
 public class BlankFragment extends Fragment {
+    int AUTOCOMPLETE_REQUEST_CODE = 1;
+    String providerAddress,latitude,longitude;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -113,6 +124,7 @@ public class BlankFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        init();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_blank, container, false);
 
@@ -130,6 +142,10 @@ public class BlankFragment extends Fragment {
         locationaddbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                location();
+
+
 //
 //                    PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
 //                    try {
@@ -296,7 +312,23 @@ public class BlankFragment extends Fragment {
     }
 
 
-
+    public void init(){
+        try {
+            String apiKey = getString(R.string.google_maps_key);
+            if (!Places.isInitialized()) {
+                Places.initialize(getContext(), apiKey);
+            }
+        } catch (Exception ignored) {
+        }
+    }
+    public void location(){
+        // Set the fields to specify which types of place data to return.
+        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG);
+        // Start the autocomplete intent.
+        Intent intent = new Autocomplete.IntentBuilder(
+                AutocompleteActivityMode.FULLSCREEN, fields).build(getContext());
+        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+    }
 
     public void checkPermissions() {
         if (ContextCompat.checkSelfPermission(getContext().getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
@@ -312,8 +344,24 @@ public class BlankFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//                super.onActivityResult(requestCode, resultCode, data);
-
+                super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                try {
+                   // location.setText(place.getAddress());
+                    providerAddress=""+place.getAddress();
+                    latitude = "" + Objects.requireNonNull(place.getLatLng()).latitude;
+                    longitude = "" + place.getLatLng().longitude;
+        Toast.makeText(getContext(), providerAddress+latitude+longitude , Toast.LENGTH_LONG).show();
+                    //Log.e("test",latitude+" , "+longitude);
+                } catch (Exception ignored) {
+                }
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+            }
+        }
 //        if (requestCode == PLACE_REQUEST){
 //            if (resultCode == RESULT_OK ){
 //                Place place = PlacePicker.getPlace(data,getContext());
