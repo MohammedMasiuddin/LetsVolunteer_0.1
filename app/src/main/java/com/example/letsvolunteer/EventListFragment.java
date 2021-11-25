@@ -9,12 +9,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.CompletionInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -22,6 +31,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,7 +60,10 @@ public class EventListFragment extends Fragment {
     private String mParam2;
     ArrayList<EventsPost> eventsResults = new ArrayList<EventsPost>();
     ArrayList<EventsPost> filtereventsResults = new ArrayList<EventsPost>();
+    ArrayList<String> categoriesinterest  = new ArrayList<String>();
+
     SearchView searchView;
+    SearchView filterView;
     boolean tempflagfliterevents;
     DocumentSnapshot lastDocument;
     EventListsAdapter tempEventListsAdapter;
@@ -98,6 +111,13 @@ public class EventListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 //        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.recycleviewrefresh);
         searchView = view.findViewById(R.id.search_bar_icon_event);
+        TextInputLayout filterautotextlayout = view.findViewById(R.id.filterautotextlayout);
+        RelativeLayout autotextcontnr = view.findViewById(R.id.autotextcontnr);
+//        filterView = view.findViewById(R.id.filtereventslist);
+        ImageButton filtericon = view.findViewById(R.id.filterlisticon);
+        AutoCompleteTextView filterAutoText = view.findViewById(R.id.filterlistautotext);
+        ImageButton crossbuttonforautotext = view.findViewById(R.id.crossbuttonforautotext);
+
         TextView eventListTxt = view.findViewById(R.id.eventListTxt);
         ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.show();
@@ -163,6 +183,7 @@ public class EventListFragment extends Fragment {
             Log.d(TAG, "onCreateView: in search icon clicked");
             eventListTxt.setVisibility(View.GONE);
             btn.setVisibility(View.GONE);
+            filterView.setVisibility(View.GONE);
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -201,6 +222,7 @@ public class EventListFragment extends Fragment {
                 Log.d(TAG, "onClose: ");
                 btn.setVisibility(View.VISIBLE);
                 eventListTxt.setVisibility(View.VISIBLE);
+                filterView.setVisibility(View.VISIBLE);
                 ((EventListsAdapter) recyclerView.getAdapter()).lastElement = tempflagfliterevents;
                 Log.d(TAG, "onClose: "+ eventsResults.size());
                 ((EventListsAdapter) recyclerView.getAdapter()).setEvents(eventsResults);
@@ -208,6 +230,83 @@ public class EventListFragment extends Fragment {
                 return false;
             }
         });
+
+        DocumentReference dbref1 = db.collection("EventCatorgy").document("CategoriesDoc");
+        dbref1.get().addOnSuccessListener(documentSnapshot -> {
+            categoriesinterest = (ArrayList<String>) documentSnapshot.getData().get("Categories");
+            Log.d(TAG, "onCreateView:  fetch categories" + categoriesinterest);
+            ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(),R.layout.support_simple_spinner_dropdown_item,categoriesinterest);
+            filterAutoText.setAdapter(arrayAdapter);
+        });
+
+        filtericon.setOnClickListener(v -> {
+            Log.d(TAG, "onCreateView: in filter icon clicked");
+            eventListTxt.setVisibility(View.GONE);
+            btn.setVisibility(View.GONE);
+            searchView.setVisibility(View.GONE);
+            filterautotextlayout.setVisibility(View.VISIBLE);
+            autotextcontnr.setVisibility(View.VISIBLE);
+            filterAutoText.showDropDown();
+        });
+
+        filterAutoText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (!(s.toString().length() > 0)){
+                    crossbuttonforautotext.setVisibility(View.VISIBLE);
+                }else{
+                    crossbuttonforautotext.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        crossbuttonforautotext.setOnClickListener(v -> {
+            btn.setVisibility(View.VISIBLE);
+            eventListTxt.setVisibility(View.VISIBLE);
+            searchView.setVisibility(View.VISIBLE);
+            filterautotextlayout.setVisibility(View.GONE);
+            autotextcontnr.setVisibility(View.GONE);
+            ((EventListsAdapter) recyclerView.getAdapter()).lastElement = tempflagfliterevents;
+            Log.d(TAG, "onClose: "+ eventsResults.size() + " :: " + tempflagfliterevents);
+            ((EventListsAdapter) recyclerView.getAdapter()).setEvents(eventsResults);
+            recyclerView.getAdapter().notifyDataSetChanged();
+
+
+        });
+
+       filterAutoText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           @Override
+           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+               Query dbref = db.collection("Events").orderBy("eventName").whereEqualTo("categoryinterest",filterAutoText.getText().toString());
+               dbref.get().addOnCompleteListener(task -> {
+
+                   Log.d(TAG, "onQueryTextSubmit: arraysize " + filtereventsResults.size() );
+                   filtereventsResults = new ArrayList<EventsPost>();
+                   Log.d(TAG, "onQueryTextSubmit: " + task.getResult().getDocuments().size());
+                   task.getResult().getDocuments().forEach(
+                           e -> {
+                               filtereventsResults.add(new EventsPost((HashMap<String, Object>) e.getData(),e.getId()));
+                           });
+
+                   tempflagfliterevents = ((EventListsAdapter) recyclerView.getAdapter()).lastElement;
+                   Log.d(TAG, "onQueryTextSubmit: mainarray " + eventsResults.size()+ " :: " + tempflagfliterevents  );
+                   Log.d(TAG, "onItemClick: "+filtereventsResults.size());
+                   ((EventListsAdapter) recyclerView.getAdapter()).lastElement = true;
+                   ((EventListsAdapter) recyclerView.getAdapter()).setEvents(filtereventsResults);
+                   recyclerView.getAdapter().notifyDataSetChanged();
+
+               });
+           }
+       });
+
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

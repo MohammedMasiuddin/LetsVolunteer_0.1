@@ -20,36 +20,112 @@
 
             android:id="@+id/eventListTxt"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_marginLeft="20dp"
+            android:layout_height="match_parent"
             android:layout_marginTop="6dp"
+            android:layout_weight="2"
+            android:paddingLeft="15dp"
 
             android:text="Events List"
             android:textColor="#101010"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:visibility="visible" />
 
         <SearchView
             android:id="@+id/search_bar_icon_event"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
-        <SearchView
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:visibility="visible" />
+
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:searchIcon="@drawable/ic_favorite"
-            android:layout_weight="1"/>
+            android:layout_height="match_parent"
+            android:id="@+id/filtereventslist"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/filterlisticon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_baseline_filter_alt_24"
+                />
+
+
+            <RelativeLayout
+                android:id="@+id/autotextcontnr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/filterautotextlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:visibility="visible"
+                    app:endIconMode="clear_text"
+                    app:hintEnabled="false"
+                    app:startIconDrawable="@drawable/ic_baseline_filter_alt_24">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/filterlistautotext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="hint" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageButton
+                    android:id="@+id/crossbuttonforautotext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:backgroundTint="#D5D5d5"
+                    android:minWidth="48dp"
+                    android:minHeight="48dp"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/ic_baseline_clear_24" />
+
+            </RelativeLayout>
+
+            <!--            <AutoCompleteTextView-->
+<!--                android:visibility="gone"-->
+<!--                android:drawableLeft="@drawable/ic_baseline_filter_alt_24"-->
+<!--                android:drawableRight="@drawable/ic_baseline_clear_24"-->
+<!--                android:id="@+id/filterlistautotext"-->
+<!--                android:layout_margin="20dp"-->
+<!--                android:padding="10dp"-->
+<!--                android:drawablePadding="5dp"-->
+
+<!--                android:backgroundTint="@color/purple_700"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"/>-->
+
+        </LinearLayout>
+
+<!--        <SearchView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/filtereventslist"-->
+<!--            android:searchIcon="@drawable/ic_baseline_filter_alt_24"-->
+<!--            android:layout_weight="1">-->
+<!--            -->
+<!--        </SearchView>-->
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addEventsbtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
+            android:layout_weight="2"
             android:backgroundTint="@color/button"
             android:text="Add Event"
             android:textColor="@color/black"
+            android:visibility="visible"
             app:cornerRadius="10dp" />
 
     </LinearLayout>

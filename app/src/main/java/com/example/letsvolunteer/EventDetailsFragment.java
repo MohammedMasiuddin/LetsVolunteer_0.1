@@ -87,6 +87,12 @@ public class EventDetailsFragment extends Fragment {
                 TextView descContent = view.findViewById(R.id.descContent);
                 descContent.setText(event.getEventDescription());
 
+                TextView dateTXt = view.findViewById(R.id.dateTxt);
+                dateTXt.setText(event.getEventDate());
+
+                TextView locationAddress = view.findViewById(R.id.locationAddress);
+                locationAddress.setText(event.getLocationAddress());
+
                 recyclerView.setAdapter(imageListsAdapter);
                 TextView textView = view.findViewById(R.id.textView3);
                 textView.setText("Images: "+ event.getImageUrlLists().size());
