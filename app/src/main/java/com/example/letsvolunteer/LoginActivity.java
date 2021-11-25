@@ -1,6 +1,7 @@
 package com.example.letsvolunteer;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -40,7 +41,11 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -221,10 +226,28 @@ public class LoginActivity extends AppCompatActivity {
                             pd.dismiss();
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-//                            startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            DocumentReference documentReference = db.collection("Volunteer").document(user.getUid());
+                            documentReference.addSnapshotListener(LoginActivity.this, new EventListener<DocumentSnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable DocumentSnapshot documentSnapshot,
+                                                    @Nullable FirebaseFirestoreException error) {
+                                    if (error != null) {
+                                        Log.d(TAG, "onEvent: Something went wrong");
+                                    }
 
-                            finish();
+                                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                        finish();
+                                    }
+                                    else {
+                                        Toast.makeText(getApplicationContext(), "Organizer account exists", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+//                            startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+//                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//
+//                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             pd.dismiss();

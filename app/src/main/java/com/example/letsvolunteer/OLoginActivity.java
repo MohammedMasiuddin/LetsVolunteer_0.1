@@ -1,6 +1,7 @@
 package com.example.letsvolunteer;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -33,15 +35,22 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class OLoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 100;
+    private static final String TAG = "TAG";
     EditText emailEt, passwordEt;
     Button loginBtn;
     TextView notHaveAccountTv, recoverPassTv;
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     ProgressDialog pd;
     private GoogleSignInClient mGoogleSignInClient;
@@ -189,8 +198,27 @@ public class OLoginActivity extends AppCompatActivity {
                             pd.dismiss();
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(OLoginActivity.this, MainActivity.class));
-                            finish();
+                            DocumentReference documentReference = db.collection("Organizers").document(user.getUid());
+                            documentReference.addSnapshotListener(OLoginActivity.this, new EventListener<DocumentSnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable DocumentSnapshot documentSnapshot,
+                                                    @Nullable FirebaseFirestoreException error) {
+                                    if (error != null) {
+                                        Log.d(TAG, "onEvent: Something went wrong");
+                                    }
+
+                                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                                        startActivity(new Intent(OLoginActivity.this, MainActivity.class));
+                                        finish();
+                                    }
+                                    else {
+                                        Toast.makeText(getApplicationContext(), "Volunteer account exists", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
+                      //      startActivity(new Intent(OLoginActivity.this, MainActivity.class));
+                        //    finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             pd.dismiss();

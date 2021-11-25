@@ -1,6 +1,7 @@
 package com.example.letsvolunteer;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -18,6 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setTitle("Profile");
 
         firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -51,8 +59,25 @@ public class MainActivity extends AppCompatActivity {
                         // code block
                         return true;
                     case R.id.page_5:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
-                                new vAccountInfoFragment()).commit();
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                        DocumentReference documentReference = db.collection("Volunteer").document(user.getUid());
+                        documentReference.addSnapshotListener(MainActivity.this, new EventListener<DocumentSnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable DocumentSnapshot documentSnapshot,
+                                                @Nullable FirebaseFirestoreException error) {
+
+                                if (documentSnapshot != null && documentSnapshot.exists()) {
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
+                                            new vAccountInfoFragment()).commit();
+                                }
+                                else {
+                                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
+                                            new oAccountInfoFragment()).commit();
+                                }
+                            }
+                        });
+                   //     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
+                            //    new vAccountInfoFragment()).commit();
                         // code block
                         return true;
 
