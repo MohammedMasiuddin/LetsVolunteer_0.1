@@ -6,8 +6,8 @@
         android:id="@+id/page_6"
         android:enabled="true"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_favorite"
-        android:title="Favourites"/>
+        android:icon="@drawable/ic_baseline_notifications_24"
+        android:title="Notification"/>
 
     <item android:id="@+id/action_logout"
         android:title="Logout"/>

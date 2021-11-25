@@ -351,7 +351,6 @@ public class BlankFragment extends Fragment {
                     }
                 }
 
-
                 eventname.setError("");
                 return ;
             }
@@ -391,7 +390,8 @@ public class BlankFragment extends Fragment {
                             .create().show();
                     return;
                 }
-                if (eventname.getError() != "" && eventname.isDirty() || !eventname.isDirty() ){
+                if (eventname.getError() != "" && eventname.isDirty() || textEventName.getText().toString().length() <3  ){
+                    Log.d(TAG, "onClick: "+ ( eventname.isDirty() ));
                     new AlertDialog.Builder(getContext()).setTitle("Alert")
                             .setMessage("Enter the valid Event name ")
                             .setCancelable(true)
@@ -399,8 +399,8 @@ public class BlankFragment extends Fragment {
                     return;
                 }
 
-                if (eventdescription.getError() != ""
-                        && eventdescription.isDirty() || !eventdescription.isDirty()){
+                if ((eventdescription.getError() != ""
+                        && eventdescription.isDirty() )|| textEventDescription.getText().toString().length() <3){
                     new AlertDialog.Builder(getContext()).setTitle("Alert")
                             .setMessage("Enter the valid Event description ")
                             .setCancelable(true)
@@ -415,21 +415,21 @@ public class BlankFragment extends Fragment {
                             .create().show();
                     return;
                 }
-                if (eventphonenumber.getError() != "" && eventphonenumber.isDirty() || !eventphonenumber.isDirty()){
+                if (eventphonenumber.getError() != "" && eventphonenumber.isDirty() || textEventphone.getText().toString().length() <10){
                     new AlertDialog.Builder(getContext()).setTitle("Alert")
                             .setMessage("please select the valid phone number ")
                             .setCancelable(true)
                             .create().show();
                     return;
                 }
-                if (eventemail.isDirty() && eventemail.getError() != "" || !eventemail.isDirty() ){
+                if ((eventemail.isDirty() && eventemail.getError() != "" )|| textemail.getText().toString().length() <5 ){
                     new AlertDialog.Builder(getContext()).setTitle("Alert")
                             .setMessage("please select the valid email ")
                             .setCancelable(true)
                             .create().show();
                     return;
                 }
-                if (selectCatorgyinterst.isDirty() && selectCatorgyinterst.getText().toString().length() < 3 || !selectCatorgyinterst.isDirty()){
+                if ( selectCatorgyinterst.isDirty() && selectCatorgyinterst.getText().toString().length() < 3  ){
                     new AlertDialog.Builder(getContext()).setTitle("Alert")
                             .setMessage("please select the catergory of event ")
                             .setCancelable(true)

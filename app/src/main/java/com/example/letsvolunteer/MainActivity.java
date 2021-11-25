@@ -51,12 +51,18 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
                         actionBar.setTitle("Events");
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
                                 new EventListFragment()).commit();
-                        // code block
                         return true;
+
+                    case R.id.page_4:
+                        actionBar.setTitle("Favourites");
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
+                                new FavouritesPageFragment()).commit();
+                        return true;
+
                     case R.id.page_5:
+                        actionBar.setTitle("User Account");
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
                                 new vAccountInfoFragment()).commit();
-                        // code block
                         return true;
 
                     default:
@@ -69,9 +75,9 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
             }
         });
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
-                new BlankFragment()).commit();
-//        bottomNavigation.setSelectedItemId(R.id.page_2);
+//        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
+//                new BlankFragment()).commit();
+        bottomNavigation.setSelectedItemId(R.id.page_2);
 
 
     }

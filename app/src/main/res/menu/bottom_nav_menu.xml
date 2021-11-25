@@ -18,11 +18,13 @@
         android:enabled="true"
         android:icon="@drawable/ic_baseline_location_on_24"
         android:title="@string/maps"/>
+
     <item
         android:id="@+id/page_4"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_notifications_24"
-        android:title="@string/notification"/>
+        android:icon="@drawable/ic_favorite"
+        android:title="favourites"/>
+
     <item
         android:id="@+id/page_5"
         android:enabled="true"
