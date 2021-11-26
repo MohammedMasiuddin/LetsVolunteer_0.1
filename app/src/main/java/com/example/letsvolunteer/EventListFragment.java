@@ -23,6 +23,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -63,7 +64,6 @@ public class EventListFragment extends Fragment {
     ArrayList<String> categoriesinterest  = new ArrayList<String>();
 
     SearchView searchView;
-    SearchView filterView;
     boolean tempflagfliterevents;
     DocumentSnapshot lastDocument;
     EventListsAdapter tempEventListsAdapter;
@@ -113,6 +113,9 @@ public class EventListFragment extends Fragment {
         searchView = view.findViewById(R.id.search_bar_icon_event);
         TextInputLayout filterautotextlayout = view.findViewById(R.id.filterautotextlayout);
         RelativeLayout autotextcontnr = view.findViewById(R.id.autotextcontnr);
+
+        LinearLayout filtereventslist = view.findViewById(R.id.filtereventslist);
+
 //        filterView = view.findViewById(R.id.filtereventslist);
         ImageButton filtericon = view.findViewById(R.id.filterlisticon);
         AutoCompleteTextView filterAutoText = view.findViewById(R.id.filterlistautotext);
@@ -183,7 +186,7 @@ public class EventListFragment extends Fragment {
             Log.d(TAG, "onCreateView: in search icon clicked");
             eventListTxt.setVisibility(View.GONE);
             btn.setVisibility(View.GONE);
-            filterView.setVisibility(View.GONE);
+            filtereventslist.setVisibility(View.GONE);
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -222,7 +225,7 @@ public class EventListFragment extends Fragment {
                 Log.d(TAG, "onClose: ");
                 btn.setVisibility(View.VISIBLE);
                 eventListTxt.setVisibility(View.VISIBLE);
-                filterView.setVisibility(View.VISIBLE);
+                filtereventslist.setVisibility(View.VISIBLE);
                 ((EventListsAdapter) recyclerView.getAdapter()).lastElement = tempflagfliterevents;
                 Log.d(TAG, "onClose: "+ eventsResults.size());
                 ((EventListsAdapter) recyclerView.getAdapter()).setEvents(eventsResults);

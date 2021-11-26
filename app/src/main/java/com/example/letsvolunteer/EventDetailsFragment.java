@@ -97,6 +97,8 @@ public class EventDetailsFragment extends Fragment {
                 TextView locationAddress = view.findViewById(R.id.locationAddress);
                 locationAddress.setText(event.getLocationAddress());
 
+
+
                 getParentFragmentManager().beginTransaction().replace(R.id.showmapfragment,new MapShowLocationFragment(event.getLocation())).commit();
 
 
