@@ -60,6 +60,7 @@
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
+                    android:visibility="gone"
                     android:background="@drawable/facebookicon"
                     app:layout_constraintBottom_toTopOf="@+id/loginwith"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -247,9 +247,10 @@ public class vAccountInfoFragment extends Fragment {
         });
 
         changeProfile.setOnClickListener(v -> {
-            Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-            galleryIntent.setType("image/*");
-            startActivityForResult(galleryIntent, GALLERY_CODE);
+//            Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+//            galleryIntent.setType("image/*");
+//            startActivityForResult(galleryIntent, GALLERY_CODE);
+            showImagePicDialog();
         });
 
 
@@ -456,7 +457,7 @@ public class vAccountInfoFragment extends Fragment {
             break;
             case STORAGE_REQUEST_CODE:{
                 if (grantResults.length > 0) {
-                    boolean writeStorageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean writeStorageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     if (writeStorageAccepted) {
                         //permission enabled
                         pickFromGallery();
