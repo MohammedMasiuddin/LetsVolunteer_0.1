@@ -48,6 +48,8 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link oAccountInfoFragment#newInstance} factory method to
@@ -84,7 +86,7 @@ public class oAccountInfoFragment extends Fragment {
     DocumentReference documentReference = db.collection("Organizers").document(user.getUid());
     StorageReference storageReference;
 
-    ImageView imageView;
+    CircleImageView imageView;
     LinearLayout linearLayout;
     FloatingActionButton fab;
 

@@ -21,13 +21,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/profileIv"
                     android:layout_width="180dp"
                     android:layout_height="150dp"
-                    android:layout_marginTop="20dp"
                     android:layout_centerHorizontal="true"
-                    tools:src="@tools:sample/backgrounds/scenic" />
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/ic_launcher_background"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2dp" />
+
+
 
                 <ImageView
                     android:id="@+id/changeProfileIv"
@@ -97,7 +101,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ageEt"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="number"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
