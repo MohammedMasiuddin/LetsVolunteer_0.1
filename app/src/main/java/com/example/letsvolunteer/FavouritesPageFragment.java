@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -42,6 +43,8 @@ public class FavouritesPageFragment extends Fragment {
     private String TAG = "FavouritesPageFragment";
     boolean loading = true;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
+    ArrayList arrayList = new ArrayList();
+
 
     public FavouritesPageFragment() {
         // Required empty public constructor
@@ -144,6 +147,47 @@ public class FavouritesPageFragment extends Fragment {
                     }
                 });
 
+        db.collection("Volunteer").document(user.getUid()).get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.getData() != null) {
+                if (documentSnapshot.getData().get("MyEventsignup") != null){
+                    arrayList = (ArrayList) documentSnapshot.getData().get("MyEventsignup");
+                    Query dbrefvol = db.collection("Events").whereIn(FieldPath.documentId(),arrayList);
+                    dbrefvol.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            queryDocumentSnapshots.getDocuments().forEach(
+                                    e -> {
+                                        eventsResults.add(new EventsPost((HashMap<String, Object>) e.getData(),e.getId()));
+                                    }
+                            );
+
+                            EventListsAdapter eventListsAdapter = new EventListsAdapter(eventsResults) {
+                                @Override
+                                public void navigatetodetails(EventsPost eventsPost) {
+                                    getActivity().getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.fragment_container_view_tag, EventDetailsFragment.newInstance(eventsPost.eventid))
+                                            .addToBackStack(null)
+                                            .commit();
+                                }
+
+                                @Override
+                                public void loadNewEventsfnc() {
+
+                                }
+
+                            };
+                            recyclerView.setAdapter(eventListsAdapter);
+                            progressDialog.dismiss();
+                            Log.d(TAG, "onSuccess: "+ eventsResults);
+
+                        }
+                    });
+
+                }
+
+
+            }
+        });
 
 //        dbref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 //            @Override
