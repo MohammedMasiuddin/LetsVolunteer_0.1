@@ -212,6 +212,7 @@
                 android:layout_marginTop="3dp">
 
                 <TextView
+                    android:id="@+id/organisername"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Organizer Name"

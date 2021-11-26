@@ -97,6 +97,13 @@ public class EventDetailsFragment extends Fragment {
                 TextView locationAddress = view.findViewById(R.id.locationAddress);
                 locationAddress.setText(event.getLocationAddress());
 
+                TextView organisername = view.findViewById(R.id.organisername);
+                db.collection("Organizers").document(event.getOrganiserid()).get()
+                        .addOnSuccessListener(documentSnapshot1 -> {
+                    if (documentSnapshot1.getData().get("organizationName") != null ){
+                        organisername.setText(documentSnapshot1.getData().get("organizationName").toString());
+                    }
+                });
 
 
                 getParentFragmentManager().beginTransaction().replace(R.id.showmapfragment,new MapShowLocationFragment(event.getLocation())).commit();
