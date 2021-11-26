@@ -4,8 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ORegisterationActivity"
-    android:background="@drawable/background"
+    android:background="@drawable/welcomepage"
     >
     <LinearLayout
         android:orientation="vertical"
@@ -45,6 +44,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Email"
+                            android:fontFamily="@font/aclonica"
                             android:drawableEnd="@drawable/ic_baseline_email_24"
                             android:inputType="textEmailAddress" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -64,6 +64,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Organization Name"
+                            android:fontFamily="@font/aclonica"
                             android:inputType="textPersonName" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,7 +82,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Address"
-
+                            android:fontFamily="@font/aclonica"
                             android:inputType="textPersonName" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,6 +100,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Phone Number"
+                            android:fontFamily="@font/aclonica"
                             android:drawableEnd="@drawable/ic_baseline_local_phone_24"
                             android:inputType="number" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -119,6 +121,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Password"
+                            android:fontFamily="@font/aclonica"
                             android:inputType="textPassword" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -137,6 +140,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Confirm Password"
+                            android:fontFamily="@font/aclonica"
                             android:inputType="textPassword" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -161,7 +165,8 @@
                 android:layout_alignParentBottom="true"
                 android:text="Already have an account? Login"
                 android:textAlignment="center"
-                android:textColor="#000"
+                android:textColor="@color/purple_700"
+                android:fontFamily="@font/aclonica"
                 app:layout_constraintTop_toBottomOf="@+id/cardView3"
                 android:layout_marginTop="2dp"/>
 
