@@ -6,6 +6,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -171,7 +172,7 @@ public class vAccountInfoFragment extends Fragment {
         imageView = view.findViewById(R.id.profileIv);
         changeProfile = view.findViewById(R.id.changeProfileIv);
         fab = view.findViewById(R.id.fab);
-
+        Context context = getContext();
         //init progress dialog
         pd = new ProgressDialog(getActivity());
 
@@ -231,7 +232,7 @@ public class vAccountInfoFragment extends Fragment {
                 @Override
                 public void onSuccess(Void unused) {
                     Log.d(TAG, "onSuccess SAVE: updated");
-                    Toast.makeText(getContext(), "Updated!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Updated!", Toast.LENGTH_SHORT).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
