@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".Activity.SettingActivity">
+
+    <ImageView
+        android:id="@+id/saveBtn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_baseline_check_circle_24"
+        android:padding="5dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="right"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+
+        android:id="@+id/setting_img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:padding="5dp"
+        android:src="@drawable/ic_baseline_person_24"
+        android:layout_gravity="center"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="2dp" />
+
+    <EditText
+        android:id="@+id/name_set"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:text="Masi"
+        android:gravity="center"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/status_set"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:text="Hey There!!"
+        android:gravity="center"
+        android:textSize="15dp"/>
+
+
+</LinearLayout>
