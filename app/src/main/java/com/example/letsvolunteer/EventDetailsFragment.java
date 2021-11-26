@@ -1,9 +1,11 @@
 package com.example.letsvolunteer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,8 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -40,6 +47,9 @@ public class EventDetailsFragment extends Fragment {
     private String mParam1;
     EventsPost event;
     private String mParam2;
+    int likecounter = 0;
+    ArrayList arrayList = new ArrayList();
+
 
     public EventDetailsFragment() {
         // Required empty public constructor
@@ -73,6 +83,94 @@ public class EventDetailsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference dbref = db.collection("Events").document(mParam1);
+        MaterialButton eventsigninBtn = view.findViewById(R.id.eventsigninBtn);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Context context = getContext();
+
+        eventsigninBtn.setOnClickListener(v -> {
+            db.collection("Volunteer").document(user.getUid())
+                    .update("MyEventsignup",
+                    FieldValue.arrayUnion(mParam1)).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "onFailure: "+ " event is not there");
+                    Toast.makeText(getContext(),
+                            "You are not allowed to sign an event create a voluteer account",
+                            Toast.LENGTH_LONG).show();
+                    eventsigninBtn.setEnabled(false);
+                }
+            });
+        });
+
+        ImageView likebtn = view.findViewById(R.id.favouriteBtn);
+        TextView likescount = view.findViewById(R.id.likescount);
+        likescount.setText("Likes :"+ likecounter);
+
+
+//
+//        // code to check wheather he is volunteer
+//        db.collection("Volunteer").document(user.getUid()).get().addOnSuccessListener(documentSnapshot1 -> {
+//
+//            Log.d(TAG, "onClick: "+ documentSnapshot1.getData() );
+//            arrayList = (ArrayList) documentSnapshot1.getData().get("likeEvents");
+//
+//            if (! arrayList.contains(mParam1)){
+//                db.collection("Events").document(mParam1)
+//                        .update("likes", FieldValue.increment(1))
+//                        .addOnCompleteListener(command -> {
+//                            likescount.setText("Likes :" + (event.getLikes() + 1 ));
+//                        });
+//                db.collection("Volunteer").document(user.getUid())
+//                        .update("LikeEvents",
+//                                FieldValue.arrayUnion(mParam1));
+//            }
+//
+//
+//        });
+//
+
+        likebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: ");
+                db.collection("Volunteer").document(user.getUid()).get().addOnSuccessListener(documentSnapshot1 -> {
+                    arrayList = new ArrayList();
+
+                    Log.d(TAG, "onClick: "+ documentSnapshot1.getData() );
+                    if ( documentSnapshot1.getData().get("LikeEvents") != null){
+                        arrayList = (ArrayList) documentSnapshot1.getData().get("LikeEvents");
+                        Log.d(TAG, "onClick: " + arrayList);
+                    }
+
+
+                    if (! arrayList.contains(mParam1)){
+                        Log.d(TAG, "Add like to events: ");
+                        db.collection("Events").document(mParam1)
+                                .update("likes", FieldValue.increment(1))
+                                .addOnCompleteListener(command -> {
+                                    likecounter++;
+                                    likescount.setText("Likes :" + likecounter);
+                                });
+                        db.collection("Volunteer").document(user.getUid())
+                                .update("LikeEvents",
+                                        FieldValue.arrayUnion(mParam1));
+                    }
+                    else {
+                        Log.d(TAG, "Already liked ");
+                        Toast.makeText(context, " Already Liked ", Toast.LENGTH_LONG).show();
+                        likebtn.setEnabled(false);
+                    }
+
+
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(context, " You are not allowed to sign an event create a voluteer account ", Toast.LENGTH_LONG).show();
+                    likebtn.setEnabled(false);
+                });
+
+
+            }
+        });
+
 
         dbref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -97,6 +195,8 @@ public class EventDetailsFragment extends Fragment {
                 TextView locationAddress = view.findViewById(R.id.locationAddress);
                 locationAddress.setText(event.getLocationAddress());
 
+                likecounter = (int) event.getLikes();
+
                 TextView organisername = view.findViewById(R.id.organisername);
                 db.collection("Organizers").document(event.getOrganiserid()).get()
                         .addOnSuccessListener(documentSnapshot1 -> {
@@ -114,19 +214,7 @@ public class EventDetailsFragment extends Fragment {
                 TextView textView = view.findViewById(R.id.textView3);
                 textView.setText("Images: "+ event.getImageUrlLists().size());
 
-                ImageView likebtn = view.findViewById(R.id.favouriteBtn);
 
-                likebtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d(TAG, "onClick: ");
-                        db.collection("Events").document(mParam1)
-                                .update("likes", FieldValue.increment(1))
-                                .addOnCompleteListener(command -> {
-                                    likescount.setText("Likes :" + (event.getLikes() + 1 ));
-                                });
-                    }
-                });
 
                 emailicon.setOnClickListener(new View.OnClickListener() {
                     @Override

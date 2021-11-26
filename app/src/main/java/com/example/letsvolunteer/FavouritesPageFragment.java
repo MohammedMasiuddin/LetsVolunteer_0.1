@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -92,41 +94,88 @@ public class FavouritesPageFragment extends Fragment {
         Query dbref = db.collection("Events").limit(10);
 
         TextView myEventsTxt = view.findViewById(R.id.myEventsTxt);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        db.collection("Organizers").document(user.getUid()).get()
+                .addOnSuccessListener(documentSnapshot1 -> {
+                    if (documentSnapshot1.getData() != null ){
+                        myEventsTxt.setText("My Events Posted");
+                        Query dbreforg = db.collection("Events")
+                                .whereEqualTo("organiserid",user.getUid());
+
+                        dbreforg.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                queryDocumentSnapshots.getDocuments().forEach(
+                                        e -> {
+                                            eventsResults.add(new EventsPost((HashMap<String, Object>) e.getData(),e.getId()));
+                                        }
+                                );
+
+                                EventListsAdapter eventListsAdapter = new EventListsAdapter(eventsResults) {
+                                    @Override
+                                    public void navigatetodetails(EventsPost eventsPost) {
+                                        getActivity().getSupportFragmentManager().beginTransaction()
+                                                .replace(R.id.fragment_container_view_tag, EventDetailsFragment.newInstance(eventsPost.eventid))
+                                                .addToBackStack(null)
+                                                .commit();
+                                    }
+
+                                    @Override
+                                    public void loadNewEventsfnc() {
+
+                                    }
+
+                                };
+                                recyclerView.setAdapter(eventListsAdapter);
+                                progressDialog.dismiss();
+                                Log.d(TAG, "onSuccess: "+ eventsResults);
 
 
+                            }
+                        }).addOnFailureListener(e -> {
+                            progressDialog.dismiss();
+                        });
 
-
-        dbref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                queryDocumentSnapshots.getDocuments().forEach(
-                        e -> {
-                            eventsResults.add(new EventsPost((HashMap<String, Object>) e.getData(),e.getId()));
-                        }
-                );
-
-                EventListsAdapter eventListsAdapter = new EventListsAdapter(eventsResults) {
-                    @Override
-                    public void navigatetodetails(EventsPost eventsPost) {
-                        getActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container_view_tag, EventDetailsFragment.newInstance(eventsPost.eventid))
-                                .addToBackStack(null)
-                                .commit();
                     }
-
-                    @Override
-                    public void loadNewEventsfnc() {
-
+                    else{
+                        myEventsTxt.setText("My Interested Events");
+                        progressDialog.dismiss();
                     }
-
-                };
-                recyclerView.setAdapter(eventListsAdapter);
-                progressDialog.dismiss();
-                Log.d(TAG, "onSuccess: "+ eventsResults);
+                });
 
 
-            }
-        });
+//        dbref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//            @Override
+//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                queryDocumentSnapshots.getDocuments().forEach(
+//                        e -> {
+//                            eventsResults.add(new EventsPost((HashMap<String, Object>) e.getData(),e.getId()));
+//                        }
+//                );
+//
+//                EventListsAdapter eventListsAdapter = new EventListsAdapter(eventsResults) {
+//                    @Override
+//                    public void navigatetodetails(EventsPost eventsPost) {
+//                        getActivity().getSupportFragmentManager().beginTransaction()
+//                                .replace(R.id.fragment_container_view_tag, EventDetailsFragment.newInstance(eventsPost.eventid))
+//                                .addToBackStack(null)
+//                                .commit();
+//                    }
+//
+//                    @Override
+//                    public void loadNewEventsfnc() {
+//
+//                    }
+//
+//                };
+//                recyclerView.setAdapter(eventListsAdapter);
+//                progressDialog.dismiss();
+//                Log.d(TAG, "onSuccess: "+ eventsResults);
+//
+//
+//            }
+//        });
 
         return view;
     }
