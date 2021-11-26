@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/welcomepage">
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,7 +17,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
         android:orientation="vertical">
 
 
@@ -66,7 +71,7 @@
                 android:layout_height="wrap_content"
                 app:cornerRadius="10dp"
                 android:text="Blood Donation"
-                android:backgroundTint="@color/button"
+                android:backgroundTint="@color/white"
                 android:textColor="@color/black"
                 android:textAllCaps="false"/>
             <com.google.android.material.button.MaterialButton
@@ -75,7 +80,7 @@
                 app:cornerRadius="10dp"
                 android:text="Food Distribution"
                 android:layout_marginLeft="35dp"
-                android:backgroundTint="@color/button"
+                android:backgroundTint="@color/white"
                 android:textColor="@color/black"
                 android:textAllCaps="false"/>
 
@@ -116,7 +121,7 @@
                 android:layout_height="wrap_content"
                 app:cornerRadius="10dp"
                 android:text="North York"
-                android:backgroundTint="@color/button"
+                android:backgroundTint="@color/white"
                 android:textColor="@color/black"
                 android:textAllCaps="false"/>
             <com.google.android.material.button.MaterialButton
@@ -125,7 +130,7 @@
                 app:cornerRadius="10dp"
                 android:text="Markham"
                 android:layout_marginLeft="35dp"
-                android:backgroundTint="@color/button"
+                android:backgroundTint="@color/white"
                 android:textColor="@color/black"
                 android:textAllCaps="false"/>
             <com.google.android.material.button.MaterialButton
@@ -134,7 +139,7 @@
                 app:cornerRadius="10dp"
                 android:text="Steels"
                 android:layout_marginLeft="35dp"
-                android:backgroundTint="@color/button"
+                android:backgroundTint="@color/white"
                 android:textColor="@color/black"
                 android:textAllCaps="false"/>
 
@@ -143,3 +148,4 @@
     </LinearLayout>
 
 </FrameLayout>
+</androidx.core.widget.NestedScrollView>
