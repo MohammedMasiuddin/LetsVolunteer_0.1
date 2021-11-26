@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/welcomepage">
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:id="@+id/letsvolunteer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lets Volunteer"
+            android:textColor="@color/purple_700"
+            android:textSize="30sp"
+            android:fontFamily="@font/aclonica"
+            android:layout_marginTop="100dp"
+            android:layout_marginLeft="20dp"/>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/logo_cv"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="250dp"
+            android:layout_below="@+id/letsvolunteer"
+            android:layout_marginLeft="80dp">
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="250dp">
+
+                <ImageView
+                    android:layout_width="164dp"
+                    android:layout_height="146dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/vol" />
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="400dp"
+            android:layout_height="385dp"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="#CCFFFFFF"
+            app:cardCornerRadius="80dp"
+            android:layout_alignParentRight="true">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/loginwith"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Organisation login"
+                    android:textColor="@color/purple_700"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/aclonica"
+                    android:layout_marginTop="80dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/oEmailTIL2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/loginwith"
+                    android:layout_centerHorizontal="true">
+
+                    <EditText
+                        android:id="@+id/oEmailEditText2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Email"
+                        android:fontFamily="@font/aclonica"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/background"
+                        android:textColorHint="@color/background"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/oPasswordTIL2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/oEmailTIL2"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    app:passwordToggleEnabled="true">
+
+                    <EditText
+                        android:id="@+id/oPasswordEditText2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Password"
+                        android:fontFamily="@font/aclonica"
+                        android:inputType="textPassword"
+                        android:textColor="@color/background"
+                        android:textColorHint="@color/background" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                <Button
+                    android:id="@+id/oLogin_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Login"
+                    android:textSize="18dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/aclonica"
+                    android:textColor="@color/purple_700"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/oPasswordTIL2" />
+                <TextView
+                    android:id="@+id/oRecoverPassTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Forgot password"
+                    android:textColor="@color/purple_700"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/aclonica"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/oLogin_button"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/nothave_accountTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo_cv"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="41dp"
+            android:fontFamily="@font/aclonica"
+            android:text="Don’t have an account. Sign up"
+            android:textColor="@color/purple_700"
+            android:textSize="14dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>
