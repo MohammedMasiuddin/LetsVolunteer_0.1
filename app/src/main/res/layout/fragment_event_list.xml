@@ -122,7 +122,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             android:layout_weight="2"
-            android:backgroundTint="@color/button"
+            android:backgroundTint="@color/white"
             android:text="Add Event"
             android:textColor="@color/black"
             android:visibility="visible"
