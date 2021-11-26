@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#E4BDF2"
+    android:background="#A8BFB9C1"
     android:orientation="vertical">
 
 
@@ -37,7 +37,7 @@
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingRight="17dp"
+                    android:paddingRight="15dp"
                     android:text="TextView"
                     android:textAlignment="textEnd" />
 
@@ -75,20 +75,37 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="28dp">
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:id="@+id/favouriteBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_baseline_favorite_24" />
+
+
+                    <TextView
+                        android:id="@+id/likescount"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Likes: 0"
+                        />
+
+                </LinearLayout>
 
                 <ImageView
+                    android:layout_weight="1"
                     android:id="@+id/chatBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:src="@drawable/ic_baseline_chat_24" />
-
-                <ImageView
-                    android:id="@+id/favouriteBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_baseline_favorite_24" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/inBtn"
@@ -127,20 +144,32 @@
                 android:textSize="18sp" />
 
 
-            <com.google.android.material.button.MaterialButton
+            <TextView
                 android:id="@+id/location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
-                style="?attr/materialButtonOutlinedStyle"
-                android:padding="10dp"
-                app:strokeColor="#B235DE"
+                android:drawableEnd="@drawable/ic_baseline_location_on_24"
                 android:text="Location"
-                android:textAlignment="textStart"
-                app:icon="@drawable/ic_baseline_location_on_24"
-                app:iconGravity="end" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+<!--            <com.google.android.material.button.MaterialButton-->
+<!--                android:id="@+id/location"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="20dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_marginRight="20dp"-->
+<!--                style="?attr/materialButtonOutlinedStyle"-->
+<!--                android:padding="10dp"-->
+<!--                app:strokeColor="#B235DE"-->
+<!--                android:text="Location"-->
+<!--                android:textAlignment="textStart"-->
+<!--                app:icon="@drawable/ic_baseline_location_on_24"-->
+<!--                app:iconGravity="end" />-->
 
             <TextView
                 android:id="@+id/locationAddress"
@@ -151,6 +180,12 @@
                 android:layout_marginRight="20dp"
                 android:text="LocationAddress"
                 android:textSize="18dp" />
+
+            <FrameLayout
+                android:id="@+id/showmapfragment"
+                android:layout_width="match_parent"
+                android:layout_margin="20dp"
+                android:layout_height="300dp"/>
 
             <TextView
                 android:id="@+id/organizedBy"

@@ -19,6 +19,7 @@ public class EventsPost {
     public String categoryinterest;
     public GeoPoint location;
     public String locationAddress;
+    public int likes = 0;
 
     public String getCategoryinterest() {
         return categoryinterest;
@@ -39,6 +40,7 @@ public class EventsPost {
         this.eventid = eventid;
     }
 
+    // this is used while event is created
     public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId, String organiserid, String eventDate, String categoryinterest,GeoPoint geoPoint,String locationAddress) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
@@ -148,5 +150,13 @@ public class EventsPost {
 
     public void setLocationAddress(String locationAddress) {
         this.locationAddress = locationAddress;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 }

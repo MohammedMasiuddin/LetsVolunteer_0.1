@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -90,12 +91,33 @@ public class EventDetailsFragment extends Fragment {
                 TextView dateTXt = view.findViewById(R.id.dateTxt);
                 dateTXt.setText(event.getEventDate());
 
+                TextView likescount = view.findViewById(R.id.likescount);
+                likescount.setText("Likes :"+ event.getLikes());
+
                 TextView locationAddress = view.findViewById(R.id.locationAddress);
                 locationAddress.setText(event.getLocationAddress());
+
+                getParentFragmentManager().beginTransaction().replace(R.id.showmapfragment,new MapShowLocationFragment(event.getLocation())).commit();
+
+
 
                 recyclerView.setAdapter(imageListsAdapter);
                 TextView textView = view.findViewById(R.id.textView3);
                 textView.setText("Images: "+ event.getImageUrlLists().size());
+
+                ImageView likebtn = view.findViewById(R.id.favouriteBtn);
+
+                likebtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(TAG, "onClick: ");
+                        db.collection("Events").document(mParam1)
+                                .update("likes", FieldValue.increment(1))
+                                .addOnCompleteListener(command -> {
+                                    likescount.setText("Likes :" + (event.getLikes() + 1 ));
+                                });
+                    }
+                });
 
                 emailicon.setOnClickListener(new View.OnClickListener() {
                     @Override
