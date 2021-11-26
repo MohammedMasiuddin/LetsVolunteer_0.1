@@ -26,7 +26,9 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SetActionBarTitle {
+
+
 
     FirebaseAuth firebaseAuth;
 
@@ -54,10 +56,17 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.page_2:
+                        actionBar.setTitle("Events");
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
                                 new EventListFragment()).commit();
-                        // code block
                         return true;
+
+                    case R.id.page_4:
+                        actionBar.setTitle("Favourites");
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
+                                new FavouritesPageFragment()).commit();
+                        return true;
+
                     case R.id.page_5:
                         FirebaseUser user = firebaseAuth.getCurrentUser();
                         DocumentReference documentReference = db.collection("Volunteer").document(user.getUid());
@@ -91,12 +100,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
-                new EventListFragment()).commit();
 //        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
 //                new BlankFragment()).commit();
+        bottomNavigation.setSelectedItemId(R.id.page_2);
 
 
+    }
+
+    public void ChangeActionBarTitle(String title){
+        getSupportActionBar().setTitle(title);
     }
 
     private void checkUserStatus() {

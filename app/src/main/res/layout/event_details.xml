@@ -113,7 +113,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
-        android:id="@+id/eveTxt"
+        android:id="@+id/eveNameTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/imgEvent"
@@ -128,7 +128,7 @@
         android:id="@+id/dateTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/eveTxt"
+        android:layout_below="@id/eveNameTxt"
         android:layout_marginLeft="19dp"
         android:layout_marginTop="9dp"
         android:fontFamily="sans-serif-light"

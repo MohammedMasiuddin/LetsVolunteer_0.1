@@ -1,5 +1,7 @@
 package com.example.letsvolunteer;
 
+import com.google.firebase.firestore.GeoPoint;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,14 +15,42 @@ public class EventsPost {
     public List<String> imageUrlLists = new ArrayList<>();
     public String organiserid;
     public String eventDate;
+    public String eventid;
+    public String categoryinterest;
+    public GeoPoint location;
+    public String locationAddress;
+    public int likes = 0;
 
-    public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId, String organiserid, String eventDate) {
+    public String getCategoryinterest() {
+        return categoryinterest;
+    }
+
+    public void setCategoryinterest(String categoryinterest) {
+        this.categoryinterest = categoryinterest;
+    }
+
+    public String getEventid() {
+        return eventid;
+    }
+
+    public EventsPost() {
+    }
+
+    public void setEventid(String eventid) {
+        this.eventid = eventid;
+    }
+
+    // this is used while event is created
+    public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId, String organiserid, String eventDate, String categoryinterest,GeoPoint geoPoint,String locationAddress) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.phoneNumber = phoneNumber;
         this.emailId = emailId;
         this.organiserid = organiserid;
         this.eventDate = eventDate;
+        this.categoryinterest = categoryinterest;
+        this.location = geoPoint;
+        this.locationAddress = locationAddress;
     }
 
     public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId, List<String> imageUrlLists, String organiserid, String eventDate) {
@@ -31,9 +61,10 @@ public class EventsPost {
         this.imageUrlLists = imageUrlLists;
         this.organiserid = organiserid;
         this.eventDate = eventDate;
+
     }
 
-    public EventsPost(HashMap<String,Object> map){
+    public EventsPost(HashMap<String,Object> map, String eventid){
         this.eventName = (String) map.get("eventName");
         this.eventName = (String) map.get("eventName");
         this.eventDescription = (String) map.get("eventDescription");
@@ -42,6 +73,11 @@ public class EventsPost {
         this.imageUrlLists = (List<String>) map.get("imageUrlLists");
         this.organiserid = (String) map.get("organiserid");
         this.eventDate = (String) map.get("eventDate");
+        this.eventid = eventid;
+        this.categoryinterest = (String) map.get("categoryinterest");
+        this.location = (GeoPoint) map.get("location");
+        this.locationAddress = (String) map.get("locationAddress");
+
     }
 
     public String getEventDate() {
@@ -66,6 +102,14 @@ public class EventsPost {
 
     public void setEventDescription(String eventDescription) {
         this.eventDescription = eventDescription;
+    }
+
+    public GeoPoint getLocation() {
+        return location;
+    }
+
+    public void setLocation(GeoPoint location) {
+        this.location = location;
     }
 
     public String getPhoneNumber() {
@@ -98,5 +142,21 @@ public class EventsPost {
 
     public void setImageUrlLists(List<String> imageUrlLists) {
         this.imageUrlLists = imageUrlLists;
+    }
+
+    public String getLocationAddress() {
+        return locationAddress;
+    }
+
+    public void setLocationAddress(String locationAddress) {
+        this.locationAddress = locationAddress;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 }

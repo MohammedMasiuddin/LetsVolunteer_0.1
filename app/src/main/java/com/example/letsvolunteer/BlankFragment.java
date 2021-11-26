@@ -1,11 +1,14 @@
 package com.example.letsvolunteer;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -16,12 +19,17 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -29,8 +37,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -46,7 +57,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -59,7 +72,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.zip.Inflater;
 
 public class BlankFragment extends Fragment {
@@ -77,6 +92,7 @@ public class BlankFragment extends Fragment {
     Boolean isPermissionGrandted = true;
     String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
     String[] permissions1 = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+    String[] permissions2 = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     int Request_Code = 12345;
     ImageView imageView;
@@ -87,6 +103,15 @@ public class BlankFragment extends Fragment {
     String documentid;
     int PLACE_REQUEST = 1;
     TextView textViewLocation;
+    TextView textlocationAddress;
+    TextView showimagesuploaded;
+    String count = "image:  ";
+    ArrayList<String> categoriesinterest;
+    Boolean isvalid;
+    ImageView mapimageview;
+    String dateselect1 = "";
+    GeoPoint geoPoint;
+    String locationAddress;
 
     public static BlankFragment newInstance(String param1, String param2) {
         BlankFragment fragment = new BlankFragment();
@@ -120,26 +145,31 @@ public class BlankFragment extends Fragment {
 //        imageView = view.findViewById(R.id.uploadimageView);
         linearLayout = view.findViewById(R.id.uploadImagesContainer);
         TextView dateselected = view.findViewById(R.id.dateselected);
+
+        mapimageview = view.findViewById(R.id.mapimage);
         MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date")
+                .setCalendarConstraints(new CalendarConstraints.Builder().setValidator(DateValidatorPointForward.now()).build())
                 .build();
+        showimagesuploaded = view.findViewById(R.id.showimagesuploaded);
 
         Button datebtn = view.findViewById(R.id.containedButtonfordate);
         textViewLocation = view.findViewById(R.id.eventLocation);
+        textlocationAddress = view.findViewById(R.id.eventLocationAddress);
         Button locationaddbtn = view.findViewById(R.id.locationPicker);
+        showimagesuploaded.setText("image:  "+datalist.size());
+
         locationaddbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//
-//                    PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
-//                    try {
-//                        startActivityForResult(intentBuilder.build(getActivity()), PLACE_REQUEST);
-//                    } catch (GooglePlayServicesRepairableException e) {
-//                        e.printStackTrace();
-//                    } catch (GooglePlayServicesNotAvailableException e) {
-//                        e.printStackTrace();
-//                    }
-//
+                if (!(ContextCompat.checkSelfPermission(getContext(),Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)){
+                    ActivityCompat.requestPermissions( getActivity(),
+                            permissions2, 1
+                    );
+                    return;
+                }
+                mapimageview.setVisibility(View.VISIBLE);
+                startActivityForResult(new Intent(((MainActivity) getActivity()), PlaceMapsActivity.class),1014);
             }
         });
 
@@ -153,23 +183,15 @@ public class BlankFragment extends Fragment {
                     @Override
                     public void onPositiveButtonClick(Object selection) {
                         Log.d(TAG, "onPositiveButtonClick: "+ selection.toString());
-                        dateselected.setText("Event Date : "+ datePicker.getHeaderText());
+                        dateselected.setText("Date : "+ datePicker.getHeaderText());
+                        dateselect1 = datePicker.getHeaderText();
                         dateselected.setVisibility(View.VISIBLE);
                     }
                 });
             }
         });
 
-//        gridLayout = view.findViewById(R.id.uploadImagesContainer);
 
-
-//        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-//        DatabaseReference dbref = firebaseDatabase.getReference("Events");
-
-//        Map<String, Object> user = new HashMap<>();
-//        user.put("first", "Ada");
-//        user.put("last", "Lovelace");
-//        user.put("born", 1815);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,49 +208,270 @@ public class BlankFragment extends Fragment {
         TextInputEditText textEventphone = view.findViewById(R.id.PhonenumberEnter);
         TextInputEditText textemail = view.findViewById(R.id.emailgiven);
 
+        TextInputLayout eventname = view.findViewById(R.id.EventNameEnter);
+        TextInputLayout eventdescription = view.findViewById(R.id.textField);
+        TextInputLayout eventphonenumber = view.findViewById(R.id.OrganiserPhoneEnter);
+        TextInputLayout eventemail = view.findViewById(R.id.Enteremail);
 
+
+        AutoCompleteTextView selectCatorgyinterst = view.findViewById(R.id.selectCatorgyinterst);
+
+        // email validation
+        textemail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && ((EditText) v).getText().toString().length() <= 3 ){
+                    eventemail.setError("enter valid email");
+                }
+            }
+        });
+        textemail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!s.toString().matches("[a-zA-Z0-9!@#\\$%\\^\\&*\\)\\(+=._-]+@[a-zA-Z0-9]+\\.[a-zA-z0-9]+") ){
+                    eventemail.setError("Enter value is not email");
+                    return;
+                }
+                eventemail.setError(null);
+                return;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        // Phone number edit text validations
+        textEventphone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && ((EditText) v).getText().toString().length() < 10 ){
+                    eventphonenumber.setError(" enter valid phone number ");
+                }
+            }
+        });
+        textEventphone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() <= 10 || s.equals("") ){
+                    eventphonenumber.setError("phone number should be greater then 10 char");
+                    return;
+                }
+                if (!s.toString().matches("[0-9+]+") ){
+                    eventphonenumber.setError("phone number should be digits");
+                    return;
+                }
+
+
+                eventphonenumber.setError("");
+                return ;
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        // Event text description validation
+        textEventDescription.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && ((EditText) v).getText().toString().length() <= 3 ){
+                    eventdescription.setError("Description should be greater then 3 char");
+                }
+            }
+        });
+        textEventDescription.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() <= 3 || s.equals("") ){
+                    eventdescription.setError("Name should be greater then 3 char");
+                    return;
+                }
+
+                eventdescription.setError("");
+                return ;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        // Event Name validations
+        textEventName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && ((EditText) v).getText().toString().length() <= 3 ){
+                    eventname.setError("Name should be greater then 3 char");
+                }
+            }
+        });
+        textEventName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() <= 3 || s.equals("") ){
+                    eventname.setError("Name should be greater then 3 char");
+                    return;
+                }
+                if (!s.toString().matches("[a-zA-Z\\s0-9]+") ){
+                    eventname.setError("Name should be alphabatic");
+                    return;
+                }
+                int count3 = 0;
+                for (char temp : s.toString().toCharArray()) {
+
+                    if (temp == ' '  ){
+                        count3++;
+                    }
+                    else{
+                        count3 = 0;
+                    }
+
+                    if ( count3 > 1 ){
+                        eventname.setError("Name should not have more than one blank");
+                        return;
+                    }
+                }
+
+                eventname.setError("");
+                return ;
+            }
+        });
 
 
         Button upload = view.findViewById(R.id.uploadbutton);
 
 
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference mountainImagesRef = storageRef.child("Events/firstimagetesting111.jpg");
+//        StorageReference mountainImagesRef = storageRef.child("Events/firstimagetesting111.jpg");
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        // autotext completion fetch from firestore
+        db.collection("EventCatorgy").document("CategoriesDoc").get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        Log.d(TAG, "onCreateView: "+ task.getResult().getData().get("Categories").getClass());
+                        categoriesinterest = (ArrayList<String>) task.getResult().getData().get("Categories");
+                        ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(),R.layout.support_simple_spinner_dropdown_item,categoriesinterest);
+                        selectCatorgyinterst.setAdapter(arrayAdapter);
+                    }
+                });
+
+        // upload btn clicked
         upload.setOnClickListener(new View.OnClickListener() {
-
-
             @Override
             public void onClick(View view) {
 
 
-                if (datalist.size() == 0){
-                    Log.d(TAG, "onCreateView: "+ textEventName.getText().toString() );
-                    Log.d(TAG, "onCreateView: "+ textEventDescription.getText().toString() );
-                    Log.d(TAG, "onCreateView: "+ textEventphone.getText().toString() );
-                    Log.d(TAG, "onCreateView: "+ textemail.getText().toString() );
-                    Log.d(TAG, "onClick: "+ datePicker.getSelection());
-//                    Log.d(TAG, "onClick: "+ eventPost);
+                if(datalist.size() == 0) {
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("Event cannot be without image please upload images")
+                            .setCancelable(true)
+                            .create().show();
+                    return;
+                }
+                if (eventname.getError() != "" && eventname.isDirty() || textEventName.getText().toString().length() <3  ){
+                    Log.d(TAG, "onClick: "+ ( eventname.isDirty() ));
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("Enter the valid Event name ")
+                            .setCancelable(true)
+                            .create().show();
+                    return;
+                }
 
+                if ((eventdescription.getError() != ""
+                        && eventdescription.isDirty() )|| textEventDescription.getText().toString().length() <3){
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("Enter the valid Event description ")
+                            .setCancelable(true)
+                            .create().show();
+                    return;
+                }
+
+                if (dateselected.getText().toString().length() < 3 ){
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("please select the valid date ")
+                            .setCancelable(true)
+                            .create().show();
+                    return;
+                }
+                if (eventphonenumber.getError() != "" && eventphonenumber.isDirty() || textEventphone.getText().toString().length() <10){
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("please select the valid phone number ")
+                            .setCancelable(true)
+                            .create().show();
+                    return;
+                }
+                if ((eventemail.isDirty() && eventemail.getError() != "" )|| textemail.getText().toString().length() <5 ){
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("please select the valid email ")
+                            .setCancelable(true)
+                            .create().show();
+                    return;
+                }
+                if ( selectCatorgyinterst.isDirty() && selectCatorgyinterst.getText().toString().length() < 3  ){
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("please select the catergory of event ")
+                            .setCancelable(true)
+                            .create().show();
+                    return;
+                }
+                if ( textViewLocation.getText().toString().length() < 3 && geoPoint != null ){
+
+                    Log.d(TAG, "onClick: "+ eventdescription.isDirty());
+                    new AlertDialog.Builder(getContext()).setTitle("Alert")
+                            .setMessage("please select the location")
+                            .setCancelable(true)
+                            .create().show();
                     return;
                 }
 
 
+                // creating post object
                 EventsPost eventPost = new EventsPost(textEventName.getText().toString(),
                         textEventDescription.getText().toString(),
                         textEventphone.getText().toString()
-                        ,textemail.getText().toString(), user.getUid(),datePicker.getSelection().toString()
+                        ,textemail.getText().toString(),
+                        user.getUid(),
+                        dateselect1,
+                        selectCatorgyinterst.getText().toString(),
+                        geoPoint,
+                        locationAddress
                 );
 
-
+                // assign spinner
                 ProgressDialog progressDialog = new ProgressDialog(getContext());
                 progressDialog.show();
                 progressDialog.setContentView(R.layout.loadingspinner);
 //                progressDialog.getWindow().setBackgroundDrawable(R.color.transparent);
 
+                if(!categoriesinterest.contains(selectCatorgyinterst.getText().toString()) ){
+                    Log.d(TAG, "onClick:  treudskdjdfg nm;ldfm ");
+                    db.collection("EventCatorgy").document("CategoriesDoc")
+                            .update("Categories",
+                                    FieldValue.arrayUnion(selectCatorgyinterst.getText().toString()));
+                }
 
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
                 db.collection("Events")
                         .add(eventPost)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -237,7 +480,7 @@ public class BlankFragment extends Fragment {
                                documentid = documentReference.getId();
 
                                for (int i = 0 ; i < datalist.size(); i++){
-                                   StorageReference mountainImagesRef = storageRef.child("Events/firstimagetesting"+ i +".jpg");
+                                   StorageReference mountainImagesRef = storageRef.child("Events/" + UUID.randomUUID().toString() +".jpg");
                                    int finalI = i;
                                    mountainImagesRef.putBytes(datalist.get(i))
                                            .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -312,21 +555,39 @@ public class BlankFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//                super.onActivityResult(requestCode, resultCode, data);
 
-//        if (requestCode == PLACE_REQUEST){
-//            if (resultCode == RESULT_OK ){
-//                Place place = PlacePicker.getPlace(data,getContext());
-//                textViewLocation.setText("" +place.getLatLng().latitude + place.getLatLng().longitude);
-//            }
-//        }
+        if (requestCode == 1014 && resultCode == RESULT_OK){
+            Log.d(TAG, "onActivityResult: "+ data.getExtras());
+            if (data.getExtras().get("geocodes") != null){
+                textViewLocation.setText("Latitude :"+ ((LatLng) data.getExtras().get("geocodes")).latitude
+                        + "\n" + "Longitude : " + ((LatLng) data.getExtras().get("geocodes")).longitude );
+                textViewLocation.setVisibility(View.VISIBLE);
+                String path = (String) data.getExtras().get("mapimage");
+
+                Log.d(TAG, "onActivityResult: "+ (String) data.getExtras().get("mapimage"));
+                Log.d(TAG, "onActivityResult: "+ (String) data.getExtras().get("locationaddress"));
+
+                geoPoint = new GeoPoint(((LatLng) data.getExtras().get("geocodes")).latitude,
+                        ((LatLng) data.getExtras().get("geocodes")).longitude);
+
+                locationAddress =  (String) data.getExtras().get("locationaddress");
+                textlocationAddress.setText("Address : "+locationAddress);
+                textlocationAddress.setVisibility(View.VISIBLE);
+
+                Glide.with(getActivity())
+                        .load(path)
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE).into(mapimageview);
+
+                return;
+            }
+        }
 
         if (data != null && data.getData() != null && requestCode == Request_Code ){
             Uri filepath = data.getData();
             try {
                 InputStream inputStream = getActivity().getContentResolver().openInputStream(filepath);
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-
 
 
                 View view2 = getLayoutInflater().inflate(R.layout.imagesampletemplate,linearLayout,false);
@@ -339,8 +600,7 @@ public class BlankFragment extends Fragment {
                 byte[] data1 = stream.toByteArray();
 
                 datalist.add(data1);
-
-
+                showimagesuploaded.setText(count + datalist.size());
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
