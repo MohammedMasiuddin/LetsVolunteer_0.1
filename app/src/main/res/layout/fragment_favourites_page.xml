@@ -5,11 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/welcomepage">
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".FavouritesPageFragment">
 
 
@@ -32,7 +30,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/myfavouriterecView"
             android:layout_width="match_parent"
-            android:layout_height="170dp"
+            android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
@@ -64,25 +62,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-           >
+            android:visibility="gone">
 
             <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cornerRadius="10dp"
-                android:text="Blood Donation"
                 android:backgroundTint="@color/white"
+                android:text="Blood Donation"
+                android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textAllCaps="false"/>
+                android:visibility="gone"
+                app:cornerRadius="10dp" />
+
             <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cornerRadius="10dp"
-                android:text="Food Distribution"
                 android:layout_marginLeft="35dp"
                 android:backgroundTint="@color/white"
+                android:text="Food Distribution"
+                android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textAllCaps="false"/>
+                app:cornerRadius="10dp" />
 
         </LinearLayout>
 
@@ -114,34 +114,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-          >
+            android:visibility="gone">
 
             <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cornerRadius="10dp"
+                android:backgroundTint="@color/white"
                 android:text="North York"
-                android:backgroundTint="@color/white"
+                android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textAllCaps="false"/>
+                app:cornerRadius="10dp" />
+
             <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cornerRadius="10dp"
+                android:layout_marginLeft="35dp"
+                android:backgroundTint="@color/white"
                 android:text="Markham"
-                android:layout_marginLeft="35dp"
-                android:backgroundTint="@color/white"
+                android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textAllCaps="false"/>
+                app:cornerRadius="10dp" />
+
             <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cornerRadius="10dp"
-                android:text="Steels"
                 android:layout_marginLeft="35dp"
                 android:backgroundTint="@color/white"
+                android:text="Steels"
+                android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textAllCaps="false"/>
+                app:cornerRadius="10dp" />
 
         </LinearLayout>
 

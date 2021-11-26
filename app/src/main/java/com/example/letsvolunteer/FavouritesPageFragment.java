@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -89,6 +90,12 @@ public class FavouritesPageFragment extends Fragment {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         ArrayList<EventsPost> eventsResults = new ArrayList<EventsPost>();
         Query dbref = db.collection("Events").limit(10);
+
+        TextView myEventsTxt = view.findViewById(R.id.myEventsTxt);
+
+
+
+
         dbref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

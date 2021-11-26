@@ -61,6 +61,12 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
                                 new EventListFragment()).commit();
                         return true;
 
+                    case R.id.page_3:
+                        actionBar.setTitle("Events on Map");
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
+                                new EventsShowonMapsFragment()).commit();
+                        return true;
+
                     case R.id.page_4:
                         actionBar.setTitle("Favourites");
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
