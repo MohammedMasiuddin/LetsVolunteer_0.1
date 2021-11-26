@@ -47,6 +47,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -158,6 +159,8 @@ public class BlankFragment extends Fragment {
         textlocationAddress = view.findViewById(R.id.eventLocationAddress);
         Button locationaddbtn = view.findViewById(R.id.locationPicker);
         showimagesuploaded.setText("image:  "+datalist.size());
+
+        MainActivity mainActivitycontext = (MainActivity) getActivity();
 
         locationaddbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -516,7 +519,10 @@ public class BlankFragment extends Fragment {
                                            }
                                             if ( finalI == datalist.size() -1 ){
                                                 progressDialog.dismiss();
-                                                Toast.makeText(getContext().getApplicationContext(),"Data is uploaded ",Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getContext().getApplicationContext(),"Event is Created and it is uploaded ",Toast.LENGTH_LONG).show();
+
+                                                BottomNavigationView bottomNavigationView = mainActivitycontext.findViewById(R.id.bottom_navigation);
+                                                bottomNavigationView.setSelectedItemId(R.id.page_2);
                                             }
                                        }
                                    });
