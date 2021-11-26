@@ -250,6 +250,7 @@ public class vAccountInfoFragment extends Fragment {
 //            Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
 //            galleryIntent.setType("image/*");
 //            startActivityForResult(galleryIntent, GALLERY_CODE);
+            pd.setMessage("Updating Profile Pic");
             showImagePicDialog();
         });
 

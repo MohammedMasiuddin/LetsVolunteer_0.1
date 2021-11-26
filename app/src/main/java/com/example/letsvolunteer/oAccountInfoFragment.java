@@ -248,9 +248,11 @@ public class oAccountInfoFragment extends Fragment {
         });
 
         changeProfile.setOnClickListener(v -> {
-            Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-            galleryIntent.setType("image/*");
-            startActivityForResult(galleryIntent, GALLERY_CODE);
+//            Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+//            galleryIntent.setType("image/*");
+//            startActivityForResult(galleryIntent, GALLERY_CODE);
+            pd.setMessage("Updating Profile Pic");
+            showImagePicDialog();
         });
 
 
