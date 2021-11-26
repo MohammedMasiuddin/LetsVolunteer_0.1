@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/welcomepage"
     android:orientation="vertical"
-    android:paddingBottom="60dp"
     tools:context=".vAccountInfoFragment">
 
     <ScrollView

@@ -33,6 +33,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -107,6 +109,7 @@ public class EventListFragment extends Fragment {
 
 
         MaterialButton btn = view.findViewById(R.id.addEventsbtn);
+        btn.setVisibility(View.INVISIBLE);
         RecyclerView recyclerView = view.findViewById(R.id.EventListrecycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 //        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.recycleviewrefresh);
@@ -127,6 +130,8 @@ public class EventListFragment extends Fragment {
         progressDialog.setContentView(R.layout.loadingspinner);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
 
         Query dbref = db.collection("Events").orderBy("eventName").limit(7);
         dbref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -179,6 +184,15 @@ public class EventListFragment extends Fragment {
 
 
 
+            }
+        });
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        db.collection("Organizers").document(user.getUid()).get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.getData() != null){
+                Log.d(TAG, "onCreateView: "+ documentSnapshot.getData());
+                btn.setVisibility(View.VISIBLE);
             }
         });
 

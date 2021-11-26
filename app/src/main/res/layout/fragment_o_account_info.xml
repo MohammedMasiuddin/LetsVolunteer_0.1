@@ -12,7 +12,6 @@
     android:layout_height="match_parent"
     android:background="#66B235DE"
     android:orientation="vertical"
-    android:paddingBottom="60dp"
     tools:context=".oAccountInfoFragment">
 
     <ScrollView
