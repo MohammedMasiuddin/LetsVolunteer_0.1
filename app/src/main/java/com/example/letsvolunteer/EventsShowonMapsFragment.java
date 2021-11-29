@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +17,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class EventsShowonMapsFragment extends Fragment {
+
+    private static final String TAG = "EventMapsFragment";
+    ArrayList<EventsPost> eventsResults = new ArrayList<EventsPost>();
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -31,9 +41,15 @@ public class EventsShowonMapsFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            LatLng sydney = new LatLng(-34, 151);
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+//
+
+            eventsResults.forEach(eventsPost -> {
+                LatLng sydney = new LatLng(eventsPost.getLocation().getLatitude(), eventsPost.getLocation().getLongitude());
+                googleMap.addMarker(new MarkerOptions().position(sydney).title(eventsPost.getLocationAddress()));
+            });
+//            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(moveCamera));
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
         }
     };
 
@@ -42,7 +58,10 @@ public class EventsShowonMapsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_events_showon_maps, container, false);
+        View view= inflater.inflate(R.layout.fragment_events_showon_maps, container, false);
+
+
+        return view;
     }
 
     @Override
@@ -50,8 +69,29 @@ public class EventsShowonMapsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(callback);
-        }
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Query dbref = db.collection("Events").limit(10);
+        ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.loadingspinner);
+        dbref.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            queryDocumentSnapshots.getDocuments().forEach(
+                    e -> {
+                        eventsResults.add(new EventsPost((HashMap<String, Object>) e.getData(),e.getId()));
+                    }
+            );
+            progressDialog.dismiss();
+            Log.d(TAG, "onCreateView: "+ eventsResults.size());
+            if (mapFragment != null) {
+                mapFragment.getMapAsync(callback);
+            }
+        }).addOnFailureListener(e ->{
+            progressDialog.dismiss();
+            if (mapFragment != null) {
+                mapFragment.getMapAsync(callback);
+            }
+        });
+
+
     }
 }

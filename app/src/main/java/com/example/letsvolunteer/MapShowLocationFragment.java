@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,17 +16,25 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MapShowLocationFragment extends Fragment {
 
     GeoPoint geopoint;
+
 
     MapShowLocationFragment(GeoPoint geoPoint){
         this.geopoint = geoPoint;
     }
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
+
+
 
         /**
          * Manipulates the map once available.
@@ -39,7 +48,7 @@ public class MapShowLocationFragment extends Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             LatLng sydney = new LatLng(geopoint.getLatitude(), geopoint.getLongitude());
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+            googleMap.addMarker(new MarkerOptions().position(sydney));
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             googleMap.getUiSettings().setZoomControlsEnabled(true);
         }
