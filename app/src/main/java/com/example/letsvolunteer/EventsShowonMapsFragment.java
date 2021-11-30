@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,14 +12,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterManager;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,16 +46,31 @@ public class EventsShowonMapsFragment extends Fragment {
          * install it inside the SupportMapFragment. This method will only be triggered once the
          * user has installed Google Play services and returned to the app.
          */
+        @SuppressLint("PotentialBehaviorOverride")
         @Override
         public void onMapReady(GoogleMap googleMap) {
-//
 
+
+            HashMap<Marker, EventsPost> hashMap = new HashMap<>(); // created the HashMap
             eventsResults.forEach(eventsPost -> {
+
                 LatLng sydney = new LatLng(eventsPost.getLocation().getLatitude(), eventsPost.getLocation().getLongitude());
-                googleMap.addMarker(new MarkerOptions().position(sydney).title(eventsPost.getLocationAddress()));
+                MarkerOptions markerOptions = new MarkerOptions().position(sydney).title(eventsPost.getEventName());
+                Marker newMarker = googleMap.addMarker(markerOptions);
+                hashMap.put(newMarker,eventsPost);
+
+                });
+
+            googleMap.setInfoWindowAdapter(new MapInfoWindowAdapter(getActivity(),hashMap));
+
+            googleMap.setOnInfoWindowClickListener(marker -> {
+                EventsPost eventsPost = hashMap.get(marker);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container_view_tag, EventDetailsFragment.newInstance(eventsPost.eventid))
+                        .addToBackStack(null)
+                        .commit();
+
             });
-//            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(moveCamera));
             googleMap.getUiSettings().setZoomControlsEnabled(true);
         }
     };
@@ -59,8 +81,6 @@ public class EventsShowonMapsFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_events_showon_maps, container, false);
-
-
         return view;
     }
 

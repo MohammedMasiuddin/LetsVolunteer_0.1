@@ -50,6 +50,10 @@ dependencies {
 
     implementation 'androidx.cardview:cardview:1.0.0'
 
+
+    implementation 'com.google.maps.android:android-maps-utils:2.2.3'
+
+
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.firebase:firebase-database:20.0.2'
     implementation 'com.google.firebase:firebase-firestore:24.0.0'
