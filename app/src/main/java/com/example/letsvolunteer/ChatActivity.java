@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,9 +43,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -58,6 +63,8 @@ public class ChatActivity extends AppCompatActivity {
     String KEY_photoUri = "photoUri";
 
     FirebaseAuth firebaseAuth;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser firebaseUser;
 
     // for checking if meesage was seen
     ValueEventListener seenListener;
@@ -88,6 +95,8 @@ public class ChatActivity extends AppCompatActivity {
         messageEt = findViewById(R.id.messageEt);
         sendBtn = findViewById(R.id.sendBtn);
 
+
+
         //Layout for recycler view
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
@@ -101,6 +110,7 @@ public class ChatActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        myUid = firebaseAuth.getUid();
         DocumentReference documentReference = db.collection("Organizers").document(hisUid);
 
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -114,8 +124,31 @@ public class ChatActivity extends AppCompatActivity {
                 if (documentSnapshot != null && documentSnapshot.exists()) {
                     String organizationName = documentSnapshot.getString(KEY_ON);
                     hisImage = documentSnapshot.getString(KEY_photoUri);
+                    String typingStatus = documentSnapshot.getString("typingTo");
+
+                    assert typingStatus != null;
+                    if(typingStatus.equals(myUid)) {
+                        userStatusTv.setText("typing...");
+                    }
+                    else {
+                        String onlineStatus = documentSnapshot.getString("onlineStatus");
+                        assert onlineStatus != null;
+                        if(onlineStatus.equals("online")) {
+                            userStatusTv.setText(onlineStatus);
+                        }
+                        else {
+                            // convert timestamp to format
+                            Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
+                            calendar.setTimeInMillis(Long.parseLong(onlineStatus));
+                            String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", calendar).toString();
+                            userStatusTv.setText("Last seen at: "+ dateTime);
+                        }
+                    }
+
+
 
                     nameTv.setText(organizationName);
+
                     try {
                         Picasso.get().load(hisImage).into(profileIv);
                     } catch (Exception e) {
@@ -142,6 +175,28 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        messageEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().trim().length() == 0) {
+                    checkTypingStatus("noOne");
+                }
+                else {
+                    checkTypingStatus(hisUid);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         readMessages();
         
         seenMessages();
@@ -152,7 +207,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private String KEY_sender = "sender";
     private String KEY_timestamp = "timestamp";
-    @SuppressLint("NotifyDataSetChanged")
+
     EventListener<QuerySnapshot> eventListener = (value, error) -> {
       if(error != null) {
           return;
@@ -247,7 +302,12 @@ public class ChatActivity extends AppCompatActivity {
                 Log.d(TAG, "onFailure " + e.getMessage());
             }
         });
+
+
+
     }
+
+
 
     private void checkUserStatus() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -257,6 +317,89 @@ public class ChatActivity extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
+    }
+
+    private void checkOnlineStatus(String status) {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        DocumentReference documentReference = db.collection("Volunteer").document(user.getUid());
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot,
+                                @Nullable FirebaseFirestoreException error) {
+
+                if (documentSnapshot != null && documentSnapshot.exists()) {
+                    HashMap<String, Object> data = new HashMap<>();
+                    data.put("onlineStatus", status);
+                    // update the online status value
+
+                    documentReference.update(data);
+                }
+                else {
+                    DocumentReference  odocumentReference = db.collection("Organizers").document(user.getUid());
+
+                    HashMap<String, Object> data = new HashMap<>();
+                    data.put("onlineStatus", status);
+                    // update the online status value
+
+                    odocumentReference.update(data);
+                }
+            }
+        });
+    }
+
+    private void checkTypingStatus(String typing) {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        DocumentReference documentReference = db.collection("Volunteer").document(user.getUid());
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot,
+                                @Nullable FirebaseFirestoreException error) {
+
+                if (documentSnapshot != null && documentSnapshot.exists()) {
+                    HashMap<String, Object> data = new HashMap<>();
+                    data.put("typingTo", typing);
+                    // update the online status value
+
+                    documentReference.update(data);
+                }
+                else {
+                    DocumentReference  odocumentReference = db.collection("Organizers").document(user.getUid());
+
+                    HashMap<String, Object> data = new HashMap<>();
+                    data.put("typingTo", typing);
+                    // update the online status value
+
+                    odocumentReference.update(data);
+                }
+            }
+        });
+    }
+
+
+    @Override
+    protected void onStart() {
+        checkUserStatus();
+
+        // set online
+        checkOnlineStatus("online");
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        // set to last seen
+        checkOnlineStatus(timestamp);
+        checkTypingStatus("noOne");
+    }
+
+    @Override
+    protected void onResume() {
+        // set online
+        checkOnlineStatus("online");
+        super.onResume();
     }
 
     @Override

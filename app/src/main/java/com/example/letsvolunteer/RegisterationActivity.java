@@ -143,6 +143,8 @@ public class RegisterationActivity extends AppCompatActivity {
                             Map<String, Object> data = new HashMap<>();
                             data.put(KEY_FN, firstName);
                             data.put(KEY_LN, lastName);
+                            data.put("onlineStatus", "online");
+                            data.put("typingTo", "noOne");
                             data.put(KEY_email, email);
                             data.put(KEY_age, "");
                             data.put(KEY_photoUri, "");

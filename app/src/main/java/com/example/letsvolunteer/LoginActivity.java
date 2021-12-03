@@ -334,6 +334,8 @@ public class LoginActivity extends AppCompatActivity {
             Map<String, Object> data = new HashMap<>();
             data.put(KEY_FN, personGivenName);
             data.put(KEY_LN, personFamilyName);
+            data.put("onlineStatus", "online");
+            data.put("typingTo", "noOne");
             data.put(KEY_email, personEmail);
             data.put(KEY_age, "");
             data.put(KEY_photoUri, "");

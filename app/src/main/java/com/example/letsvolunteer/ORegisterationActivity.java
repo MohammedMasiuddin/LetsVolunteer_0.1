@@ -148,6 +148,8 @@ public class ORegisterationActivity extends AppCompatActivity {
                             DocumentReference documentReference = db.collection("Organizers").document(UserID);
                             Map<String, Object> data = new HashMap<>();
                             data.put(KEY_ON, organizationName);
+                            data.put("onlineStatus", "online");
+                            data.put("typingTo", "noOne");
                             data.put(KEY_contactEmail, "");
                             data.put(KEY_email, email);
                             data.put(KEY_address, address);

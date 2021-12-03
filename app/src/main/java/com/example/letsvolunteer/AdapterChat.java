@@ -1,21 +1,41 @@
 package com.example.letsvolunteer;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,10 +43,12 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
 
     private static final int MSG_TYPE_LEFT= 0;
     private static final int MSG_TYPE_RIGHT= 1;
+    private static final String TAG = "TAG";
     Context context;
     List<ModelChat> chatList;
     String imageUrl;
 
+    FirebaseAuth firebaseAuth;
     FirebaseUser user;
 
     public AdapterChat(Context context, List<ModelChat> chatList, String imageUrl) {
@@ -49,7 +71,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyHolder holder, final int position) {
         //fetch the data
         String message = chatList.get(position).getMessage();
         String timeStamp = chatList.get(position).getTimestamp();
@@ -67,6 +89,33 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
 
         }
 
+        // click to show delete dialog
+        holder.messageLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // show confirm dialog box
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Delete");
+                builder.setMessage("Are you sure to delete this message?");
+                //delete button
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteMessage(position);
+                    }
+                });
+                //cancel the delete operation
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                //create and show dialog box
+                builder.create().show();
+            }
+        });
+
         if(position == chatList.size()-1) {
             if (chatList.get(position).isSeen()) {
                 holder.isSeenTv.setText("Seen");
@@ -78,6 +127,44 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
         }
 
     }
+
+
+
+
+    private void deleteMessage(int position) {
+
+        String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String msgTimeStamp = chatList.get(position).getTimestamp();
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference collectionReference = db.collection("Chats");
+        Query query = collectionReference.whereEqualTo("timestamp", msgTimeStamp);
+
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                HashMap hashMap = new HashMap();
+
+                collectionReference.document().delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d(TAG, "onSuccess chat deleted");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "onFailure " + e.getMessage());
+                    }
+                });
+            }
+            });
+        }
+
+
+
+
 
     @Override
     public int getItemCount() {
@@ -98,6 +185,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
 
         ImageView profileIv;
         TextView messageTv, timeTv, isSeenTv;
+        LinearLayout messageLayout; // for click listener to show delete
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,6 +195,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
             messageTv = itemView.findViewById(R.id.messageTv);
             timeTv = itemView.findViewById(R.id.timeTv);
             isSeenTv = itemView.findViewById(R.id.isSeenTv);
+            messageLayout = itemView.findViewById(R.id.messageLayout);
 
         }
     }
