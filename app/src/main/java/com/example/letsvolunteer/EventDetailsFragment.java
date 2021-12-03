@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,8 +26,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -42,6 +46,7 @@ public class EventDetailsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "EventDetails";
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -87,6 +92,8 @@ public class EventDetailsFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         Context context = getContext();
 
+
+
         eventsigninBtn.setOnClickListener(v -> {
             db.collection("Volunteer").document(user.getUid())
                     .update("MyEventsignup",
@@ -103,6 +110,7 @@ public class EventDetailsFragment extends Fragment {
         });
 
         ImageView likebtn = view.findViewById(R.id.favouriteBtn);
+        ImageView chatBtn = view.findViewById(R.id.chatBtn);
         TextView likescount = view.findViewById(R.id.likescount);
         likescount.setText("Likes :"+ likecounter);
 
@@ -128,6 +136,28 @@ public class EventDetailsFragment extends Fragment {
 //
 //        });
 //
+
+
+
+        chatBtn.setOnClickListener(v -> {
+
+            dbref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    String hisUid = documentSnapshot.getString("organiserid");
+                    Log.d("Chat", "onSuccess:" + hisUid);
+                    Intent intent = new Intent(context, ChatActivity.class);
+                    intent.putExtra("orgid", hisUid);
+                    context.startActivity(intent);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "onFailure: No data Records found");
+                }
+            });
+
+        });
 
         likebtn.setOnClickListener(new View.OnClickListener() {
             @Override

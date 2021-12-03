@@ -52,7 +52,8 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
                 switch(item.getItemId()) {
                     case R.id.page_1 :
                         // code
-
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
+                                new ChatListFragment()).commit();
                         return true;
 
                     case R.id.page_2:
