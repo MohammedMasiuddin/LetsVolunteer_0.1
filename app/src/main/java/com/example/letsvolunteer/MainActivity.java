@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
 
 
     FirebaseAuth firebaseAuth;
-
+    ActionBar actionBar;
     TextView profileTv;
 
     @Override
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
         setContentView(R.layout.activity_main);
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         actionBar.setTitle("Profile");
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -154,6 +154,11 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
         if(id == R.id.action_logout) {
             firebaseAuth.signOut();
             checkUserStatus();
+        }
+        if (id == R.id.page_6){
+            actionBar.setTitle("Events");
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
+                    new NotificationsFragment()).commit();
         }
 
 
