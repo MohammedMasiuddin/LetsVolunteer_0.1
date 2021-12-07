@@ -1,6 +1,9 @@
 package com.example.letsvolunteer;
 
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.ServerTimestamp;
+import com.google.type.Date;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +23,7 @@ public class EventsPost {
     public GeoPoint location;
     public String locationAddress;
     public int likes = 0;
+    public String time;
 
     public String getCategoryinterest() {
         return categoryinterest;
@@ -41,7 +45,8 @@ public class EventsPost {
     }
 
     // this is used while event is created
-    public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId, String organiserid, String eventDate, String categoryinterest,GeoPoint geoPoint,String locationAddress) {
+    public EventsPost(String eventName, String eventDescription, String phoneNumber, String emailId,
+                      String organiserid, String eventDate, String categoryinterest,GeoPoint geoPoint,String locationAddress) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.phoneNumber = phoneNumber;
@@ -77,7 +82,7 @@ public class EventsPost {
         this.categoryinterest = (String) map.get("categoryinterest");
         this.location = (GeoPoint) map.get("location");
         this.locationAddress = (String) map.get("locationAddress");
-
+        this.time = (String) map.get("timestamp");
     }
 
     public String getEventDate() {
@@ -158,5 +163,13 @@ public class EventsPost {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

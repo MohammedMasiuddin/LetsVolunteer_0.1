@@ -131,8 +131,6 @@ public class EventListFragment extends Fragment {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-
-
         Query dbref = db.collection("Events").orderBy("eventName").limit(7);
         dbref.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override

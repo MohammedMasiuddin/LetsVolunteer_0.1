@@ -518,8 +518,21 @@ public class BlankFragment extends Fragment {
                                                Log.d(TAG, "onComplete: Failed to upload");
                                            }
                                             if ( finalI == datalist.size() -1 ){
+
                                                 progressDialog.dismiss();
                                                 Toast.makeText(getContext().getApplicationContext(),"Event is Created and it is uploaded ",Toast.LENGTH_LONG).show();
+
+                                                NewNotification newNotification = new NewNotification(documentid,eventPost.getCategoryinterest());
+
+                                                db.collection("Notification").add(newNotification).addOnSuccessListener(documentReference1 -> {
+                                                    db.collection("Notification").document(documentReference1.getId()).update("eventCreateDate",FieldValue.serverTimestamp());
+                                                });
+
+                                                db.collection("Events")
+                                                        .document(documentid)
+                                                        .update("timestamp",
+                                                                FieldValue.serverTimestamp());
+
 
                                                 BottomNavigationView bottomNavigationView = mainActivitycontext.findViewById(R.id.bottom_navigation);
                                                 bottomNavigationView.setSelectedItemId(R.id.page_2);

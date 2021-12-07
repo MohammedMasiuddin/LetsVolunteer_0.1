@@ -9,6 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link NotificationsFragment#newInstance} factory method to
@@ -25,6 +33,7 @@ public class NotificationsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    ArrayList<NewNotification> notificationsList = new ArrayList<NewNotification>();
 
     public NotificationsFragment() {
         // Required empty public constructor
@@ -62,6 +71,22 @@ public class NotificationsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notifications, container, false);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        Query dbref = db.collection("Events").limit(10);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        Query dbref =  db.collection("Notification").whereEqualTo("eventCategory","soothing");
+        dbref.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            Log.d(TAG, "onCreateView: "+ queryDocumentSnapshots.getDocuments());
+            notificationsList.clear();
+            queryDocumentSnapshots.getDocuments().forEach(
+                    e -> {
+                        notificationsList.add(new NewNotification((HashMap<String, Object>) e.getData()));
+                    });
+            Log.d(TAG, "onCreateView: "+ notificationsList);
+        });
+
+
 
         Log.d(TAG, "onCreateView: ");
         return view;
