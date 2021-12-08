@@ -69,6 +69,7 @@ public class EventListFragment extends Fragment {
     boolean tempflagfliterevents;
     DocumentSnapshot lastDocument;
     EventListsAdapter tempEventListsAdapter;
+    boolean showaddbtn = false;
 
     public EventListFragment() {
         // Required empty public constructor
@@ -109,7 +110,7 @@ public class EventListFragment extends Fragment {
 
 
         MaterialButton btn = view.findViewById(R.id.addEventsbtn);
-        btn.setVisibility(View.INVISIBLE);
+        btn.setVisibility(View.GONE);
         RecyclerView recyclerView = view.findViewById(R.id.EventListrecycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 //        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.recycleviewrefresh);
@@ -189,6 +190,7 @@ public class EventListFragment extends Fragment {
 
         db.collection("Organizers").document(user.getUid()).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.getData() != null){
+                showaddbtn = true;
                 Log.d(TAG, "onCreateView: "+ documentSnapshot.getData());
                 btn.setVisibility(View.VISIBLE);
             }
@@ -235,7 +237,9 @@ public class EventListFragment extends Fragment {
             @Override
             public boolean onClose() {
                 Log.d(TAG, "onClose: ");
-                btn.setVisibility(View.VISIBLE);
+                if (showaddbtn){
+                    btn.setVisibility(View.VISIBLE);
+                }
                 eventListTxt.setVisibility(View.VISIBLE);
                 filtereventslist.setVisibility(View.VISIBLE);
                 ((EventListsAdapter) recyclerView.getAdapter()).lastElement = tempflagfliterevents;
@@ -283,7 +287,11 @@ public class EventListFragment extends Fragment {
         });
 
         crossbuttonforautotext.setOnClickListener(v -> {
-            btn.setVisibility(View.VISIBLE);
+
+            if (showaddbtn){
+                btn.setVisibility(View.VISIBLE);
+
+            }
             eventListTxt.setVisibility(View.VISIBLE);
             searchView.setVisibility(View.VISIBLE);
             filterautotextlayout.setVisibility(View.GONE);

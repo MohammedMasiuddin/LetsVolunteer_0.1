@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,11 @@ public class EventDetailsFragment extends Fragment {
     private String mParam2;
     int likecounter = 0;
     ArrayList arrayList = new ArrayList();
+    boolean isvolunteer = true;
+    String organiserid;
+    OrganiserNotifcation organiserNotifcation;
+    String eventName;
+
 
 
     public EventDetailsFragment() {
@@ -90,11 +96,16 @@ public class EventDetailsFragment extends Fragment {
         DocumentReference dbref = db.collection("Events").document(mParam1);
         MaterialButton eventsigninBtn = view.findViewById(R.id.eventsigninBtn);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        LinearLayout options = view.findViewById(R.id.options);
         Context context = getContext();
 
 
 
         eventsigninBtn.setOnClickListener(v -> {
+            if (!isvolunteer){
+                Toast.makeText(context, " You are not allowed to join an event, Create a voluteer account ", Toast.LENGTH_LONG).show();
+                return;
+            }
             db.collection("Volunteer").document(user.getUid())
                     .update("MyEventsignup",
                     FieldValue.arrayUnion(mParam1)).addOnFailureListener(new OnFailureListener() {
@@ -107,6 +118,11 @@ public class EventDetailsFragment extends Fragment {
                     eventsigninBtn.setEnabled(false);
                 }
             });
+
+            organiserNotifcation.setOrganiserid(organiserid);
+            organiserNotifcation.setEventName(eventName);
+            db.collection("OrganiserNotification").document(mParam1+user.getUid()).set(organiserNotifcation);
+
         });
 
         ImageView likebtn = view.findViewById(R.id.favouriteBtn);
@@ -137,6 +153,22 @@ public class EventDetailsFragment extends Fragment {
 //        });
 //
 
+        db.collection("Volunteer").document(user.getUid()).get().addOnSuccessListener(documentSnapshot1 -> {
+            if (documentSnapshot1.getData() == null){
+                isvolunteer = false;
+            }else{
+                if (documentSnapshot1.getData()!= null){
+                    String photourl = "";
+                    if (documentSnapshot1.getData().get("photoUri") != null){
+                        photourl = documentSnapshot1.getData().get("photoUri").toString();
+                    }
+                    organiserNotifcation = new OrganiserNotifcation(documentSnapshot1.getData().get("firstName").toString(),
+                            documentSnapshot1.getData().get("lastName").toString(),
+                            photourl,user.getUid(),mParam1 , organiserid, eventName);
+
+                }
+            }
+        });
 
 
         chatBtn.setOnClickListener(v -> {
@@ -145,7 +177,12 @@ public class EventDetailsFragment extends Fragment {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     String hisUid = documentSnapshot.getString("organiserid");
-                    Log.d("Chat", "onSuccess:" + hisUid);
+                    if (hisUid.equals(user.getUid())){
+                        Toast.makeText(context, " You are not allowed to have a chat with this" +
+                                " organiser as you are the organiser of this event ", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                     Intent intent = new Intent(context, ChatActivity.class);
                     intent.putExtra("hisUid", hisUid);
                     context.startActivity(intent);
@@ -162,6 +199,11 @@ public class EventDetailsFragment extends Fragment {
         likebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isvolunteer){
+                    Toast.makeText(context, " You are not allowed to Like an event create a voluteer account ", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 Log.d(TAG, "onClick: ");
                 db.collection("Volunteer").document(user.getUid()).get().addOnSuccessListener(documentSnapshot1 -> {
                     arrayList = new ArrayList();
@@ -213,6 +255,8 @@ public class EventDetailsFragment extends Fragment {
                 TextView evtNameText = view.findViewById(R.id.eveNameTxt);
                 evtNameText.setText(event.getEventName());
 
+                eventName = event.getEventName();
+
                 TextView descContent = view.findViewById(R.id.descContent);
                 descContent.setText(event.getEventDescription());
 
@@ -226,6 +270,7 @@ public class EventDetailsFragment extends Fragment {
                 locationAddress.setText(event.getLocationAddress());
 
                 likecounter = (int) event.getLikes();
+                organiserid = event.getOrganiserid();
 
                 TextView organisername = view.findViewById(R.id.organisername);
                 db.collection("Organizers").document(event.getOrganiserid()).get()
@@ -270,4 +315,7 @@ public class EventDetailsFragment extends Fragment {
 
         return view;
     }
+
+
+
 }

@@ -45,6 +45,8 @@ public class NotificationsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     ArrayList<NewNotification> notificationsList = new ArrayList<NewNotification>();
+    ArrayList<OrganiserNotifcation> organiserNotifcations = new ArrayList<OrganiserNotifcation>();
+
     ArrayList<String> manageNotifications = new ArrayList<String>();
     TextView textView;
 
@@ -138,6 +140,29 @@ public class NotificationsFragment extends Fragment {
 
             }
         });
+
+        db.collection("Organizers").document(user.getUid()).get().addOnSuccessListener(documentSnapshot -> {
+            notificationsList.clear();
+            if (documentSnapshot.getData() != null) {
+
+                Query dbref =  db.collection("OrganiserNotification").whereEqualTo("organiserid", user.getUid());
+                dbref.get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    queryDocumentSnapshots.getDocuments().forEach(
+                            e -> {
+                                organiserNotifcations.add(new OrganiserNotifcation((HashMap<String, Object>) e.getData()));
+                            });
+
+                    OrganiserNotificationListsAdapter organiserNotificationListsAdapter = new OrganiserNotificationListsAdapter(organiserNotifcations);
+                    listNotification.setAdapter(null);
+                    listNotification.setAdapter(organiserNotificationListsAdapter);
+                    textView.setText("" + (organiserNotifcations.size()));
+                });
+
+
+
+            }
+        });
+
 
         return view;
     }
