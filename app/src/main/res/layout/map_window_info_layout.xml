@@ -44,7 +44,7 @@
                android:layout_width="250dp"
                android:layout_height="187dp"
                android:scaleType="fitXY"
-               android:src="@drawable/background"
+               android:src="@drawable/welcomepage"
                />
            <TextView
                android:layout_width="match_parent"

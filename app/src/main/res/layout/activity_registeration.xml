@@ -39,6 +39,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="40dp"
+                        android:textColorHint="@color/purple_700"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp">
 
@@ -47,6 +48,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Email"
+                            android:textColorHint="@color/purple_700"
                             android:fontFamily="@font/aclonica"
                             android:drawableEnd="@drawable/ic_baseline_email_24"
                             android:inputType="textEmailAddress" />
@@ -58,6 +60,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/emailTIL"
                         android:layout_marginTop="10dp"
+                        android:textColorHint="@color/purple_700"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp">
 
@@ -66,6 +69,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="First Name"
+                            android:textColorHint="@color/purple_700"
                             android:fontFamily="@font/aclonica"
                             android:drawableEnd="@drawable/ic_baseline_person_24"
                             android:inputType="textPersonName" />
@@ -77,6 +81,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/vFirstNameTIL"
                         android:layout_marginTop="10dp"
+                        android:textColorHint="@color/purple_700"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp">
 
@@ -85,6 +90,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Last Name"
+                            android:textColorHint="@color/purple_700"
                             android:fontFamily="@font/aclonica"
                             android:drawableEnd="@drawable/ic_baseline_person_24"
                             android:inputType="textPersonName" />
@@ -96,6 +102,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/vLastNameTIL"
                         android:layout_marginTop="10dp"
+                        android:textColorHint="@color/purple_700"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         app:passwordToggleEnabled="true">
@@ -105,6 +112,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Password"
+                            android:textColorHint="@color/purple_700"
                             android:fontFamily="@font/aclonica"
                             android:inputType="textPassword"
                             />
@@ -116,6 +124,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
+                        android:textColorHint="@color/purple_700"
                         android:layout_below="@id/passwordTIL"
                         android:layout_marginTop="10dp"
                         app:passwordToggleEnabled="true">
@@ -125,6 +134,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Confirm Password"
+                            android:textColorHint="@color/purple_700"
                             android:fontFamily="@font/aclonica"
                             android:inputType="textPassword" />
                     </com.google.android.material.textfield.TextInputLayout>

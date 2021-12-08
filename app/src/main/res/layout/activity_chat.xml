@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F1EDED"
+    android:background="#73B7FB"
     tools:context=".ChatActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/backgroundPurple"
+        android:background="#055DB5"
         android:theme="@style/AppTheme">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/chatProfileIv"

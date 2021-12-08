@@ -86,7 +86,6 @@
                         android:id="@+id/googleLoginBtn"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_marginRight="200dp"
                         android:background="@drawable/googleicon"
                         app:layout_constraintBottom_toTopOf="@+id/loginwith"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -115,6 +114,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
+                        android:textColorHint="@color/purple_700"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/loginwith"
                         android:layout_centerHorizontal="true">
@@ -128,8 +128,8 @@
                             android:hint="Email"
                             android:fontFamily="@font/aclonica"
                             android:inputType="textEmailAddress"
-                            android:textColor="@color/background"
-                            android:textColorHint="@color/background"
+                            android:textColor="@color/purple_700"
+                            android:textColorHint="@color/purple_700"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -138,6 +138,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
+                        android:textColorHint="@color/purple_700"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/emailTIL2"
 
@@ -152,8 +153,8 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
                             android:inputType="textPassword"
-                            android:textColor="@color/background"
-                            android:textColorHint="@color/background" />
+                            android:textColor="@color/purple_700"
+                            android:textColorHint="@color/purple_700" />
                     </com.google.android.material.textfield.TextInputLayout>
 
 

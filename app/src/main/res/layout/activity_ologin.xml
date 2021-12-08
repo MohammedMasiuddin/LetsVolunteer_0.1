@@ -93,6 +93,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
+                        android:textColorHint="@color/purple_700"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/loginwith"
                         android:layout_centerHorizontal="true">
@@ -104,8 +105,8 @@
                             android:hint="Email"
                             android:fontFamily="@font/aclonica"
                             android:inputType="textEmailAddress"
-                            android:textColor="@color/background"
-                            android:textColorHint="@color/background"
+                            android:textColor="@color/purple_700"
+                            android:textColorHint="@color/purple_700"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,6 +118,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/oEmailTIL2"
                         android:layout_marginLeft="20dp"
+                        android:textColorHint="@color/purple_700"
                         android:layout_marginRight="20dp"
                         app:passwordToggleEnabled="true">
 
@@ -127,8 +129,8 @@
                             android:hint="Password"
                             android:fontFamily="@font/aclonica"
                             android:inputType="textPassword"
-                            android:textColor="@color/background"
-                            android:textColorHint="@color/background" />
+                            android:textColor="@color/purple_700"
+                            android:textColorHint="@color/purple_700" />
                     </com.google.android.material.textfield.TextInputLayout>
 
 

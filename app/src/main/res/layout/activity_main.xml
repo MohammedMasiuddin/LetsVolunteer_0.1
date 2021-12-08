@@ -49,8 +49,8 @@ tools:context=".MainActivity">
             android:background="#F7E8FA"
             app:itemHorizontalTranslationEnabled="true"
             app:itemIconTint="@drawable/bottom_nav_item_color"
-            app:itemRippleColor="#cc80d9"
-            app:itemTextColor="#8E259F"
+            app:itemRippleColor="#73B7FB"
+            app:itemTextColor="#25359F"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/bottom_nav_menu" />
 
