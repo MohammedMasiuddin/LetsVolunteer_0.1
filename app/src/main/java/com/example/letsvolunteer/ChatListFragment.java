@@ -91,7 +91,7 @@ public class ChatListFragment extends Fragment {
                         }
                     }
                     //adapter
-                    AdapterChatlist adapterChatlist = new AdapterChatlist(getContext(), userList);
+                    adapterChatlist = new AdapterChatlist(getContext(), userList);
 
                     recyclerView.setAdapter(adapterChatlist);
 

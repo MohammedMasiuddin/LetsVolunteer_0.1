@@ -1,41 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:contentPadding="3dp">
-    <RelativeLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profileIv"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/ic_default_img"/>
-        <ImageView
-            android:id="@+id/onlineStatusIv"
-            android:layout_width="25dp"
-            android:layout_height="25dp"/>
-        <TextView
-            android:id="@+id/nameTv"
+
+
+        app:contentPadding="3dp">
+        <LinearLayout
+            android:padding="10dp"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="His Name"
-            android:layout_marginStart="4dp"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:layout_toEndOf="@+id/profileIv" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/lastMessageTv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/nameTv"
-            android:layout_marginStart="4dp"
-            android:maxLines="2"
-            android:layout_toEndOf="@+id/profileIv"
-            android:text="The last message" />
-    </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profileIv"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/ic_default_img"/>
+                <ImageView
+                    android:id="@+id/onlineStatusIv"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/nameTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="His Name"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:layout_toEndOf="@+id/profileIv" />
 
-</androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/lastMessageTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:paddingTop="3dp"
+                    android:maxLines="2"
+                    android:text="The last message" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:background="@color/purple_700"
+        />
+</LinearLayout>
