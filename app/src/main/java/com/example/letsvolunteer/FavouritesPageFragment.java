@@ -103,7 +103,7 @@ public class FavouritesPageFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-
+        TextView myInterestTxt = view.findViewById(R.id.myInterestTxt);
         ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.show();
         progressDialog.setContentView(R.layout.loadingspinner);
@@ -190,6 +190,7 @@ public class FavouritesPageFragment extends Fragment {
                 .addOnSuccessListener(documentSnapshot1 -> {
                     if (documentSnapshot1.getData() != null ){
                         myEventsTxt.setText("My Events Posted");
+                        myInterestTxt.setVisibility(View.GONE);
                         Query dbreforg = db.collection("Events")
                                 .whereEqualTo("organiserid",user.getUid());
 

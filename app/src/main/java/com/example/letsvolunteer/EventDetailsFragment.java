@@ -97,6 +97,7 @@ public class EventDetailsFragment extends Fragment {
         MaterialButton eventsigninBtn = view.findViewById(R.id.eventsigninBtn);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         LinearLayout options = view.findViewById(R.id.options);
+        TextView eventCategorydetail = view.findViewById(R.id.eventCategorydetail);
         Context context = getContext();
 
 
@@ -108,7 +109,9 @@ public class EventDetailsFragment extends Fragment {
             }
             db.collection("Volunteer").document(user.getUid())
                     .update("MyEventsignup",
-                    FieldValue.arrayUnion(mParam1)).addOnFailureListener(new OnFailureListener() {
+                    FieldValue.arrayUnion(mParam1)).addOnSuccessListener(command -> {
+                Toast.makeText(context, " Successfully sign up for the event  ", Toast.LENGTH_LONG).show();
+            }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Log.d(TAG, "onFailure: "+ " event is not there");
@@ -259,6 +262,8 @@ public class EventDetailsFragment extends Fragment {
 
                 TextView descContent = view.findViewById(R.id.descContent);
                 descContent.setText(event.getEventDescription());
+
+                eventCategorydetail.setText("Event Category : " + event.getCategoryinterest());
 
                 TextView dateTXt = view.findViewById(R.id.dateTxt);
                 dateTXt.setText(event.getEventDate());
