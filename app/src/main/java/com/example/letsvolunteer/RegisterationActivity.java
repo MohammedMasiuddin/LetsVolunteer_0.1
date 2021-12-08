@@ -24,8 +24,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -143,6 +146,8 @@ public class RegisterationActivity extends AppCompatActivity {
                             Map<String, Object> data = new HashMap<>();
                             data.put(KEY_FN, firstName);
                             data.put(KEY_LN, lastName);
+                            data.put("onlineStatus", "online");
+                            data.put("typingTo", "noOne");
                             data.put(KEY_email, email);
                             data.put(KEY_age, "");
                             data.put(KEY_photoUri, "");
@@ -157,6 +162,17 @@ public class RegisterationActivity extends AppCompatActivity {
                                     Log.d(TAG, "onFailure: " + e.getMessage());
                                 }
                             });
+                            Map<String, Object> userData = new HashMap<>();
+                            userData.put("uid", UserID);
+                            userData.put("name", firstName);
+                            userData.put(KEY_photoUri, "");
+                            userData.put(KEY_email, email);
+                            userData.put("onlineStatus", "online");
+                            userData.put("typingTo", "noOne");
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference reference = database.getReference("Users");
+                            reference.child(UserID).setValue(userData);
+
                             startActivity(new Intent(RegisterationActivity.this, MainActivity.class));
                             finish();
                         } else {

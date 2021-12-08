@@ -6,6 +6,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.letsvolunteer.notifications.Token;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +33,7 @@ import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity implements SetActionBarTitle {
 
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
     TextView profileTv;
     MenuItem menuItemNotification;
     TextView textNotificationCount;
+    String mUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +64,10 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
                 Log.d("TAG", "onNavigationItemSelected: "+ item.getItemId());
                 switch(item.getItemId()) {
                     case R.id.page_1 :
+                        actionBar.setTitle("Users");
                         // code
-
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag,
+                                new ChatListFragment()).commit();
                         return true;
 
                     case R.id.page_2:
@@ -120,7 +126,17 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
 //                new BlankFragment()).commit();
         bottomNavigation.setSelectedItemId(R.id.page_2);
 
+        updateToken(String.valueOf(FirebaseMessaging.getInstance().getToken()));
 
+
+    }
+
+    public void updateToken(String token) {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        mUID = user.getUid();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token mToken = new Token(token);
+        ref.child(mUID).setValue(mToken);
     }
 
     public void ChangeActionBarTitle(String title){
@@ -131,7 +147,13 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
             // user is signed in, stay in this page
-            profileTv.setText(user.getEmail());
+           // profileTv.setText(user.getEmail());
+            mUID = user.getUid();
+
+            SharedPreferences sp =  getSharedPreferences("SP_USER", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("Current_USERID", mUID);
+            editor.apply();
 
         }
         else {

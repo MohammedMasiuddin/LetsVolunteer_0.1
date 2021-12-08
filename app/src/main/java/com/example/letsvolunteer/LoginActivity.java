@@ -40,6 +40,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -334,6 +336,8 @@ public class LoginActivity extends AppCompatActivity {
             Map<String, Object> data = new HashMap<>();
             data.put(KEY_FN, personGivenName);
             data.put(KEY_LN, personFamilyName);
+            data.put("onlineStatus", "online");
+            data.put("typingTo", "noOne");
             data.put(KEY_email, personEmail);
             data.put(KEY_age, "");
             data.put(KEY_photoUri, "");
@@ -348,6 +352,16 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG, "onFailure: " + e.getMessage());
                 }
             });
+            Map<String, Object> userData = new HashMap<>();
+            userData.put("uid", UserID);
+            userData.put("name", personGivenName);
+            userData.put(KEY_photoUri, "");
+            userData.put("onlineStatus", "online");
+            userData.put(KEY_email, personEmail);
+            userData.put("typingTo", "noOne");
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference reference = database.getReference("Users");
+            reference.child(UserID).setValue(userData);
         }
 
     }
