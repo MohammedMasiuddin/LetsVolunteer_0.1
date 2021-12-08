@@ -166,6 +166,12 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
     @Override
     public void onBackPressed() {
         Log.d("Overwriting the back button functionaloity", "onBackPressed: ");
+        Log.d("-->>>", "onBackPressed: " + getSupportFragmentManager());
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            // no code
+        }
     }
 
     //
