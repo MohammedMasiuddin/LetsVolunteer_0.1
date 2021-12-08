@@ -163,7 +163,12 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
         }
     }
 
-//
+    @Override
+    public void onBackPressed() {
+        Log.d("Overwriting the back button functionaloity", "onBackPressed: ");
+    }
+
+    //
 //    @Override
 //    protected void onStart() {
 //        checkUserStatus();
