@@ -502,14 +502,15 @@ public class BlankFragment extends Fragment {
                                            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                                        @Override
                                        public void onComplete(@NonNull Task<Uri> task) {
-                                           if (finalI == 0){
-                                               eventimage = downloadUri.toString();
-                                           }
 
                                            if (task.isSuccessful()) {
+
                                                downloadUri = task.getResult();
                                                eventPost.getImageUrlLists().add(downloadUri.toString());
                                                Log.d(TAG, "onComplete: "+ downloadUri);
+                                               if (finalI == 0){
+                                                   eventimage = downloadUri.toString();
+                                               }
                                                db.collection("Events")
                                                            .document(documentid)
                                                        .update("imageUrlLists",
