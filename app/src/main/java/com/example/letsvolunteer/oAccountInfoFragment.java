@@ -35,6 +35,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -81,9 +83,11 @@ public class oAccountInfoFragment extends Fragment {
 
     // Connection to firestore
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     FirebaseUser user = mAuth.getCurrentUser();
     DocumentReference documentReference = db.collection("Organizers").document(user.getUid());
+    DatabaseReference databaseReference = database.getReference("Users");
     StorageReference storageReference;
 
     CircleImageView imageView;
@@ -239,6 +243,10 @@ public class oAccountInfoFragment extends Fragment {
                         Log.d(TAG, "onFailure SAVE: " + e.getMessage());
                     }
                 });
+                Map<String, Object> userData = new HashMap<>();
+                userData.put("name", organizationName);
+                data.put(KEY_email, email);
+                databaseReference.child(user.getUid()).updateChildren(userData);
 
                 organizationNameEt.setEnabled(false);
                 contactEmailEt.setEnabled(false);
@@ -563,6 +571,7 @@ public class oAccountInfoFragment extends Fragment {
                             HashMap<String, Object> results = new HashMap<>();
                             results.put(KEY_photoUri, downloadUri.toString());
 
+                            databaseReference.child(user.getUid()).updateChildren(results);
                             documentReference.update(results).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {

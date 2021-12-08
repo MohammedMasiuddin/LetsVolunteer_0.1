@@ -23,6 +23,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -167,6 +169,16 @@ public class ORegisterationActivity extends AppCompatActivity {
                                     Log.d(TAG, "onFailure: " + e.getMessage());
                                 }
                             });
+                            Map<String, Object> userData = new HashMap<>();
+                            userData.put("uid", UserID);
+                            userData.put("name", organizationName);
+                            userData.put(KEY_email, email);
+                            userData.put(KEY_photoUri, "");
+                            userData.put("onlineStatus", "online");
+                            userData.put("typingTo", "noOne");
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference reference = database.getReference("Users");
+                            reference.child(UserID).setValue(userData);
                             startActivity(new Intent(ORegisterationActivity.this, MainActivity.class));
                             finish();
                         } else {

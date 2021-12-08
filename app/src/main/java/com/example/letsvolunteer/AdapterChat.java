@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -28,7 +35,6 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
@@ -90,13 +96,12 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
         }
 
         // click to show delete dialog
-        holder.messageLayout.setOnClickListener(new View.OnClickListener() {
+        holder.messageLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-                // show confirm dialog box
+            public boolean onLongClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Delete");
-                builder.setMessage("Are you sure to delete this message?");
+                builder.setMessage("Are you sure you want to delete this message?");
                 //delete button
                 builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
@@ -113,8 +118,34 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
                 });
                 //create and show dialog box
                 builder.create().show();
+                return true;
             }
         });
+//        holder.messageLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // show confirm dialog box
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setTitle("Delete");
+//                builder.setMessage("Are you sure to delete this message?");
+//                //delete button
+//                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        deleteMessage(position);
+//                    }
+//                });
+//                //cancel the delete operation
+//                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//                //create and show dialog box
+//                builder.create().show();
+//            }
+//        });
 
         if(position == chatList.size()-1) {
             if (chatList.get(position).isSeen()) {
@@ -139,27 +170,54 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("Chats");
-        Query query = collectionReference.whereEqualTo("timestamp", msgTimeStamp);
-
-        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Chats");
+        Query query = dbRef.orderByChild("timestamp").equalTo(msgTimeStamp);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                 for (DataSnapshot ds : snapshot.getChildren()) {
 
-                HashMap hashMap = new HashMap();
+                     if (ds.child("sender").getValue().equals(myUid) ) {
 
-                collectionReference.document().delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d(TAG, "onSuccess chat deleted");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "onFailure " + e.getMessage());
-                    }
-                });
+                         ds.getRef().removeValue();
+                         Toast.makeText(context, "Message deleted...", Toast.LENGTH_SHORT).show();
+                     } else {
+                         Toast.makeText(context, "You can delete only your message chat", Toast.LENGTH_SHORT).show();
+                     }
+
+
+                 }
             }
-            });
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+//        Query query = collectionReference.whereEqualTo("timestamp", msgTimeStamp);
+//
+//        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//
+//                HashMap hashMap = new HashMap();
+//
+//                collectionReference.document().delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void unused) {
+//                        Log.d(TAG, "onSuccess chat deleted");
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.d(TAG, "onFailure " + e.getMessage());
+//                    }
+//                });
+//            }
+//            });
+
+   //     query.addSnapshotListener()
+
         }
 
 

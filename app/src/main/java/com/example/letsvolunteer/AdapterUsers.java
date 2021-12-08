@@ -19,12 +19,12 @@ import java.util.List;
 public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyHolder> {
 
     Context context;
-    List<ModelVolunteer> userList;
+    List<ModelUser> userList;
 
     // constructor
 
 
-    public AdapterUsers(Context context, List<ModelVolunteer> userList) {
+    public AdapterUsers(Context context, List<ModelUser> userList) {
         this.context = context;
         this.userList = userList;
     }
@@ -43,7 +43,7 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyHolder> {
         // get data
         String hisUid = userList.get(position).getUid();
         String userImage = userList.get(position).getPhotoUri();
-        String userName = userList.get(position).getFirstName();
+        String userName = userList.get(position).getName();
         String userEmail = userList.get(position).getEmail();
 
         // set data

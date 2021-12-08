@@ -147,7 +147,7 @@ public class EventDetailsFragment extends Fragment {
                     String hisUid = documentSnapshot.getString("organiserid");
                     Log.d("Chat", "onSuccess:" + hisUid);
                     Intent intent = new Intent(context, ChatActivity.class);
-                    intent.putExtra("orgid", hisUid);
+                    intent.putExtra("hisUid", hisUid);
                     context.startActivity(intent);
                 }
             }).addOnFailureListener(new OnFailureListener() {
