@@ -3,19 +3,30 @@ package com.example.letsvolunteer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +45,8 @@ public class NotificationsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     ArrayList<NewNotification> notificationsList = new ArrayList<NewNotification>();
+    ArrayList<String> manageNotifications = new ArrayList<String>();
+    TextView textView;
 
     public NotificationsFragment() {
         // Required empty public constructor
@@ -75,20 +88,57 @@ public class NotificationsFragment extends Fragment {
 //        Query dbref = db.collection("Events").limit(10);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        Query dbref =  db.collection("Notification").whereEqualTo("eventCategory","soothing");
-        dbref.get().addOnSuccessListener(queryDocumentSnapshots -> {
-            Log.d(TAG, "onCreateView: "+ queryDocumentSnapshots.getDocuments());
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.actionBar.setTitle("Notifications");
+        MenuItem menuItem = mainActivity.menuItemNotification;
+        View view1 = mainActivity.menuItemNotification.getActionView();
+        textView = view1.findViewById(R.id.cart_badge);
+        Log.d(TAG, " menu text : " + textView);
+
+
+        RecyclerView listNotification = view.findViewById(R.id.notificationlistview);
+        listNotification.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        db.collection("Volunteer").document(user.getUid()).get().addOnSuccessListener(documentSnapshot -> {
             notificationsList.clear();
-            queryDocumentSnapshots.getDocuments().forEach(
-                    e -> {
-                        notificationsList.add(new NewNotification((HashMap<String, Object>) e.getData()));
-                    });
-            Log.d(TAG, "onCreateView: "+ notificationsList);
+
+            if (documentSnapshot.getData() != null && documentSnapshot.getData().get("MyInterestCategories") != null) {
+                if (documentSnapshot.getData().get("MyManageNotifications") != null) {
+                    manageNotifications = (ArrayList) documentSnapshot.getData().get("MyManageNotifications");
+                }
+                ArrayList<String> arrayListCate = (ArrayList<String>) documentSnapshot.getData().get("MyInterestCategories");
+                Log.d(TAG, " arraylsit of categories : " + arrayListCate);
+                Query dbref =  db.collection("Notification").whereIn("eventCategory", arrayListCate);
+                dbref.get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    Log.d(TAG, " doc count : "+ queryDocumentSnapshots.getDocuments());
+                    queryDocumentSnapshots.getDocuments().forEach(
+                            e -> {
+                                notificationsList.add(new NewNotification((HashMap<String, Object>) e.getData()));
+                            });
+
+                    Log.d(TAG, "notification size: "+ notificationsList.size());
+                    NotificationListsAdapter notificationListsAdapter = new NotificationListsAdapter(notificationsList,manageNotifications) {
+                        @Override
+                        public void navigatetoeventdetails(String eventid) {
+                            db.collection("Volunteer").document(user.getUid()).update("MyManageNotifications", FieldValue.arrayUnion(eventid));
+
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_container_view_tag, EventDetailsFragment.newInstance(eventid))
+                                    .addToBackStack(null)
+                                    .commit();
+                        }
+                    };
+                    listNotification.setAdapter(notificationListsAdapter);
+                    Log.d(TAG, " ++ : " + notificationsList.size());
+                    Log.d(TAG, " bagde " + (notificationsList.size() - manageNotifications.size()) );
+                    textView.setText("" + (notificationsList.size() - manageNotifications.size()));
+                });
+
+
+
+            }
         });
 
-
-
-        Log.d(TAG, "onCreateView: ");
         return view;
     }
 }

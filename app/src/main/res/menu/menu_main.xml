@@ -7,6 +7,7 @@
         android:enabled="true"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_baseline_notifications_24"
+        app:actionLayout="@layout/custom_action_notification_item_layout"
         android:title="Notification"/>
 
     <item android:id="@+id/action_logout"

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,8 +24,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements SetActionBarTitle {
 
@@ -33,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
     FirebaseAuth firebaseAuth;
     ActionBar actionBar;
     TextView profileTv;
+    MenuItem menuItemNotification;
+    TextView textNotificationCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
         actionBar = getSupportActionBar();
         actionBar.setTitle("Profile");
+
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -74,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
                         return true;
 
                     case R.id.page_5:
+                        actionBar.setTitle("User");
                         FirebaseUser user = firebaseAuth.getCurrentUser();
                         DocumentReference documentReference = db.collection("Volunteer").document(user.getUid());
                         documentReference.addSnapshotListener(MainActivity.this, new EventListener<DocumentSnapshot>() {
@@ -144,6 +154,43 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
     public boolean onCreateOptionsMenu(Menu menu) {
         // inflate menu
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        menuItemNotification = menu.findItem(R.id.page_6);
+        View actionView = menuItemNotification.getActionView();
+        textNotificationCount = (TextView) actionView.findViewById(R.id.cart_badge);
+
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItemNotification);
+            }
+        });
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        db.collection("Volunteer").document(user.getUid()).get().addOnSuccessListener(documentSnapshot -> {
+
+        int manageNotifications = 0;
+            final int[] notificationsList = {0};
+            if (documentSnapshot.getData() != null && documentSnapshot.getData().get("MyInterestCategories") != null) {
+                if (documentSnapshot.getData().get("MyManageNotifications") != null) {
+                    manageNotifications = ((ArrayList) documentSnapshot.getData().get("MyManageNotifications")).size();
+                }
+                ArrayList<String> arrayListCate = (ArrayList<String>) documentSnapshot.getData().get("MyInterestCategories");
+                Query dbref =  db.collection("Notification").whereIn("eventCategory", arrayListCate);
+                int finalManageNotifications = manageNotifications;
+                dbref.get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    notificationsList[0] = queryDocumentSnapshots.getDocuments().size();
+                    textNotificationCount.setText("" + (notificationsList[0] - finalManageNotifications));
+                });
+
+
+
+            }
+        });
+
+
+
         return super.onCreateOptionsMenu(menu);
     }
 

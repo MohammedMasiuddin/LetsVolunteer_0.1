@@ -113,6 +113,7 @@ public class BlankFragment extends Fragment {
     String dateselect1 = "";
     GeoPoint geoPoint;
     String locationAddress;
+    String eventimage;
 
     public static BlankFragment newInstance(String param1, String param2) {
         BlankFragment fragment = new BlankFragment();
@@ -501,6 +502,10 @@ public class BlankFragment extends Fragment {
                                            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                                        @Override
                                        public void onComplete(@NonNull Task<Uri> task) {
+                                           if (finalI == 0){
+                                               eventimage = downloadUri.toString();
+                                           }
+
                                            if (task.isSuccessful()) {
                                                downloadUri = task.getResult();
                                                eventPost.getImageUrlLists().add(downloadUri.toString());
@@ -522,11 +527,17 @@ public class BlankFragment extends Fragment {
                                                 progressDialog.dismiss();
                                                 Toast.makeText(getContext().getApplicationContext(),"Event is Created and it is uploaded ",Toast.LENGTH_LONG).show();
 
-                                                NewNotification newNotification = new NewNotification(documentid,eventPost.getCategoryinterest());
+                                                db.collection("Organizers").document(eventPost.getOrganiserid()).get()
+                                                        .addOnSuccessListener(documentSnapshot1 -> {
+                                                            if (documentSnapshot1.getData().get("organizationName") != null ){
+                                                                NewNotification newNotification = new NewNotification(documentid,eventPost.getCategoryinterest(),
+                                                                        eventPost.getEventDate(),eventPost.getEventName(),documentSnapshot1.getData().get("organizationName").toString(), eventimage);
+                                                                db.collection("Notification").add(newNotification).addOnSuccessListener(documentReference1 -> {
+                                                                    db.collection("Notification").document(documentReference1.getId()).update("eventCreateDate",FieldValue.serverTimestamp());
+                                                                });
+                                                            }
+                                                        });
 
-                                                db.collection("Notification").add(newNotification).addOnSuccessListener(documentReference1 -> {
-                                                    db.collection("Notification").document(documentReference1.getId()).update("eventCreateDate",FieldValue.serverTimestamp());
-                                                });
 
                                                 db.collection("Events")
                                                         .document(documentid)

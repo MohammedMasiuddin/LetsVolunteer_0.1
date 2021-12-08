@@ -1,5 +1,6 @@
 package com.example.letsvolunteer;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.ServerTimestamp;
@@ -23,7 +24,7 @@ public class EventsPost {
     public GeoPoint location;
     public String locationAddress;
     public int likes = 0;
-    public String time;
+    public Timestamp time;
 
     public String getCategoryinterest() {
         return categoryinterest;
@@ -82,7 +83,7 @@ public class EventsPost {
         this.categoryinterest = (String) map.get("categoryinterest");
         this.location = (GeoPoint) map.get("location");
         this.locationAddress = (String) map.get("locationAddress");
-        this.time = (String) map.get("timestamp");
+        this.time = (Timestamp) map.get("timestamp");
     }
 
     public String getEventDate() {
@@ -165,11 +166,11 @@ public class EventsPost {
         this.likes = likes;
     }
 
-    public String getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 }
