@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements SetActionBarTitle
         });
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
 
         db.collection("Volunteer").document(user.getUid()).get().addOnSuccessListener(documentSnapshot -> {
 
